@@ -33,6 +33,9 @@
 }
 
 - (IBAction) goNewSock:(id)sender {
+	if (![network isConnected]) {
+		return;
+	}
 	
 	/*
 	 open
