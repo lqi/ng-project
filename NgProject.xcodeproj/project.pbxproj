@@ -13,6 +13,7 @@
 		2952659A1140FD1D00CA2C90 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E7B7CB1140A67A001E3644 /* libProtocolBuffers.a */; };
 		295265A51140FD6A00CA2C90 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		295265BA1140FEC800CA2C90 /* NGRpc.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E7B80E1140C2FE001E3644 /* NGRpc.m */; };
+		29BD933011417C2100AA22AE /* NGNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD932F11417C2100AA22AE /* NGNetwork.m */; };
 		29E7B7D01140A692001E3644 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E7B7CB1140A67A001E3644 /* libProtocolBuffers.a */; };
 		29E7B7D61140BB95001E3644 /* Common.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E7B7D31140BB95001E3644 /* Common.pb.m */; };
 		29E7B7D71140BB95001E3644 /* WaveclientRpc.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E7B7D51140BB95001E3644 /* WaveclientRpc.pb.m */; };
@@ -27,14 +28,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8D1107260486CEB800E47090 /* NG Google Wave Client */;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
 			remoteInfo = "NG Google Wave Client";
 		};
 		295265981140FD0E00CA2C90 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29E7B7C11140A67A001E3644 /* ProtocolBuffers.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 7461B52D0F94FAF800A0C422 /* ProtocolBuffers */;
+			remoteGlobalIDString = 7461B52D0F94FAF800A0C422;
 			remoteInfo = ProtocolBuffers;
 		};
 		29E7B7CA1140A67A001E3644 /* PBXContainerItemProxy */ = {
@@ -75,13 +76,15 @@
 		256AC3D80F4B6AC300CF3369 /* NgProjectAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NgProjectAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* NgProjectAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NgProjectAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* NgProject_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NgProject_Prefix.pch; sourceTree = "<group>"; };
-		295264701140F78800CA2C90 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = UnitTests.octest; path = build/Debug/UnitTests.octest; sourceTree = "<group>"; };
+		295264701140F78800CA2C90 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		295264711140F78800CA2C90 /* UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
 		295264991140F91A00CA2C90 /* NGRpcTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpcTest.h; path = test/lib/network/NGRpcTest.h; sourceTree = "<group>"; };
 		2952649A1140F91A00CA2C90 /* NGRpcTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGRpcTest.m; path = test/lib/network/NGRpcTest.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		29BD932E11417C2100AA22AE /* NGNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGNetwork.h; path = lib/network/NGNetwork.h; sourceTree = "<group>"; };
+		29BD932F11417C2100AA22AE /* NGNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGNetwork.m; path = lib/network/NGNetwork.m; sourceTree = "<group>"; };
 		29E7B7C11140A67A001E3644 /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = "third-party/ProtocolBuffers/ProtocolBuffers.xcodeproj"; sourceTree = "<group>"; };
 		29E7B7D21140BB95001E3644 /* Common.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.pb.h; path = proto/Common.pb.h; sourceTree = "<group>"; };
 		29E7B7D31140BB95001E3644 /* Common.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Common.pb.m; path = proto/Common.pb.m; sourceTree = "<group>"; };
@@ -239,6 +242,8 @@
 		29E7B80B1140C27D001E3644 /* network */ = {
 			isa = PBXGroup;
 			children = (
+				29BD932E11417C2100AA22AE /* NGNetwork.h */,
+				29BD932F11417C2100AA22AE /* NGNetwork.m */,
 				29E7B80D1140C2FE001E3644 /* NGRpc.h */,
 				29E7B80E1140C2FE001E3644 /* NGRpc.m */,
 			);
@@ -392,6 +397,7 @@
 				29E7B7D61140BB95001E3644 /* Common.pb.m in Sources */,
 				29E7B7D71140BB95001E3644 /* WaveclientRpc.pb.m in Sources */,
 				29E7B80F1140C2FE001E3644 /* NGRpc.m in Sources */,
+				29BD933011417C2100AA22AE /* NGNetwork.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

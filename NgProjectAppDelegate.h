@@ -19,11 +19,12 @@
 
 #import "WaveclientRpc.pb.h"
 
+#import "NGNetwork.h"
 #import "NGRpc.h"
 
 @interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
-	NGRpc *rpc;
+	NGNetwork *network;
 }
 
 @property (assign) IBOutlet NSWindow *window;

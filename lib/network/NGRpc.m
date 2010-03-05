@@ -19,78 +19,15 @@
 
 @implementation NGRpc
 
-- (id) initWithHostName:(NSString *)name port:(NSInteger)port {
-	if ((self = [super init])) {
-		NSHost *host = [NSHost hostWithName:name];
-		[self connectToHost:host port:port];
-	}
-	return self;
-}
-
-- (id) initWithHostAddress:(NSString *)address port:(NSInteger)port {
-	if ((self = [super init])) {
-		NSHost *host = [NSHost hostWithAddress:address];
-		[self connectToHost:host port:port];
-	}
-	return self;
-}
-
-- (id) initWithHost:(NSHost *)host port:(NSInteger)port {
-	if ((self = [super init])) {
-		[self connectToHost:host port:port];
-	}
-	return self;
-}
-
-- (void) connectToHost:(NSHost *)host port:(NSInteger)port {
-	[NSStream getStreamsToHost:host port:9876 inputStream:&inputStream outputStream:&outputStream];
-	[inputStream retain];
-	[outputStream retain];
-	[inputStream setDelegate:self];
-	[outputStream setDelegate:self];
-	[inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	[outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	
-	pbOutputStream = [PBCodedOutputStream streamWithOutputStream:outputStream];
-	[pbOutputStream retain];
-	
-	pbInputStream = [PBCodedInputStream streamWithInputStream:inputStream];
-	[pbInputStream retain];
-	
-	sequenceNo = 0;
-}
-
-- (BOOL) isConnected {
-	return (inputStream != nil) && (outputStream != nil) && (pbInputStream != nil) && (pbOutputStream != nil);
-}
-
-- (void)send:(PBGeneratedMessage *)message {
++ (void)send:(PBGeneratedMessage *)message viaOutputStream:(PBCodedOutputStream *)stream sequenceNo:(long)sequenceNo {
 	NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
 	[messageType appendString:[message className]];
 	int32_t size = computeInt32SizeNoTag(sequenceNo) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag(message);
-	[pbOutputStream writeRawLittleEndian32:size];
-	[pbOutputStream writeInt64NoTag:sequenceNo];
-	[pbOutputStream writeStringNoTag:messageType];
-	[pbOutputStream writeMessageNoTag:message];
-	[pbOutputStream flush];
-	
-	sequenceNo++;
+	[stream writeRawLittleEndian32:size];
+	[stream writeInt64NoTag:sequenceNo];
+	[stream writeStringNoTag:messageType];
+	[stream writeMessageNoTag:message];
+	[stream flush];
 }
-
-- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
-	if (eventCode == NSStreamEventHasBytesAvailable) {
-		uint8_t buf[1024];
-		unsigned int len = 0;
-		len = [(NSInputStream *)stream read:buf maxLength:1024];
-	}
-}
-
-- (void) dealloc {
-	[pbInputStream release];
-	[pbOutputStream release];
-	[inputStream release];
-	[outputStream release];
-	[super dealloc];
-}	
 
 @end

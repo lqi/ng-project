@@ -29,7 +29,7 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	rpc = [[NGRpc alloc] initWithHostAddress:@"192.168.1.5" port:9876];
+	network = [[NGNetwork alloc] initWithHostAddress:@"192.168.1.5" port:9876];
 }
 
 - (IBAction) goNewSock:(id)sender {
@@ -40,7 +40,8 @@
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:@"test@192.168.1.5"];
 	[openRequestBuilder setWaveId:@"indexwave!indexwave"];
-	[rpc send:[openRequestBuilder build]];
+	//[network send:[openRequestBuilder build]];
+	[NGRpc send:[openRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:1];
 	
 	/*
 	 new wave
@@ -66,12 +67,13 @@
 	
 	[submitRequestBuilder setDelta:[deltaBuilder build]];
 	
-	[rpc send:[submitRequestBuilder build]];
+	//[network send:[submitRequestBuilder build]];
+	[NGRpc send:[submitRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:2];
 	
 }
 
 - (void) dealloc {
-	[rpc release];
+	[network release];
 	[super dealloc];
 }
 

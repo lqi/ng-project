@@ -20,11 +20,8 @@
 #import "NGRpc.h"
 
 @interface NGRpcTest : SenTestCase {
-	NGRpc *rpc;
 }
 
 - (void) testCanary;
-- (void) testIsConnected;
-- (void) testIsNotConnected;
 
 @end

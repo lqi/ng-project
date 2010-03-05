@@ -19,9 +19,22 @@
 
 #import "ProtocolBuffers.h"
 
-@interface NGRpc : NSObject {
+@interface NGNetwork : NSObject <NSStreamDelegate> {
+	long sequenceNo;
+	NSInputStream *inputStream;
+	NSOutputStream *outputStream;
+	PBCodedInputStream *pbInputStream;
+	PBCodedOutputStream *pbOutputStream;
 }
 
-+ (void)send:(PBGeneratedMessage *)message viaOutputStream:(PBCodedOutputStream *)stream sequenceNo:(long)sequenceNo;
+@property (readonly) PBCodedInputStream *pbInputStream;
+@property (readonly) PBCodedOutputStream *pbOutputStream;
+
+- (id) initWithHostName:(NSString *)name port:(NSInteger)port;
+- (id) initWithHostAddress:(NSString *)address port:(NSInteger)port;
+- (id) initWithHost:(NSHost *)host port:(NSInteger)port;
+
+- (void) connectToHost:(NSHost *)host port:(NSInteger)port;
+- (BOOL) isConnected;
 
 @end
