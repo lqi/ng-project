@@ -28,57 +28,11 @@
 	return self;
 }
 
-- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
-	switch(eventCode) {
-        case NSStreamEventHasBytesAvailable: 
-		{
-			uint8_t buf[1024];
-			
-            unsigned int len = 0;
-			
-            len = [(NSInputStream *)stream read:buf maxLength:1024];
-			
-            NSLog([NSString stringWithFormat:@"%d", len]);
-		}
-	}
-}
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	NSLog(@"Ready");
-	
-	NSHost *host = [NSHost hostWithAddress:@"192.168.1.5"];
-	//NSHost *host = [NSHost hostWithName:@"sandbox.ng.longyiqi.com"];
-	[NSStream getStreamsToHost:host port:9876 inputStream:&inputStream outputStream:&outputStream];
-	[inputStream retain];
-	[outputStream retain];
-	[inputStream setDelegate:self];
-	[outputStream setDelegate:self];
-	[inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	[outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	
-	pbOutputStream = [PBCodedOutputStream streamWithOutputStream:outputStream];
-	[pbOutputStream retain];
-	
-	pbInputStream = [PBCodedInputStream streamWithInputStream:inputStream];
-	[pbInputStream retain];
-	
-	NSLog(@"Connected!");
-	
-}
-
-- (void)sendMessage:(PBGeneratedMessage *)message withSequence:(long)sequenceNo {
-	NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
-	[messageType appendString:[message className]];
-	int32_t size = computeInt32SizeNoTag(sequenceNo) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag(message);
-	[pbOutputStream writeRawLittleEndian32:size];
-	[pbOutputStream writeInt64NoTag:sequenceNo];
-	[pbOutputStream writeStringNoTag:messageType];
-	[pbOutputStream writeMessageNoTag:message];
-	[pbOutputStream flush];
+	rpc = [[NGRpc alloc] initWithHostAddress:@"192.168.1.5" port:9876];
 }
 
 - (IBAction) goNewSock:(id)sender {
-	NSLog(@"New Sock Respond!");
 	
 	/*
 	 open
@@ -86,7 +40,7 @@
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:@"test@192.168.1.5"];
 	[openRequestBuilder setWaveId:@"indexwave!indexwave"];
-	[self sendMessage:[openRequestBuilder build] withSequence:1];
+	[rpc send:[openRequestBuilder build]];
 	
 	/*
 	 new wave
@@ -112,8 +66,13 @@
 	
 	[submitRequestBuilder setDelta:[deltaBuilder build]];
 	
-	[self sendMessage:[submitRequestBuilder build] withSequence:2];
+	[rpc send:[submitRequestBuilder build]];
 	
+}
+
+- (void) dealloc {
+	[rpc release];
+	[super dealloc];
 }
 
 @end

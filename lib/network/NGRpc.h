@@ -17,14 +17,19 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "NGRpc.h"
-
-@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *window;
-	NGRpc *rpc;
+@interface NGRpc : NSObject <NSStreamDelegate> {
+	long sequenceNo;
+	NSInputStream *inputStream;
+	NSOutputStream *outputStream;
+	PBCodedInputStream *pbInputStream;
+	PBCodedOutputStream *pbOutputStream;
 }
 
-@property (assign) IBOutlet NSWindow *window;
+- (id) initWithHostName:(NSString *)name port:(NSInteger)port;
+- (id) initWithHostAddress:(NSString *)address port:(NSInteger)port;
+- (id) initWithHost:(NSHost *)host port:(NSInteger)port;
 
-- (IBAction) goNewSock:(id)sender;
+- (void) connectToHost:(NSHost *)host port:(NSInteger)port;
+- (void)send:(PBGeneratedMessage *)message;
+
 @end
