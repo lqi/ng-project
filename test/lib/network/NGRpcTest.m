@@ -31,10 +31,4 @@
 	STAssertTrue(YES, @"test canary");
 }
 
-- (void) testIsConnected {
-}
-
-- (void) testIsNotConnected {
-}
-
 @end

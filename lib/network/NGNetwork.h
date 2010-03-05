@@ -20,7 +20,6 @@
 #import "ProtocolBuffers.h"
 
 @interface NGNetwork : NSObject <NSStreamDelegate> {
-	long sequenceNo;
 	NSInputStream *inputStream;
 	NSOutputStream *outputStream;
 	PBCodedInputStream *pbInputStream;

@@ -65,8 +65,6 @@
 	
 	pbInputStream = [PBCodedInputStream streamWithInputStream:inputStream];
 	[pbInputStream retain];
-	
-	sequenceNo = 0;
 }
 
 - (BOOL) isStreamOpen:(NSStream *)stream {
