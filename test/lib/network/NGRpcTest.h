@@ -15,18 +15,16 @@
  * 
  */
 
-#import <Cocoa/Cocoa.h>
-
-#import "WaveclientRpc.pb.h"
+#import <SenTestingKit/SenTestingKit.h>
 
 #import "NGRpc.h"
 
-@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *window;
+@interface NGRpcTest : SenTestCase {
 	NGRpc *rpc;
 }
 
-@property (assign) IBOutlet NSWindow *window;
+- (void) testCanary;
+- (void) testIsConnected;
+- (void) testIsNotConnected;
 
-- (IBAction) goNewSock:(id)sender;
 @end

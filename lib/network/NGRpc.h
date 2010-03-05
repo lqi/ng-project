@@ -17,6 +17,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "ProtocolBuffers.h"
+
 @interface NGRpc : NSObject <NSStreamDelegate> {
 	long sequenceNo;
 	NSInputStream *inputStream;
@@ -30,6 +32,8 @@
 - (id) initWithHost:(NSHost *)host port:(NSInteger)port;
 
 - (void) connectToHost:(NSHost *)host port:(NSInteger)port;
+- (BOOL) isConnected;
+
 - (void)send:(PBGeneratedMessage *)message;
 
 @end

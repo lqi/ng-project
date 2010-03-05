@@ -15,18 +15,32 @@
  * 
  */
 
-#import <Cocoa/Cocoa.h>
+#import "NGRpcTest.h"
 
-#import "WaveclientRpc.pb.h"
+@implementation NGRpcTest
 
-#import "NGRpc.h"
-
-@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *window;
-	NGRpc *rpc;
+- (void) setUp
+{
+    rpc = [[NGRpc alloc] initWithHostAddress:@"192.168.1.5" port:9876];
 }
 
-@property (assign) IBOutlet NSWindow *window;
+- (void) tearDown
+{
+    [rpc release];
+}
 
-- (IBAction) goNewSock:(id)sender;
+- (void) testCanary {
+	STAssertTrue(YES, @"test canary");
+}
+
+- (void) testIsConnected {
+	STAssertTrue([rpc isConnected], @"a rpc object connecting to the test wave server");
+}
+
+- (void) testIsNotConnected {
+	NGRpc *testRpc = [[NGRpc alloc] init];
+	STAssertFalse([testRpc isConnected], @"a rpc object without connecting to the server");
+	[testRpc release];
+}
+
 @end

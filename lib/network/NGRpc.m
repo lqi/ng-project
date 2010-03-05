@@ -60,6 +60,10 @@
 	sequenceNo = 0;
 }
 
+- (BOOL) isConnected {
+	return (inputStream != nil) && (outputStream != nil) && (pbInputStream != nil) && (pbOutputStream != nil);
+}
+
 - (void)send:(PBGeneratedMessage *)message {
 	NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
 	[messageType appendString:[message className]];

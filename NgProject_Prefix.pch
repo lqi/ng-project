@@ -4,8 +4,4 @@
 
 #ifdef __OBJC__
 	#import <Cocoa/Cocoa.h>
-
-	#import "ProtocolBuffers.h"
-	#import "Common.pb.h"
-	#import "WaveclientRpc.pb.h"
 #endif
