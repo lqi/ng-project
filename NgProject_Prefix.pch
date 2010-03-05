@@ -1,0 +1,10 @@
+//
+// Prefix header for all source files of the 'NgProject' target in the 'NgProject' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+	#import "ProtocolBuffers.h"
+	#import "Common.pb.h"
+	#import "WaveclientRpc.pb.h"
+#endif
