@@ -36,10 +36,10 @@
 }
 
 - (BOOL) isEqual:(id)object {
-	if ([object className] != [self className]) {
+	if (![[self className] isEqual:[object className]]) {
 		return NO;
 	}
-	return ([object domain] == [self domain]) && ([object waveId] == [self waveId]);
+	return [[self domain] isEqual:[object domain]] && [[self waveId] isEqual:[object waveId]];
 }
 
 @end

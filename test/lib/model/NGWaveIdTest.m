@@ -15,18 +15,30 @@
  * 
  */
 
-#import "NGRpcTest.h"
+#import "NGWaveIdTest.h"
 
-@implementation NGRpcTest
+@implementation NGWaveIdTest
 
 - (void) setUp {
+	waveId = [[NGWaveId alloc] initWithDomain:@"testDomain" waveId:@"testId"];
 }
 
 - (void) tearDown {
+	[waveId release];
 }
 
-- (void) testCanary {
-	STAssertTrue(YES, @"test canary");
+- (void) testDomain {
+	STAssertEqualObjects([waveId domain], @"testDomain", @"domain should be 'testDomain'");
+}
+
+- (void) testWaveId {
+	STAssertEqualObjects([waveId waveId], @"testId", @"waveId should be 'waveId'");
+}
+
+- (void) testEquals {
+	NGWaveId *compareWaveId = [[NGWaveId alloc] initWithDomain:@"testDomain" waveId:@"testId"];
+	STAssertEqualObjects(waveId, compareWaveId, @"WaveId with same domain and id should be equal");
+	[compareWaveId release];
 }
 
 @end

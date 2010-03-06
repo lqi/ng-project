@@ -17,9 +17,10 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-#import "NGRpc.h"
+#import "NGWaveId.h"
 
-@interface NGRpcTest : SenTestCase {
+@interface NGWaveIdTest : SenTestCase {
+	NGWaveId *waveId;
 }
 
 @end

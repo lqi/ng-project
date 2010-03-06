@@ -22,6 +22,8 @@
 		29BD94E31142375200AA22AE /* NGWaveId.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD94E11142375200AA22AE /* NGWaveId.m */; };
 		29BD94FF1142406E00AA22AE /* NGWaveletId.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD94FE1142406E00AA22AE /* NGWaveletId.m */; };
 		29BD95001142406E00AA22AE /* NGWaveletId.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD94FE1142406E00AA22AE /* NGWaveletId.m */; };
+		29BD958C1142495C00AA22AE /* NGWaveIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD958B1142495C00AA22AE /* NGWaveIdTest.m */; };
+		29BD95CD11424F3300AA22AE /* NGWaveletIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */; };
 		29E7B7D01140A692001E3644 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E7B7CB1140A67A001E3644 /* libProtocolBuffers.a */; };
 		29E7B7D61140BB95001E3644 /* Common.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E7B7D31140BB95001E3644 /* Common.pb.m */; };
 		29E7B7D71140BB95001E3644 /* WaveclientRpc.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E7B7D51140BB95001E3644 /* WaveclientRpc.pb.m */; };
@@ -101,6 +103,10 @@
 		29BD94E11142375200AA22AE /* NGWaveId.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveId.m; path = lib/model/NGWaveId.m; sourceTree = "<group>"; };
 		29BD94FD11423ED800AA22AE /* NGWaveletId.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletId.h; path = lib/model/NGWaveletId.h; sourceTree = "<group>"; };
 		29BD94FE1142406E00AA22AE /* NGWaveletId.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletId.m; path = lib/model/NGWaveletId.m; sourceTree = "<group>"; };
+		29BD958A1142495C00AA22AE /* NGWaveIdTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveIdTest.h; path = test/lib/model/NGWaveIdTest.h; sourceTree = "<group>"; };
+		29BD958B1142495C00AA22AE /* NGWaveIdTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveIdTest.m; path = test/lib/model/NGWaveIdTest.m; sourceTree = "<group>"; };
+		29BD95CB11424F3300AA22AE /* NGWaveletIdTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletIdTest.h; path = test/lib/model/NGWaveletIdTest.h; sourceTree = "<group>"; };
+		29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletIdTest.m; path = test/lib/model/NGWaveletIdTest.m; sourceTree = "<group>"; };
 		29E7B7C11140A67A001E3644 /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = "third-party/ProtocolBuffers/ProtocolBuffers.xcodeproj"; sourceTree = "<group>"; };
 		29E7B7D21140BB95001E3644 /* Common.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.pb.h; path = proto/Common.pb.h; sourceTree = "<group>"; };
 		29E7B7D31140BB95001E3644 /* Common.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Common.pb.m; path = proto/Common.pb.m; sourceTree = "<group>"; };
@@ -178,6 +184,7 @@
 		2952644E1140F3E200CA2C90 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				29BD95891142492500AA22AE /* model */,
 				2952649C1140F92000CA2C90 /* network */,
 			);
 			name = Tests;
@@ -254,6 +261,17 @@
 				29BD94E11142375200AA22AE /* NGWaveId.m */,
 				29BD94FD11423ED800AA22AE /* NGWaveletId.h */,
 				29BD94FE1142406E00AA22AE /* NGWaveletId.m */,
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
+		29BD95891142492500AA22AE /* model */ = {
+			isa = PBXGroup;
+			children = (
+				29BD95CB11424F3300AA22AE /* NGWaveletIdTest.h */,
+				29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */,
+				29BD958A1142495C00AA22AE /* NGWaveIdTest.h */,
+				29BD958B1142495C00AA22AE /* NGWaveIdTest.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -430,6 +448,8 @@
 				29BD94AC1142198F00AA22AE /* NGRandomIdGenerator.m in Sources */,
 				29BD94E21142375200AA22AE /* NGWaveId.m in Sources */,
 				29BD94FF1142406E00AA22AE /* NGWaveletId.m in Sources */,
+				29BD958C1142495C00AA22AE /* NGWaveIdTest.m in Sources */,
+				29BD95CD11424F3300AA22AE /* NGWaveletIdTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

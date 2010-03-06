@@ -36,10 +36,10 @@
 }
 
 - (BOOL) isEqual:(id)object {
-	if ([object className] != [self className]) {
+	if (![[self className] isEqual:[object className]]) {
 		return NO;
 	}
-	return ([object domain] == [self domain]) && ([object waveletId] == [self waveletId]);
+	return [[self domain] isEqual:[object domain]] && [[self waveletId] isEqual:[object waveletId]];
 }
 
 @end

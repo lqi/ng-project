@@ -22,6 +22,4 @@
 @interface NGNetworkTest : SenTestCase {
 }
 
-- (void) testIsConnected;
-
 @end

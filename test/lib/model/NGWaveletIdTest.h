@@ -17,9 +17,10 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-#import "NGRpc.h"
+#import "NGWaveletId.h"
 
-@interface NGRpcTest : SenTestCase {
+@interface NGWaveletIdTest : SenTestCase {
+	NGWaveletId *waveletId;
 }
 
 @end
