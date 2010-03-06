@@ -29,7 +29,7 @@
 @synthesize pbInputStream;
 
 - (id) initWithHostName:(NSString *)name port:(NSInteger)port {
-	if ((self = [super init])) {
+	if (self = [super init]) {
 		NSHost *host = [NSHost hostWithName:name];
 		[self connectToHost:host port:port];
 	}
@@ -37,7 +37,7 @@
 }
 
 - (id) initWithHostAddress:(NSString *)address port:(NSInteger)port {
-	if ((self = [super init])) {
+	if (self = [super init]) {
 		NSHost *host = [NSHost hostWithAddress:address];
 		[self connectToHost:host port:port];
 	}
@@ -45,7 +45,7 @@
 }
 
 - (id) initWithHost:(NSHost *)host port:(NSInteger)port {
-	if ((self = [super init])) {
+	if (self = [super init]) {
 		[self connectToHost:host port:port];
 	}
 	return self;

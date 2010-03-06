@@ -15,27 +15,31 @@
  * 
  */
 
-#import <Cocoa/Cocoa.h>
-
-#import "WaveclientRpc.pb.h"
-
-#import "NGNetwork.h"
-#import "NGRpc.h"
-#import "NGWaveId.h"
 #import "NGWaveletId.h"
-#import "NGRandomIdGenerator.h"
 
-@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *window;
-	NSString *domain;
-	long seqNo;
-	NGNetwork *network;
-	NGRandomIdGenerator *idGenerator;
+@implementation NGWaveletId
+
+- (id) initWithDomain:(NSString *)domain waveletId:(NSString *)waveletId {
+	if (self = [super init]) {
+		domain_ = domain;
+		waveletId_ = waveletId;
+	}
+	return self;
 }
 
-@property (assign) IBOutlet NSWindow *window;
+- (NSString *) domain {
+	return domain_;
+}
 
-- (IBAction) goReceive:(id)sender;
-- (IBAction) openIndex:(id)sender;
-- (IBAction) newWave:(id)sender;
+- (NSString *) waveletId {
+	return waveletId_;
+}
+
+- (BOOL) isEqual:(id)object {
+	if ([object className] != [self className]) {
+		return NO;
+	}
+	return ([object domain] == [self domain]) && ([object waveletId] == [self waveletId]);
+}
+
 @end

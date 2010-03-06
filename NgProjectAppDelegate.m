@@ -23,13 +23,15 @@
 
 - (id)init {
 	if (self = [super init]) {
-		
+		domain = @"192.168.1.5";
+		seqNo = 0;
+		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
 	}
 	return self;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	network = [[NGNetwork alloc] initWithHostAddress:@"192.168.1.5" port:9876];
+	network = [[NGNetwork alloc] initWithHostAddress:domain port:9876];
 }
 
 - (IBAction) goReceive:(id)sender {
@@ -40,23 +42,29 @@
 	[NGRpc receive:[network pbInputStream]];
 }
 
-- (IBAction) goNewSock:(id)sender {
+- (IBAction) openIndex:(id)sender {
 	if (![network isConnected]) {
 		return;
 	}
 	
-	/*
-	 open
-	 */
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:@"test@192.168.1.5"];
 	[openRequestBuilder setWaveId:@"indexwave!indexwave"];
-	[NGRpc send:[openRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:1];
+	[NGRpc send:[openRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:seqNo++];
 	
-	/*
-	 new wave
-	 */
-	NSString *waveName = @"wave://192.168.1.5/w+PkFExyYKI2P/conv+root";
+}
+
+- (IBAction) newWave:(id)sender {
+	if (![network isConnected]) {
+		return;
+	}
+	
+	NSMutableString *waveName = [[NSMutableString alloc] initWithString:@"wave://"];
+	[waveName appendString:domain];
+	[waveName appendString:@"/"];
+	[waveName appendString:[[idGenerator newWaveId] waveId]];
+	[waveName appendString:@"/"];
+	[waveName appendString:[[idGenerator newConversationRootWaveletId] waveletId]];
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
 	[submitRequestBuilder setWaveletName:waveName];
@@ -64,11 +72,9 @@
 	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
 	[deltaBuilder setAuthor:@"test@192.168.1.5"];
 	
-	ProtocolWaveletOperation_Builder *opBuilder;
-	opBuilder = [ProtocolWaveletOperation builder];
+	ProtocolWaveletOperation_Builder *opBuilder = [ProtocolWaveletOperation builder];
 	[opBuilder setAddParticipant:@"test@192.168.1.5"];
 	[deltaBuilder addOperation:[opBuilder build]];
-	[opBuilder release];
 	
 	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
 	[hashedVersionBuilder setVersion:0];
@@ -77,11 +83,11 @@
 	
 	[submitRequestBuilder setDelta:[deltaBuilder build]];
 	
-	[NGRpc send:[submitRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:2];
-	
+	[NGRpc send:[submitRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:seqNo++];
 }
 
 - (void) dealloc {
+	[idGenerator release];
 	[network release];
 	[super dealloc];
 }
