@@ -15,20 +15,16 @@
  * 
  */
 
-#import <Cocoa/Cocoa.h>
+#import "NGNetworkTest.h"
 
-#import "WaveclientRpc.pb.h"
+@implementation NGNetworkTest
 
-#import "NGNetwork.h"
-#import "NGRpc.h"
-
-@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *window;
-	NGNetwork *network;
+- (void) testIsConnected {
+	NSHost *labWaveHost = [NSHost hostWithAddress:@"192.168.1.5"];
+	NGNetwork *labWaveServer = [[NGNetwork alloc] initWithHost:labWaveHost port:9876];
+	while (![labWaveServer isConnected]) {
+	}
+	STAssertTrue([labWaveServer isConnected], @"this test, at the moment, is very tricky, need to think about it later.");
 }
 
-@property (assign) IBOutlet NSWindow *window;
-
-- (IBAction) goReceive:(id)sender;
-- (IBAction) goNewSock:(id)sender;
 @end

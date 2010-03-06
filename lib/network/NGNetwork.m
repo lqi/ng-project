@@ -79,11 +79,8 @@
 	return [self isStreamOpen:inputStream] && [self isStreamOpen:outputStream];
 }
 
-- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
+- (void) stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
 	if (eventCode == NSStreamEventHasBytesAvailable) {
-		uint8_t buf[1024];
-		unsigned int len = 0;
-		len = [(NSInputStream *)stream read:buf maxLength:1024];
 	}
 }
 

@@ -15,20 +15,13 @@
  * 
  */
 
-#import <Cocoa/Cocoa.h>
-
-#import "WaveclientRpc.pb.h"
+#import <SenTestingKit/SenTestingKit.h>
 
 #import "NGNetwork.h"
-#import "NGRpc.h"
 
-@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
-    NSWindow *window;
-	NGNetwork *network;
+@interface NGNetworkTest : SenTestCase {
 }
 
-@property (assign) IBOutlet NSWindow *window;
+- (void) testIsConnected;
 
-- (IBAction) goReceive:(id)sender;
-- (IBAction) goNewSock:(id)sender;
 @end

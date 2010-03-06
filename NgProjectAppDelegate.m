@@ -32,6 +32,14 @@
 	network = [[NGNetwork alloc] initWithHostAddress:@"192.168.1.5" port:9876];
 }
 
+- (IBAction) goReceive:(id)sender {
+	if (![network isConnected]) {
+		return;
+	}
+	
+	[NGRpc receive:[network pbInputStream]];
+}
+
 - (IBAction) goNewSock:(id)sender {
 	if (![network isConnected]) {
 		return;
@@ -43,12 +51,12 @@
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:@"test@192.168.1.5"];
 	[openRequestBuilder setWaveId:@"indexwave!indexwave"];
-	//[network send:[openRequestBuilder build]];
 	[NGRpc send:[openRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:1];
 	
 	/*
 	 new wave
 	 */
+	/*
 	NSString *waveName = @"wave://192.168.1.5/w+PkFExyYKI2P/conv+root";
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
@@ -70,8 +78,8 @@
 	
 	[submitRequestBuilder setDelta:[deltaBuilder build]];
 	
-	//[network send:[submitRequestBuilder build]];
 	[NGRpc send:[submitRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:2];
+	 */
 	
 }
 
