@@ -56,7 +56,6 @@
 	/*
 	 new wave
 	 */
-	/*
 	NSString *waveName = @"wave://192.168.1.5/w+PkFExyYKI2P/conv+root";
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
@@ -79,7 +78,6 @@
 	[submitRequestBuilder setDelta:[deltaBuilder build]];
 	
 	[NGRpc send:[submitRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:2];
-	 */
 	
 }
 

@@ -44,7 +44,6 @@
 	}
 	else {
 		[stream readMessage:messageBuilder extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-		NSLog([messageBuilder waveletName]);
 	}
 }
 
