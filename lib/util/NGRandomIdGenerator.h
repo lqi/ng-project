@@ -23,7 +23,7 @@
 #import "NGWaveletId.h"
 
 @interface NGRandomIdGenerator : NSObject {
-	NSString *domain_;
+	NSString *_domain;
 }
 
 - (id) initWithDomain:(NSString *)domain;

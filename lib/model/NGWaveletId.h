@@ -18,8 +18,8 @@
 #import <Foundation/Foundation.h>
 
 @interface NGWaveletId : NSObject {
-	NSString *domain_;
-	NSString *waveletId_;
+	NSString *_domain;
+	NSString *_waveletId;
 }
 
 - (id) initWithDomain:(NSString *)domain waveletId:(NSString *)waveletId;

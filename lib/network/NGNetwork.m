@@ -52,18 +52,18 @@
 }
 
 - (void) connectToHost:(NSHost *)host port:(NSInteger)port {
-	[NSStream getStreamsToHost:host port:9876 inputStream:&inputStream outputStream:&outputStream];
-	[inputStream retain];
-	[outputStream retain];
-	[inputStream setDelegate:self];
-	[outputStream setDelegate:self];
-	[inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	[outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[NSStream getStreamsToHost:host port:9876 inputStream:&_inputStream outputStream:&_outputStream];
+	[_inputStream retain];
+	[_outputStream retain];
+	[_inputStream setDelegate:self];
+	[_outputStream setDelegate:self];
+	[_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 	
-	pbOutputStream = [PBCodedOutputStream streamWithOutputStream:outputStream];
+	pbOutputStream = [PBCodedOutputStream streamWithOutputStream:_outputStream];
 	[pbOutputStream retain];
 	
-	pbInputStream = [PBCodedInputStream streamWithInputStream:inputStream];
+	pbInputStream = [PBCodedInputStream streamWithInputStream:_inputStream];
 	[pbInputStream retain];
 }
 
@@ -76,7 +76,7 @@
 }
 
 - (BOOL) isConnected {
-	return [self isStreamOpen:inputStream] && [self isStreamOpen:outputStream];
+	return [self isStreamOpen:_inputStream] && [self isStreamOpen:_outputStream];
 }
 
 - (void) stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
@@ -87,8 +87,8 @@
 - (void) dealloc {
 	[pbInputStream release];
 	[pbOutputStream release];
-	[inputStream release];
-	[outputStream release];
+	[_inputStream release];
+	[_outputStream release];
 	[super dealloc];
 }	
 

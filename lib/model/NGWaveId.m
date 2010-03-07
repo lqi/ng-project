@@ -21,18 +21,18 @@
 
 - (id) initWithDomain:(NSString *)domain waveId:(NSString *)waveId {
 	if (self = [super init]) {
-		domain_ = domain;
-		waveId_ = waveId;
+		_domain = domain;
+		_waveId = waveId;
 	}
 	return self;
 }
 
 - (NSString *) domain {
-	return domain_;
+	return _domain;
 }
 
 - (NSString *) waveId {
-	return waveId_;
+	return _waveId;
 }
 
 - (BOOL) isEqual:(id)object {

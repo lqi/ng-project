@@ -38,7 +38,7 @@ static NSString *const WEB64_ALPHABET = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl
 
 - (id) initWithDomain:(NSString *)domain {
 	if (self = [super init]) {
-		domain_ = domain;
+		_domain = domain;
 	}
 	return self;
 }
@@ -74,11 +74,11 @@ static NSString *const WEB64_ALPHABET = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl
 }
 
 - (NGWaveId *) newWaveId {
-	return [[NGWaveId alloc] initWithDomain:domain_ waveId:[self generateId:WAVE_PREFIX length:72]];
+	return [[NGWaveId alloc] initWithDomain:_domain waveId:[self generateId:WAVE_PREFIX length:72]];
 }
 
 - (NGWaveletId *) newConversationRootWaveletId {
-	return [[NGWaveletId alloc] initWithDomain:domain_ waveletId:CONVERSATION_ROOT_WAVELET];
+	return [[NGWaveletId alloc] initWithDomain:_domain waveletId:CONVERSATION_ROOT_WAVELET];
 }
 
 @end

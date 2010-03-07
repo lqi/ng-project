@@ -20,7 +20,7 @@
 #import "NGWaveletId.h"
 
 @interface NGWaveletIdTest : SenTestCase {
-	NGWaveletId *waveletId;
+	NGWaveletId *_waveletId;
 }
 
 @end

@@ -20,24 +20,24 @@
 @implementation NGWaveletIdTest
 
 - (void) setUp {
-	waveletId = [[NGWaveletId alloc] initWithDomain:@"testDomain" waveletId:@"testId"];
+	_waveletId = [[NGWaveletId alloc] initWithDomain:@"testDomain" waveletId:@"testId"];
 }
 
 - (void) tearDown {
-	[waveletId release];
+	[_waveletId release];
 }
 
 - (void) testDomain {
-	STAssertEqualObjects([waveletId domain], @"testDomain", @"domain should be 'testDomain'");
+	STAssertEqualObjects([_waveletId domain], @"testDomain", @"domain should be 'testDomain'");
 }
 
 - (void) testWaveletId {
-	STAssertEqualObjects([waveletId waveletId], @"testId", @"waveId should be 'waveId'");
+	STAssertEqualObjects([_waveletId waveletId], @"testId", @"waveId should be 'waveId'");
 }
 
 - (void) testEquals {
 	NGWaveletId *compareWaveletId = [[NGWaveletId alloc] initWithDomain:@"testDomain" waveletId:@"testId"];
-	STAssertEqualObjects(waveletId, compareWaveletId, @"WaveId with same domain and id should be equal");
+	STAssertEqualObjects(_waveletId, compareWaveletId, @"WaveId with same domain and id should be equal");
 	[compareWaveletId release];
 }
 

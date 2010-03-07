@@ -18,8 +18,8 @@
 #import <Foundation/Foundation.h>
 
 @interface NGWaveId : NSObject {
-	NSString *domain_;
-	NSString *waveId_;
+	NSString *_domain;
+	NSString *_waveId;
 }
 
 - (id) initWithDomain:(NSString *)domain waveId:(NSString *)waveId;

@@ -20,7 +20,7 @@
 #import "NGWaveId.h"
 
 @interface NGWaveIdTest : SenTestCase {
-	NGWaveId *waveId;
+	NGWaveId *_waveId;
 }
 
 @end
