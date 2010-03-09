@@ -19,7 +19,7 @@
 
 #import "ProtocolBuffers.h"
 
-@interface NGNetwork : NSObject <NSStreamDelegate> {
+@interface NGNetwork : NSObject {
 	NSInputStream *_inputStream;
 	NSOutputStream *_outputStream;
 	PBCodedInputStream *pbInputStream;
@@ -29,11 +29,9 @@
 @property (readonly) PBCodedInputStream *pbInputStream;
 @property (readonly) PBCodedOutputStream *pbOutputStream;
 
-- (id) initWithHostName:(NSString *)name port:(NSInteger)port;
-- (id) initWithHostAddress:(NSString *)address port:(NSInteger)port;
-- (id) initWithHost:(NSHost *)host port:(NSInteger)port;
+- (id) initWithHostDomain:(NSString *)domain port:(NSInteger)port;
 
-- (void) connectToHost:(NSHost *)host port:(NSInteger)port;
+- (void) connectToHost:(NSString *)domain port:(NSInteger)port;
 - (BOOL) isConnected;
 
 @end

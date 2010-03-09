@@ -25,7 +25,7 @@
 #import "NGWaveletId.h"
 #import "NGRandomIdGenerator.h"
 
-@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
+@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate, NSStreamDelegate> {
     NSWindow *window;
 	NSString *domain;
 	long seqNo;

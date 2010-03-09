@@ -31,7 +31,7 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	network = [[NGNetwork alloc] initWithHostAddress:domain port:9876];
+	network = [[NGNetwork alloc] initWithHostDomain:domain port:9876];
 }
 
 - (IBAction) goReceive:(id)sender {
