@@ -21,7 +21,7 @@
 
 + (void) send:(PBGeneratedMessage *)message viaOutputStream:(PBCodedOutputStream *)stream sequenceNo:(long)sequenceNo {
 	NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
-	[messageType appendString:[message className]];
+	[messageType appendString:[[message class] description]];
 	int32_t size = computeInt32SizeNoTag(sequenceNo) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag(message);
 	[stream writeRawLittleEndian32:size];
 	[stream writeInt64NoTag:sequenceNo];
