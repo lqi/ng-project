@@ -23,7 +23,7 @@
 
 - (id)init {
 	if (self = [super init]) {
-		domain = @"192.168.131.132";
+		domain = @"192.168.131.5";
 		seqNo = 0;
 		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
 	}
