@@ -15,16 +15,15 @@
  * 
  */
 
-#import <stdlib.h>
+#import "ProtocolBuffers.h"
 
-#import <Foundation/Foundation.h>
+#import "proto/Common.pb.h"
+#import "proto/WaveclientRpc.pb.h"
 
-@interface NGRandomIdGenerator : NSObject {
-	NSString *_domain;
-}
+#import "model/NGWaveId.h"
+#import "model/NGWaveletId.h"
 
-- (id) initWithDomain:(NSString *)domain;
-- (NGWaveId *) newWaveId;
-- (NGWaveletId *) newConversationRootWaveletId;
+#import "util/NGRandomIdGenerator.h"
 
-@end
+#import "network/NGNetwork.h"
+#import "network/NGRpc.h"

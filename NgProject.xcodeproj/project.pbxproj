@@ -102,6 +102,7 @@
 		29B46CDA114AD91C00AC74D7 /* waveclient-rpc.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "waveclient-rpc.proto"; sourceTree = "<group>"; };
 		29B46CDB114AD91C00AC74D7 /* WaveclientRpc.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveclientRpc.pb.h; sourceTree = "<group>"; };
 		29B46CDC114AD91C00AC74D7 /* WaveclientRpc.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveclientRpc.pb.m; sourceTree = "<group>"; };
+		29B46CFA114AD9EA00AC74D7 /* NGHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGHeader.h; path = lib/NGHeader.h; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -243,6 +244,7 @@
 				29E7B7D81140BBB9001E3644 /* ProtocolBuffers.h */,
 				256AC3F00F4B6AF500CF3369 /* NgProject_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				29B46CFA114AD9EA00AC74D7 /* NGHeader.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";

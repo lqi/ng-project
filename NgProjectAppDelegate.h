@@ -17,13 +17,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "WaveclientRpc.pb.h"
-
-#import "NGNetwork.h"
-#import "NGRpc.h"
-#import "NGWaveId.h"
-#import "NGWaveletId.h"
-#import "NGRandomIdGenerator.h"
+#import "NGHeader.h"
 
 @interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
