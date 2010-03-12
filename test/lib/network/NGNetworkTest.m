@@ -20,7 +20,7 @@
 @implementation NGNetworkTest
 
 - (void) testIsConnected {
-	NGNetwork *labWaveServer = [[NGNetwork alloc] initWithHostDomain:@"192.168.1.5" port:9876];
+	NGNetwork *labWaveServer = [[NGNetwork alloc] initWithHostDomain:@"192.168.131.5" port:9876];
 	while (![labWaveServer isConnected]) {
 	}
 	STAssertTrue([labWaveServer isConnected], @"this test, at the moment, is very tricky, need to think about it later.");
