@@ -32,6 +32,7 @@
 - (id) initWithHostDomain:(NSString *)domain port:(NSInteger)port;
 
 - (void) connectToHost:(NSString *)domain port:(NSInteger)port;
+- (BOOL) callbackAvailable;
 - (BOOL) isConnected;
 
 @end

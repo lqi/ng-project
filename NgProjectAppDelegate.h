@@ -19,17 +19,23 @@
 
 #import "NGHeader.h"
 
-@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
+@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate, NSStreamDelegate> {
     NSWindow *window;
+	NSTextField *statusLabel;
 	NSString *domain;
+	NSString *userName;
 	long seqNo;
 	NGNetwork *network;
 	NGRandomIdGenerator *idGenerator;
 }
 
 @property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet NSTextField *statusLabel;
+
+- (void) connectionStatueController;
+- (void) openInbox;
+- (void) newReceive;
 
 - (IBAction) goReceive:(id)sender;
-- (IBAction) openIndex:(id)sender;
 - (IBAction) newWave:(id)sender;
 @end

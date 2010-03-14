@@ -14,12 +14,8 @@
 		295265A51140FD6A00CA2C90 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		295265BA1140FEC800CA2C90 /* NGRpc.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E7B80E1140C2FE001E3644 /* NGRpc.m */; };
 		29B46CDD114AD91C00AC74D7 /* Common.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B46CD8114AD91C00AC74D7 /* Common.pb.m */; };
-		29B46CDE114AD91C00AC74D7 /* common.proto in Resources */ = {isa = PBXBuildFile; fileRef = 29B46CD9114AD91C00AC74D7 /* common.proto */; };
-		29B46CDF114AD91C00AC74D7 /* waveclient-rpc.proto in Resources */ = {isa = PBXBuildFile; fileRef = 29B46CDA114AD91C00AC74D7 /* waveclient-rpc.proto */; };
 		29B46CE0114AD91C00AC74D7 /* WaveclientRpc.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B46CDC114AD91C00AC74D7 /* WaveclientRpc.pb.m */; };
 		29B46CE1114AD91C00AC74D7 /* Common.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B46CD8114AD91C00AC74D7 /* Common.pb.m */; };
-		29B46CE2114AD91C00AC74D7 /* common.proto in Resources */ = {isa = PBXBuildFile; fileRef = 29B46CD9114AD91C00AC74D7 /* common.proto */; };
-		29B46CE3114AD91C00AC74D7 /* waveclient-rpc.proto in Resources */ = {isa = PBXBuildFile; fileRef = 29B46CDA114AD91C00AC74D7 /* waveclient-rpc.proto */; };
 		29B46CE4114AD91C00AC74D7 /* WaveclientRpc.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B46CDC114AD91C00AC74D7 /* WaveclientRpc.pb.m */; };
 		29BD933011417C2100AA22AE /* NGNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD932F11417C2100AA22AE /* NGNetwork.m */; };
 		29BD937D1141950700AA22AE /* NGNetworkTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD937C1141950700AA22AE /* NGNetworkTest.m */; };
@@ -419,8 +415,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29B46CDE114AD91C00AC74D7 /* common.proto in Resources */,
-				29B46CDF114AD91C00AC74D7 /* waveclient-rpc.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,8 +424,6 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				29B46CE2114AD91C00AC74D7 /* common.proto in Resources */,
-				29B46CE3114AD91C00AC74D7 /* waveclient-rpc.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

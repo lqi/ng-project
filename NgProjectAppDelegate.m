@@ -20,10 +20,12 @@
 @implementation NgProjectAppDelegate
 
 @synthesize window;
+@synthesize statusLabel;
 
 - (id)init {
 	if (self = [super init]) {
 		domain = @"192.168.131.5";
+		userName = @"test";
 		seqNo = 0;
 		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
 	}
@@ -32,6 +34,49 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	network = [[NGNetwork alloc] initWithHostDomain:domain port:9876];
+	
+	[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(openInbox) userInfo:nil repeats:NO];
+	
+	[NSThread detachNewThreadSelector:@selector(connectionStatueControllerThread) toTarget:self withObject:nil];
+	[NSThread detachNewThreadSelector:@selector(newReceiveThread) toTarget:self withObject:nil];
+}
+
+- (void) newReceiveThread {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	while (YES) {
+		[NSThread sleepForTimeInterval:0.5];
+		NSLog(@"receive");
+		[self newReceive];
+	}
+	
+	[pool release];
+}
+
+- (void) newReceive {
+	if ([network isConnected]) {
+		if ([network callbackAvailable]) {
+			while (![[network pbInputStream] isAtEnd]) {
+				[NGRpc receive:[network pbInputStream]];
+			}
+		}
+	}
+}
+
+- (void) connectionStatueControllerThread {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	while (YES) {
+		[NSThread sleepForTimeInterval:0.5];
+		NSLog(@"status");
+		[self connectionStatueController];
+	}
+	
+	[pool release];
+}
+
+- (void) connectionStatueController {
+	[self.statusLabel setStringValue:([network isConnected] ? @"Online": @"Offline")];
 }
 
 - (IBAction) goReceive:(id)sender {
@@ -42,13 +87,14 @@
 	[NGRpc receive:[network pbInputStream]];
 }
 
-- (IBAction) openIndex:(id)sender {
+- (void) openInbox {
+	NSLog(@"open inbox");
 	if (![network isConnected]) {
 		return;
 	}
 	
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
-	[openRequestBuilder setParticipantId:[NSString stringWithFormat:@"test@%@", domain]];
+	[openRequestBuilder setParticipantId:[NSString stringWithFormat:@"%@@%@", userName, domain]];
 	[openRequestBuilder setWaveId:@"indexwave!indexwave"];
 	[NGRpc send:[openRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:seqNo++];
 	
@@ -70,10 +116,10 @@
 	[submitRequestBuilder setWaveletName:waveName];
 	
 	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[NSString stringWithFormat:@"test@%@", domain]];
+	[deltaBuilder setAuthor:[NSString stringWithFormat:@"%@@%@", userName, domain]];
 	
 	ProtocolWaveletOperation_Builder *opBuilder = [ProtocolWaveletOperation builder];
-	[opBuilder setAddParticipant:[NSString stringWithFormat:@"test@%@", domain]];
+	[opBuilder setAddParticipant:[NSString stringWithFormat:@"%@@%@", userName, domain]];
 	[deltaBuilder addOperation:[opBuilder build]];
 	
 	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];

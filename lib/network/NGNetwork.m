@@ -81,6 +81,10 @@
 	return NO;
 }
 
+- (BOOL) callbackAvailable {
+	return [_inputStream hasBytesAvailable];
+}
+
 - (BOOL) isConnected {
 	return [self isStreamOpen:_inputStream] && [self isStreamOpen:_outputStream];
 }
@@ -91,6 +95,6 @@
 	[_inputStream release];
 	[_outputStream release];
 	[super dealloc];
-}	
+}
 
 @end
