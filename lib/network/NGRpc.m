@@ -20,30 +20,34 @@
 @implementation NGRpc
 
 + (void) send:(PBGeneratedMessage *)message viaOutputStream:(PBCodedOutputStream *)stream sequenceNo:(long)sequenceNo {
-	NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
-	[messageType appendString:[[message class] description]];
-	int32_t size = computeInt32SizeNoTag(sequenceNo) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag(message);
-	[stream writeRawLittleEndian32:size];
-	[stream writeInt64NoTag:sequenceNo];
-	[stream writeStringNoTag:messageType];
-	[stream writeMessageNoTag:message];
-	[stream flush];
+	@synchronized (stream) {
+		NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
+		[messageType appendString:[[message class] description]];
+		int32_t size = computeInt32SizeNoTag(sequenceNo) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag(message);
+		[stream writeRawLittleEndian32:size];
+		[stream writeInt64NoTag:sequenceNo];
+		[stream writeStringNoTag:messageType];
+		[stream writeMessageNoTag:message];
+		[stream flush];
+	}
 }
 
 + (void) receive:(PBCodedInputStream *)stream {
-	int32_t size = [stream readRawLittleEndian32];
-	long sequenceNo = [stream readInt64];
-	NSMutableString *messageType = [[NSMutableString alloc] initWithString:[stream readString]];
-	NSString *stringToBeDeleted = @"waveserver.";
-	NSRange rangeToBeDeleted = {0, [stringToBeDeleted length]};
-	[messageType deleteCharactersInRange:rangeToBeDeleted];
-	[messageType appendString:@"_Builder"];
-	PBGeneratedMessage_Builder *messageBuilder = [[NSClassFromString(messageType) alloc] init];
-	if (messageBuilder == nil) {
-		// do nothing at the moment
-	}
-	else {
-		[stream readMessage:messageBuilder extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+	@synchronized (stream) {
+		int32_t size = [stream readRawLittleEndian32];
+		long sequenceNo = [stream readInt64];
+		NSMutableString *messageType = [[NSMutableString alloc] initWithString:[stream readString]];
+		NSString *stringToBeDeleted = @"waveserver.";
+		NSRange rangeToBeDeleted = {0, [stringToBeDeleted length]};
+		[messageType deleteCharactersInRange:rangeToBeDeleted];
+		[messageType appendString:@"_Builder"];
+		PBGeneratedMessage_Builder *messageBuilder = [[NSClassFromString(messageType) alloc] init];
+		if (messageBuilder == nil) {
+			// do nothing at the moment
+		}
+		else {
+			[stream readMessage:messageBuilder extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+		}
 	}
 }
 
