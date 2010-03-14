@@ -15,16 +15,17 @@
  * 
  */
 
-#import "ProtocolBuffers.h"
+#import <Foundation/Foundation.h>
 
-#import "proto/Common.pb.h"
-#import "proto/WaveclientRpc.pb.h"
 
-#import "model/NGRpcMessage.h"
-#import "model/NGWaveId.h"
-#import "model/NGWaveletId.h"
+@interface NGRpcMessage : NSObject {
+	long sequenceNo;
+	PBGeneratedMessage *message;
+}
 
-#import "util/NGRandomIdGenerator.h"
+@property long sequenceNo;
+@property (retain) PBGeneratedMessage *message;
 
-#import "network/NGNetwork.h"
-#import "network/NGRpc.h"
++ (NGRpcMessage *)rpcMessage:(PBGeneratedMessage *)pbMessage sequenceNo:(long)sequence;
+
+@end

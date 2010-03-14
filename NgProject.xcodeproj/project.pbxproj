@@ -28,6 +28,7 @@
 		29BD95001142406E00AA22AE /* NGWaveletId.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD94FE1142406E00AA22AE /* NGWaveletId.m */; };
 		29BD958C1142495C00AA22AE /* NGWaveIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD958B1142495C00AA22AE /* NGWaveIdTest.m */; };
 		29BD95CD11424F3300AA22AE /* NGWaveletIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */; };
+		29CDE9C9114C8C6100B95C82 /* NGRpcMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */; };
 		29E7B7D01140A692001E3644 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E7B7CB1140A67A001E3644 /* libProtocolBuffers.a */; };
 		29E7B80F1140C2FE001E3644 /* NGRpc.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E7B80E1140C2FE001E3644 /* NGRpc.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -116,6 +117,8 @@
 		29BD958B1142495C00AA22AE /* NGWaveIdTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveIdTest.m; path = test/lib/model/NGWaveIdTest.m; sourceTree = "<group>"; };
 		29BD95CB11424F3300AA22AE /* NGWaveletIdTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletIdTest.h; path = test/lib/model/NGWaveletIdTest.h; sourceTree = "<group>"; };
 		29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletIdTest.m; path = test/lib/model/NGWaveletIdTest.m; sourceTree = "<group>"; };
+		29CDE9C7114C8C6100B95C82 /* NGRpcMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpcMessage.h; path = lib/model/NGRpcMessage.h; sourceTree = "<group>"; };
+		29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGRpcMessage.m; path = lib/model/NGRpcMessage.m; sourceTree = "<group>"; };
 		29E7B7C11140A67A001E3644 /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = "third-party/ProtocolBuffers/ProtocolBuffers.xcodeproj"; sourceTree = "<group>"; };
 		29E7B7D81140BBB9001E3644 /* ProtocolBuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtocolBuffers.h; path = "third-party/ProtocolBuffers/Classes/ProtocolBuffers.h"; sourceTree = "<group>"; };
 		29E7B80D1140C2FE001E3644 /* NGRpc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpc.h; path = lib/network/NGRpc.h; sourceTree = "<group>"; };
@@ -281,6 +284,8 @@
 				29BD94E11142375200AA22AE /* NGWaveId.m */,
 				29BD94FD11423ED800AA22AE /* NGWaveletId.h */,
 				29BD94FE1142406E00AA22AE /* NGWaveletId.m */,
+				29CDE9C7114C8C6100B95C82 /* NGRpcMessage.h */,
+				29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -477,6 +482,7 @@
 				29BD95001142406E00AA22AE /* NGWaveletId.m in Sources */,
 				29B46CE1114AD91C00AC74D7 /* Common.pb.m in Sources */,
 				29B46CE4114AD91C00AC74D7 /* WaveclientRpc.pb.m in Sources */,
+				29CDE9C9114C8C6100B95C82 /* NGRpcMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

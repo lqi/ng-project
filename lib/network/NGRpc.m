@@ -19,23 +19,25 @@
 
 @implementation NGRpc
 
-+ (void) send:(PBGeneratedMessage *)message viaOutputStream:(PBCodedOutputStream *)stream sequenceNo:(long)sequenceNo {
++ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream {
 	@synchronized (stream) {
 		NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
-		[messageType appendString:[[message class] description]];
-		int32_t size = computeInt32SizeNoTag(sequenceNo) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag(message);
+		[messageType appendString:[[[rpcMessage message] class] description]];
+		int32_t size = computeInt32SizeNoTag([rpcMessage sequenceNo]) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag([rpcMessage message]);
 		[stream writeRawLittleEndian32:size];
-		[stream writeInt64NoTag:sequenceNo];
+		[stream writeInt64NoTag:[rpcMessage sequenceNo]];
 		[stream writeStringNoTag:messageType];
-		[stream writeMessageNoTag:message];
+		[stream writeMessageNoTag:[rpcMessage message]];
 		[stream flush];
 	}
 }
 
-+ (void) receive:(PBCodedInputStream *)stream {
++ (NGRpcMessage *) receive:(PBCodedInputStream *)stream {
+	NGRpcMessage *returnMessage = [[[NGRpcMessage alloc] init] autorelease];
+	
 	@synchronized (stream) {
-		int32_t size = [stream readRawLittleEndian32];
-		long sequenceNo = [stream readInt64];
+		/* int32_t size = */[stream readRawLittleEndian32];
+		long seqNo = [stream readInt64];
 		NSMutableString *messageType = [[NSMutableString alloc] initWithString:[stream readString]];
 		NSString *stringToBeDeleted = @"waveserver.";
 		NSRange rangeToBeDeleted = {0, [stringToBeDeleted length]};
@@ -47,8 +49,12 @@
 		}
 		else {
 			[stream readMessage:messageBuilder extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+			[returnMessage setSequenceNo:seqNo];
+			[returnMessage setMessage:[messageBuilder build]];
 		}
 	}
+	
+	return returnMessage;
 }
 
 @end

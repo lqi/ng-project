@@ -57,7 +57,8 @@
 	if ([network isConnected]) {
 		if ([network callbackAvailable]) {
 			while (![[network pbInputStream] isAtEnd]) {
-				[NGRpc receive:[network pbInputStream]];
+				NGRpcMessage *msg = [NGRpc receive:[network pbInputStream]];
+				NSLog([NSString stringWithFormat:@"%d: %@", [msg sequenceNo], [[msg message] className]]);
 			}
 		}
 	}
@@ -96,8 +97,7 @@
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:[NSString stringWithFormat:@"%@@%@", userName, domain]];
 	[openRequestBuilder setWaveId:@"indexwave!indexwave"];
-	[NGRpc send:[openRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:seqNo++];
-	
+	[NGRpc send:[NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:seqNo++] viaOutputStream:[network pbOutputStream]];	
 }
 
 - (IBAction) newWave:(id)sender {
@@ -129,7 +129,7 @@
 	
 	[submitRequestBuilder setDelta:[deltaBuilder build]];
 	
-	[NGRpc send:[submitRequestBuilder build] viaOutputStream:[network pbOutputStream] sequenceNo:seqNo++];
+	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:seqNo++] viaOutputStream:[network pbOutputStream]];	
 }
 
 - (void) dealloc {

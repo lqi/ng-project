@@ -15,16 +15,19 @@
  * 
  */
 
-#import "ProtocolBuffers.h"
+#import "NGRpcMessage.h"
 
-#import "proto/Common.pb.h"
-#import "proto/WaveclientRpc.pb.h"
 
-#import "model/NGRpcMessage.h"
-#import "model/NGWaveId.h"
-#import "model/NGWaveletId.h"
+@implementation NGRpcMessage
 
-#import "util/NGRandomIdGenerator.h"
+@synthesize sequenceNo;
+@synthesize message;
 
-#import "network/NGNetwork.h"
-#import "network/NGRpc.h"
++ (NGRpcMessage *)rpcMessage:(PBGeneratedMessage *)pbMessage sequenceNo:(long)sequence {
+	NGRpcMessage *returnMessage = [[[NGRpcMessage alloc] init] autorelease];
+	[returnMessage setSequenceNo:sequence];
+	[returnMessage setMessage:pbMessage];
+	return returnMessage;
+}
+
+@end

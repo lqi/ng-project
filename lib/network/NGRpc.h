@@ -22,7 +22,7 @@
 @interface NGRpc : NSObject {
 }
 
-+ (void) send:(PBGeneratedMessage *)message viaOutputStream:(PBCodedOutputStream *)stream sequenceNo:(long)sequenceNo;
-+ (void) receive:(PBCodedInputStream *)stream;
++ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
++ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
 
 @end
