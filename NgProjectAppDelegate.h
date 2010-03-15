@@ -22,6 +22,7 @@
 @interface NgProjectAppDelegate : NSObject <NSApplicationDelegate, NSStreamDelegate> {
     NSWindow *window;
 	NSTextField *statusLabel;
+	NSTextField *currentUser;
 	NSString *domain;
 	NGParticipantId *participantId;
 	long seqNo;
@@ -31,11 +32,11 @@
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSTextField *statusLabel;
+@property (assign) IBOutlet NSTextField *currentUser;
 
 - (void) connectionStatueController;
 - (void) openInbox;
 - (void) newReceive;
 
-- (IBAction) goReceive:(id)sender;
 - (IBAction) newWave:(id)sender;
 @end

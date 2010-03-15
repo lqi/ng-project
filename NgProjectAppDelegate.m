@@ -21,6 +21,7 @@
 
 @synthesize window;
 @synthesize statusLabel;
+@synthesize currentUser;
 
 - (id)init {
 	if (self = [super init]) {
@@ -35,6 +36,8 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	network = [[NGNetwork alloc] initWithHostDomain:domain port:9876];
 	
+	[self.currentUser setStringValue:[participantId participantIdAtDomain]];
+	
 	[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(openInbox) userInfo:nil repeats:NO];
 	
 	[NSThread detachNewThreadSelector:@selector(connectionStatueControllerThread) toTarget:self withObject:nil];
@@ -46,7 +49,6 @@
 	
 	while (YES) {
 		[NSThread sleepForTimeInterval:0.5];
-		NSLog(@"receive");
 		[self newReceive];
 	}
 	
@@ -69,7 +71,6 @@
 	
 	while (YES) {
 		[NSThread sleepForTimeInterval:0.5];
-		NSLog(@"status");
 		[self connectionStatueController];
 	}
 	
@@ -80,16 +81,7 @@
 	[self.statusLabel setStringValue:([network isConnected] ? @"Online": @"Offline")];
 }
 
-- (IBAction) goReceive:(id)sender {
-	if (![network isConnected]) {
-		return;
-	}
-	
-	[NGRpc receive:[network pbInputStream]];
-}
-
 - (void) openInbox {
-	NSLog(@"open inbox");
 	if (![network isConnected]) {
 		return;
 	}
