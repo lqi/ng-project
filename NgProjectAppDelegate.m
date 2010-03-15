@@ -22,6 +22,7 @@
 @synthesize window;
 @synthesize statusLabel;
 @synthesize currentUser;
+@synthesize inboxTableView;
 
 - (id)init {
 	if (self = [super init]) {
@@ -29,6 +30,7 @@
 		participantId = [[NGParticipantId alloc] initWithDomain:domain participantId:@"test"];
 		seqNo = 0;
 		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
+		inboxViewDelegate = [[NGInboxViewDelegate alloc] init];
 	}
 	return self;
 }
@@ -42,6 +44,8 @@
 	
 	[NSThread detachNewThreadSelector:@selector(connectionStatueControllerThread) toTarget:self withObject:nil];
 	[NSThread detachNewThreadSelector:@selector(newReceiveThread) toTarget:self withObject:nil];
+	
+	[inboxTableView setDataSource:inboxViewDelegate];
 }
 
 - (void) newReceiveThread {
@@ -60,7 +64,14 @@
 		if ([network callbackAvailable]) {
 			while (![[network pbInputStream] isAtEnd]) {
 				NGRpcMessage *msg = [NGRpc receive:[network pbInputStream]];
-				NSLog([NSString stringWithFormat:@"%d: %@", [msg sequenceNo], [[msg message] className]]);
+				if ([[[[msg message] class] description] isEqual:@"ProtocolWaveletUpdate"]) {
+					ProtocolWaveletUpdate *waveletUpdate = (ProtocolWaveletUpdate *)[msg message];
+					NSString *fullWaveletName = [waveletUpdate waveletName];
+					NSLog(@"Update with url: %@", fullWaveletName);
+				}
+				else if ([[[[msg message] class] description] isEqual:@"ProtocolSubmitResponse"]) {
+					NSLog(@"%d: Submit", [msg sequenceNo]);
+				}
 			}
 		}
 	}
@@ -139,6 +150,7 @@
 }
 
 - (void) dealloc {
+	[inboxViewDelegate release];
 	[participantId release];
 	[idGenerator release];
 	[network release];

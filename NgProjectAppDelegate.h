@@ -19,20 +19,25 @@
 
 #import "NGHeader.h"
 
-@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate, NSStreamDelegate> {
+#import "NGInboxViewDelegate.h"
+
+@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
 	NSTextField *statusLabel;
 	NSTextField *currentUser;
+	NSTableView *inboxTableView;
 	NSString *domain;
 	NGParticipantId *participantId;
 	long seqNo;
 	NGNetwork *network;
 	NGRandomIdGenerator *idGenerator;
+	NGInboxViewDelegate *inboxViewDelegate;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSTextField *statusLabel;
 @property (assign) IBOutlet NSTextField *currentUser;
+@property (assign) IBOutlet NSTableView *inboxTableView;
 
 - (void) connectionStatueController;
 - (void) openInbox;
