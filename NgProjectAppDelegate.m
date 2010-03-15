@@ -25,7 +25,7 @@
 - (id)init {
 	if (self = [super init]) {
 		domain = @"192.168.131.5";
-		userName = @"test";
+		participantId = [[NGParticipantId alloc] initWithDomain:domain participantId:@"test"];
 		seqNo = 0;
 		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
 	}
@@ -95,7 +95,7 @@
 	}
 	
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
-	[openRequestBuilder setParticipantId:[NSString stringWithFormat:@"%@@%@", userName, domain]];
+	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
 	[openRequestBuilder setWaveId:@"indexwave!indexwave"];
 	[NGRpc send:[NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:seqNo++] viaOutputStream:[network pbOutputStream]];	
 }
@@ -116,10 +116,10 @@
 	[submitRequestBuilder setWaveletName:waveName];
 	
 	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[NSString stringWithFormat:@"%@@%@", userName, domain]];
+	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
 	
 	ProtocolWaveletOperation_Builder *opBuilder = [ProtocolWaveletOperation builder];
-	[opBuilder setAddParticipant:[NSString stringWithFormat:@"%@@%@", userName, domain]];
+	[opBuilder setAddParticipant:[participantId participantIdAtDomain]];
 	[deltaBuilder addOperation:[opBuilder build]];
 	
 	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
@@ -133,6 +133,7 @@
 }
 
 - (void) dealloc {
+	[participantId release];
 	[idGenerator release];
 	[network release];
 	[super dealloc];

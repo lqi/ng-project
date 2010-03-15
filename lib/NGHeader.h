@@ -23,6 +23,7 @@
 #import "model/NGRpcMessage.h"
 #import "model/NGWaveId.h"
 #import "model/NGWaveletId.h"
+#import "model/NGParticipantId.h"
 
 #import "util/NGRandomIdGenerator.h"
 

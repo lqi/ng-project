@@ -23,7 +23,7 @@
     NSWindow *window;
 	NSTextField *statusLabel;
 	NSString *domain;
-	NSString *userName;
+	NGParticipantId *participantId;
 	long seqNo;
 	NGNetwork *network;
 	NGRandomIdGenerator *idGenerator;
