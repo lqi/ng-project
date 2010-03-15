@@ -35,6 +35,10 @@
 	STAssertEqualObjects([_waveUrl waveletId], [NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"], @"waveletId should be 'testWaveletId@testDomain'");
 }
 
+- (void) testDomain {
+	STAssertEqualObjects([_waveUrl domain], @"testDomain", @"domain should be 'testDomain'");
+}
+
 - (void) testStringValue {
 	NGWaveUrl *testUrl = [[NGWaveUrl alloc] init];
 	[testUrl setWaveId:[NGWaveId waveIdWithDomain:@"testWaveDomain" waveId:@"testWaveId"]];

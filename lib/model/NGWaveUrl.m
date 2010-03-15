@@ -22,6 +22,10 @@
 @synthesize waveId;
 @synthesize waveletId;
 
+- (NSString *)domain {
+	return [[self waveletId] domain];
+}
+
 - (id) initWithWaveId:(NGWaveId *)aWaveId WaveletId:(NGWaveletId *)aWaveletId {
 	if (self = [super init]) {
 		[self setWaveId:aWaveId];
@@ -50,7 +54,7 @@
 }
 
 - (NSString *) stringValue {
-	return [NSString stringWithFormat:@"wave://%@/%@/%@", [[self waveletId] domain], [[self waveId] waveId], [[self waveletId] waveletId]];
+	return [NSString stringWithFormat:@"wave://%@/%@/%@", [self domain], [[self waveId] waveId], [[self waveletId] waveletId]];
 }
 
 @end

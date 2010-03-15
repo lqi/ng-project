@@ -22,4 +22,6 @@
 
 }
 
+- (void) passSignal:(ProtocolWaveletUpdate *)update;
+
 @end

@@ -66,8 +66,11 @@
 				NGRpcMessage *msg = [NGRpc receive:[network pbInputStream]];
 				if ([[[[msg message] class] description] isEqual:@"ProtocolWaveletUpdate"]) {
 					ProtocolWaveletUpdate *waveletUpdate = (ProtocolWaveletUpdate *)[msg message];
-					NSString *fullWaveletName = [waveletUpdate waveletName];
-					NSLog(@"Update with url: %@", fullWaveletName);
+					NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithString:[waveletUpdate waveletName]];
+					if ([[[waveUrl waveId] waveId] isEqual:@"indexwave!indexwave"]) {
+						[inboxViewDelegate passSignal:waveletUpdate];
+					}
+					[waveUrl release];
 				}
 				else if ([[[[msg message] class] description] isEqual:@"ProtocolSubmitResponse"]) {
 					NSLog(@"%d: Submit", [msg sequenceNo]);

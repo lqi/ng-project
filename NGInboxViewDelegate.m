@@ -28,4 +28,8 @@
 	return @"hello";
 }
 
+- (void) passSignal:(ProtocolWaveletUpdate *)update {
+	NSLog(@"ha");
+}
+
 @end
