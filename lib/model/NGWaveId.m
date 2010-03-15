@@ -19,6 +19,10 @@
 
 @implementation NGWaveId
 
++ (NGWaveId *) waveIdWithDomain:(NSString *)domain waveId:(NSString *)waveId {
+	return [[[NGWaveId alloc] initWithDomain:domain waveId:waveId] autorelease];
+}
+
 - (id) initWithDomain:(NSString *)domain waveId:(NSString *)waveId {
 	if (self = [super init]) {
 		_domain = domain;

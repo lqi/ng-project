@@ -19,6 +19,10 @@
 
 @implementation NGWaveletId
 
++ (NGWaveletId *) waveletIdWithDomain:(NSString *)domain waveletId:(NSString *)waveletId {
+	return [[[NGWaveletId alloc] initWithDomain:domain waveletId:waveletId] autorelease];
+}
+
 - (id) initWithDomain:(NSString *)domain waveletId:(NSString *)waveletId {
 	if (self = [super init]) {
 		_domain = domain;

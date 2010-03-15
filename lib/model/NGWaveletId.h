@@ -22,6 +22,8 @@
 	NSString *_waveletId;
 }
 
++ (NGWaveletId *) waveletIdWithDomain:(NSString *)domain waveletId:(NSString *)waveletId;
+
 - (id) initWithDomain:(NSString *)domain waveletId:(NSString *)waveletId;
 
 - (NSString *) domain;

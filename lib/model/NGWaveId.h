@@ -22,6 +22,8 @@
 	NSString *_waveId;
 }
 
++ (NGWaveId *) waveIdWithDomain:(NSString *)domain waveId:(NSString *)waveId;
+
 - (id) initWithDomain:(NSString *)domain waveId:(NSString *)waveId;
 
 - (NSString *) domain;
