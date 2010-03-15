@@ -17,6 +17,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "ProtocolBuffers.h"
 
 @interface NGRpcMessage : NSObject {
 	long sequenceNo;

@@ -19,6 +19,8 @@
 
 #import "ProtocolBuffers.h"
 
+#import "../model/NGRpcMessage.h"
+
 @interface NGRpc : NSObject {
 }
 

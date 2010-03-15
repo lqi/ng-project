@@ -15,18 +15,19 @@
  * 
  */
 
-#import "NGRpcMessage.h"
+#import <Foundation/Foundation.h>
 
-@implementation NGRpcMessage
-
-@synthesize sequenceNo;
-@synthesize message;
-
-+ (NGRpcMessage *)rpcMessage:(PBGeneratedMessage *)pbMessage sequenceNo:(long)sequence {
-	NGRpcMessage *returnMessage = [[[NGRpcMessage alloc] init] autorelease];
-	[returnMessage setSequenceNo:sequence];
-	[returnMessage setMessage:pbMessage];
-	return returnMessage;
+@interface NGParticipantId : NSObject {
+	NSString *_participantId;
+	NSString *_domain;
 }
+
++ (NGParticipantId *) participantIdWithDomain:(NSString *)domain participantId:(NSString *)participantId;
+
+- (id) initWithDomain:(NSString *)domain participantId:(NSString *)participantId;
+
+- (NSString *) domain;
+- (NSString *) participantId;
+- (NSString *) participantIdAtDomain;
 
 @end

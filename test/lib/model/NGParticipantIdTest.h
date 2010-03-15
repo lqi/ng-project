@@ -15,18 +15,12 @@
  * 
  */
 
-#import "NGRpcMessage.h"
+#import <SenTestingKit/SenTestingKit.h>
 
-@implementation NGRpcMessage
+#import "NGParticipantId.h"
 
-@synthesize sequenceNo;
-@synthesize message;
-
-+ (NGRpcMessage *)rpcMessage:(PBGeneratedMessage *)pbMessage sequenceNo:(long)sequence {
-	NGRpcMessage *returnMessage = [[[NGRpcMessage alloc] init] autorelease];
-	[returnMessage setSequenceNo:sequence];
-	[returnMessage setMessage:pbMessage];
-	return returnMessage;
+@interface NGParticipantIdTest : SenTestCase {
+	NGParticipantId *_participantId;
 }
 
 @end
