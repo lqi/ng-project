@@ -108,12 +108,9 @@
 		return;
 	}
 	
-	NSMutableString *waveName = [[NSMutableString alloc] initWithString:@"wave://"];
-	[waveName appendString:domain];
-	[waveName appendString:@"/"];
-	[waveName appendString:[[idGenerator newWaveId] waveId]];
-	[waveName appendString:@"/"];
-	[waveName appendString:[[idGenerator newConversationRootWaveletId] waveletId]];
+	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[idGenerator newWaveId] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NSString *waveName = [waveUrl stringValue];
+	[waveUrl release];
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
 	[submitRequestBuilder setWaveletName:waveName];
