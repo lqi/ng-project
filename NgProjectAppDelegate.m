@@ -110,9 +110,23 @@
 	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
 	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
 	
-	ProtocolWaveletOperation_Builder *opBuilder = [ProtocolWaveletOperation builder];
-	[opBuilder setAddParticipant:[participantId participantIdAtDomain]];
-	[deltaBuilder addOperation:[opBuilder build]];
+	// First Operation to add current user as the participant
+	ProtocolWaveletOperation_Builder *opAddParticipantBuilder = [ProtocolWaveletOperation builder];
+	[opAddParticipantBuilder setAddParticipant:[participantId participantIdAtDomain]];
+	[deltaBuilder addOperation:[opAddParticipantBuilder build]];
+	
+	// Second Operation to create the conversation
+	ProtocolDocumentOperation_Component_ElementStart_Builder *conversationElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
+	[conversationElementStartBuilder setType:@"conversation"];
+	ProtocolDocumentOperation_Builder *docOpBuilder = [ProtocolDocumentOperation builder];
+	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[conversationElementStartBuilder build]] build]];
+	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
+	ProtocolWaveletOperation_MutateDocument_Builder *mutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
+	[mutateDocBuilder setDocumentId:@"conversation"];
+	[mutateDocBuilder setDocumentOperation:[docOpBuilder build]];
+	ProtocolWaveletOperation_Builder *opCreateConversationBuilder = [ProtocolWaveletOperation builder];
+	[opCreateConversationBuilder setMutateDocument:[mutateDocBuilder build]];
+	[deltaBuilder addOperation:[opCreateConversationBuilder build]];
 	
 	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
 	[hashedVersionBuilder setVersion:0];
