@@ -20,7 +20,7 @@
 @implementation NGParticipantId
 
 + (NGParticipantId *) participantIdWithDomain:(NSString *)domain participantId:(NSString *)participantId {
-	return [[[NGParticipantId alloc] initWithDomain:domain waveId:participantId] autorelease];
+	return [[[NGParticipantId alloc] initWithDomain:domain participantId:participantId] autorelease];
 }
 
 - (id) initWithDomain:(NSString *)domain participantId:(NSString *)participantId {

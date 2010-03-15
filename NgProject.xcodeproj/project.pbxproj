@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* NgProjectAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* NgProjectAppDelegate.m */; };
+		29258AFF114ECC4200ED4F98 /* NGWaveUrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258AFE114ECC4200ED4F98 /* NGWaveUrl.m */; };
+		29258B00114ECC4200ED4F98 /* NGWaveUrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258AFE114ECC4200ED4F98 /* NGWaveUrl.m */; };
+		29258B03114ED59800ED4F98 /* NGWaveUrlTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258B02114ED59800ED4F98 /* NGWaveUrlTest.m */; };
 		2952649B1140F91A00CA2C90 /* NGRpcTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2952649A1140F91A00CA2C90 /* NGRpcTest.m */; };
 		2952659A1140FD1D00CA2C90 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E7B7CB1140A67A001E3644 /* libProtocolBuffers.a */; };
 		295265A51140FD6A00CA2C90 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -94,6 +97,10 @@
 		256AC3D80F4B6AC300CF3369 /* NgProjectAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NgProjectAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* NgProjectAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NgProjectAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* NgProject_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NgProject_Prefix.pch; sourceTree = "<group>"; };
+		29258AFD114ECC4200ED4F98 /* NGWaveUrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveUrl.h; path = lib/model/NGWaveUrl.h; sourceTree = "<group>"; };
+		29258AFE114ECC4200ED4F98 /* NGWaveUrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveUrl.m; path = lib/model/NGWaveUrl.m; sourceTree = "<group>"; };
+		29258B01114ED59800ED4F98 /* NGWaveUrlTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveUrlTest.h; path = test/lib/model/NGWaveUrlTest.h; sourceTree = "<group>"; };
+		29258B02114ED59800ED4F98 /* NGWaveUrlTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveUrlTest.m; path = test/lib/model/NGWaveUrlTest.m; sourceTree = "<group>"; };
 		295264701140F78800CA2C90 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		295264711140F78800CA2C90 /* UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
 		295264991140F91A00CA2C90 /* NGRpcTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpcTest.h; path = test/lib/network/NGRpcTest.h; sourceTree = "<group>"; };
@@ -301,6 +308,8 @@
 				29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */,
 				29A7E769114DAE3D006D61A8 /* NGParticipantId.h */,
 				29A7E76A114DAE3D006D61A8 /* NGParticipantId.m */,
+				29258AFD114ECC4200ED4F98 /* NGWaveUrl.h */,
+				29258AFE114ECC4200ED4F98 /* NGWaveUrl.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -314,6 +323,8 @@
 				29BD958B1142495C00AA22AE /* NGWaveIdTest.m */,
 				29A7E790114DB34E006D61A8 /* NGParticipantIdTest.h */,
 				29A7E791114DB34E006D61A8 /* NGParticipantIdTest.m */,
+				29258B01114ED59800ED4F98 /* NGWaveUrlTest.h */,
+				29258B02114ED59800ED4F98 /* NGWaveUrlTest.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -486,6 +497,8 @@
 				29B46CE0114AD91C00AC74D7 /* WaveclientRpc.pb.m in Sources */,
 				29A7E76B114DAE3D006D61A8 /* NGParticipantId.m in Sources */,
 				29A7E792114DB34E006D61A8 /* NGParticipantIdTest.m in Sources */,
+				29258AFF114ECC4200ED4F98 /* NGWaveUrl.m in Sources */,
+				29258B03114ED59800ED4F98 /* NGWaveUrlTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +518,7 @@
 				29CDE9C9114C8C6100B95C82 /* NGRpcMessage.m in Sources */,
 				29A7E76C114DAE3E006D61A8 /* NGParticipantId.m in Sources */,
 				29A7E7F2114DEF02006D61A8 /* NGInboxViewDelegate.m in Sources */,
+				29258B00114ECC4200ED4F98 /* NGWaveUrl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

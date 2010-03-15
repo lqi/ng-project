@@ -15,18 +15,23 @@
  * 
  */
 
-#import "ProtocolBuffers.h"
+#import <Foundation/Foundation.h>
 
-#import "proto/Common.pb.h"
-#import "proto/WaveclientRpc.pb.h"
+#import "NGWaveId.h"
+#import "NGWaveletId.h"
 
-#import "model/NGRpcMessage.h"
-#import "model/NGWaveId.h"
-#import "model/NGWaveletId.h"
-#import "model/NGParticipantId.h"
-#import "model/NGWaveUrl.h"
+@interface NGWaveUrl : NSObject {
+	NGWaveId *waveId;
+	NGWaveletId *waveletId;
+}
 
-#import "util/NGRandomIdGenerator.h"
+@property (retain) NGWaveId *waveId;
+@property (retain) NGWaveletId *waveletId;
 
-#import "network/NGNetwork.h"
-#import "network/NGRpc.h"
+- (id) initWithWaveId:(NGWaveId *)aWaveId WaveletId:(NGWaveletId *)aWaveletId;
+- (id) initWithString:(NSString *)stringWaveUrl;
+
+- (void) parse:(NSString *)stringWaveUrl;
+- (NSString *) stringValue;
+
+@end

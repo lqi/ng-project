@@ -15,18 +15,14 @@
  * 
  */
 
-#import "ProtocolBuffers.h"
+#import <SenTestingKit/SenTestingKit.h>
 
-#import "proto/Common.pb.h"
-#import "proto/WaveclientRpc.pb.h"
+#import "NGWaveUrl.h"
+#import "NGWaveId.h"
+#import "NGWaveletId.h"
 
-#import "model/NGRpcMessage.h"
-#import "model/NGWaveId.h"
-#import "model/NGWaveletId.h"
-#import "model/NGParticipantId.h"
-#import "model/NGWaveUrl.h"
+@interface NGWaveUrlTest : SenTestCase {
+	NGWaveUrl *_waveUrl;
+}
 
-#import "util/NGRandomIdGenerator.h"
-
-#import "network/NGNetwork.h"
-#import "network/NGRpc.h"
+@end
