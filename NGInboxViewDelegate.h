@@ -19,7 +19,7 @@
 
 
 @interface NGInboxViewDelegate : NSObject <NSTableViewDataSource> {
-
+	NSMutableArray *inboxArray;
 }
 
 - (void) passSignal:(ProtocolWaveletUpdate *)update;

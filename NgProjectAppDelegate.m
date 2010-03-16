@@ -71,6 +71,7 @@
 						[inboxViewDelegate passSignal:waveletUpdate];
 					}
 					[waveUrl release];
+					[inboxTableView reloadData];
 				}
 				else if ([[[[msg message] class] description] isEqual:@"ProtocolSubmitResponse"]) {
 					NSLog(@"%d: Submit", [msg sequenceNo]);
