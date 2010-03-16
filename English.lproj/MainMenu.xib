@@ -1355,7 +1355,7 @@
 						</object>
 						<object class="NSScrollView" id="853169777">
 							<reference key="NSNextResponder" ref="439893737"/>
-							<int key="NSvFlags">266</int>
+							<int key="NSvFlags">274</int>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSClipView" id="1946736">
@@ -1413,7 +1413,7 @@
 														</object>
 													</object>
 													<object class="NSTextFieldCell" key="NSDataCell" id="48064847">
-														<int key="NSCellFlags">337772032</int>
+														<int key="NSCellFlags">67239424</int>
 														<int key="NSCellFlags2">0</int>
 														<string key="NSContents">Text Cell</string>
 														<reference key="NSSupport" ref="898726965"/>
@@ -1453,7 +1453,7 @@
 														<reference key="NSTextColor" ref="588789998"/>
 													</object>
 													<object class="NSTextFieldCell" key="NSDataCell" id="536849400">
-														<int key="NSCellFlags">337772032</int>
+														<int key="NSCellFlags">67239424</int>
 														<int key="NSCellFlags2">0</int>
 														<string key="NSContents">Text Cell</string>
 														<reference key="NSSupport" ref="898726965"/>
@@ -1488,7 +1488,7 @@
 														<reference key="NSTextColor" ref="588789998"/>
 													</object>
 													<object class="NSTextFieldCell" key="NSDataCell" id="907521304">
-														<int key="NSCellFlags">337772032</int>
+														<int key="NSCellFlags">67239424</int>
 														<int key="NSCellFlags2">0</int>
 														<string key="NSContents">Text Cell</string>
 														<reference key="NSSupport" ref="898726965"/>
@@ -1515,7 +1515,7 @@
 														<reference key="NSTextColor" ref="588789998"/>
 													</object>
 													<object class="NSTextFieldCell" key="NSDataCell" id="787231272">
-														<int key="NSCellFlags">337772032</int>
+														<int key="NSCellFlags">67239424</int>
 														<int key="NSCellFlags2">0</int>
 														<string key="NSContents">Text Cell</string>
 														<reference key="NSSupport" ref="898726965"/>
@@ -3836,6 +3836,7 @@
 					<string>573.IBPluginDependency</string>
 					<string>575.IBPluginDependency</string>
 					<string>576.IBPluginDependency</string>
+					<string>579.IBPluginDependency</string>
 					<string>58.IBPluginDependency</string>
 					<string>58.ImportedFromIB2</string>
 					<string>72.IBPluginDependency</string>
@@ -3996,9 +3997,9 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{266, 220}, {876, 560}}</string>
+					<string>{{396, 220}, {876, 560}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{266, 220}, {876, 560}}</string>
+					<string>{{396, 220}, {876, 560}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<string>{3.40282e+38, 3.40282e+38}</string>
@@ -4103,6 +4104,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{23, 794}, {245, 183}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
