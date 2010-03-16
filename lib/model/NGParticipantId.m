@@ -23,10 +23,21 @@
 	return [[[NGParticipantId alloc] initWithDomain:domain participantId:participantId] autorelease];
 }
 
++ (NGParticipantId *) participantIdWithParticipantIdAtDomain:(NSString *)stringParticipantIdAtDomain {
+	return [[[NGParticipantId alloc] initWithParticipantIdAtDomain:stringParticipantIdAtDomain] autorelease];
+}
+
 - (id) initWithDomain:(NSString *)domain participantId:(NSString *)participantId {
 	if (self = [super init]) {
 		_domain = domain;
 		_participantId = participantId;
+	}
+	return self;
+}
+
+- (id) initWithParticipantIdAtDomain:(NSString *)stringParticipantIdAtDomain {
+	if (self = [super init]) {
+		[self parse:stringParticipantIdAtDomain];
 	}
 	return self;
 }
@@ -41,6 +52,13 @@
 
 - (NSString *) participantIdAtDomain {
 	return [NSString stringWithFormat:@"%@@%@", _participantId, _domain];
+}
+
+- (void) parse:(NSString *)stringParticipantIdAtDomain {
+	NSArray *splitParticipantIdFromDomain = [stringParticipantIdAtDomain componentsSeparatedByString:@"@"];
+	assert([splitParticipantIdFromDomain count] == 2);
+	_participantId = [splitParticipantIdFromDomain objectAtIndex:0];
+	_domain = [splitParticipantIdFromDomain objectAtIndex:1];
 }
 
 - (BOOL) isEqual:(id)object {

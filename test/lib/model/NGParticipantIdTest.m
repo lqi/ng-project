@@ -40,9 +40,7 @@
 }
 
 - (void) testEquals {
-	NGParticipantId *compareParticipantId = [[NGParticipantId alloc] initWithDomain:@"testDomain" participantId:@"testId"];
-	STAssertEqualObjects(_participantId, compareParticipantId, @"ParticipantId with same domain and id should be equal");
-	[compareParticipantId release];
+	STAssertEqualObjects(_participantId, [NGParticipantId participantIdWithParticipantIdAtDomain:@"testId@testDomain"], @"ParticipantId with same domain and id should be equal");
 }
 
 @end

@@ -23,11 +23,15 @@
 }
 
 + (NGParticipantId *) participantIdWithDomain:(NSString *)domain participantId:(NSString *)participantId;
++ (NGParticipantId *) participantIdWithParticipantIdAtDomain:(NSString *)stringParticipantIdAtDomain;
 
 - (id) initWithDomain:(NSString *)domain participantId:(NSString *)participantId;
+- (id) initWithParticipantIdAtDomain:(NSString *)stringParticipantIdAtDomain;
 
 - (NSString *) domain;
 - (NSString *) participantId;
 - (NSString *) participantIdAtDomain;
+
+- (void) parse:(NSString *)stringParticipantIdAtDomain;
 
 @end
