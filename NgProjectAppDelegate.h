@@ -26,22 +26,31 @@
 	NSTextField *statusLabel;
 	NSTextField *currentUser;
 	NSTableView *inboxTableView;
+	NSTextField *currentWave;
+	
 	NSString *domain;
 	NGParticipantId *participantId;
 	long seqNo;
 	NGNetwork *network;
 	NGRandomIdGenerator *idGenerator;
 	NGInboxViewDelegate *inboxViewDelegate;
+	
+	BOOL hasWaveOpened;
+	NSString *openedWaveId;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSTextField *statusLabel;
 @property (assign) IBOutlet NSTextField *currentUser;
 @property (assign) IBOutlet NSTableView *inboxTableView;
+@property (assign) IBOutlet NSTextField *currentWave;
 
 - (void) connectionStatueController;
 - (void) openInbox;
 - (void) newReceive;
+
+- (IBAction) openWave:(id)sender;
+- (IBAction) closeWave:(id)sender;
 
 - (IBAction) newWave:(id)sender;
 @end

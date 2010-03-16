@@ -151,9 +151,13 @@
 	return @"TODO";
 }
 
+- (NSString *) getWaveIdByRowIndex:(NSInteger)rowIndex {
+	return [[inboxArray objectAtIndex:rowIndex] waveId];
+}
+
 - (void) passSignal:(ProtocolWaveletUpdate *)update {
 	NGWaveUrl *waveUrl = [[[NGWaveUrl alloc] initWithString:[update waveletName]] autorelease];
-	assert([[[waveUrl waveId] waveId] isEqual:@"indexwave!indexwave"]);
+	NSAssert([[[waveUrl waveId] waveId] isEqual:@"indexwave!indexwave"], @"Message here must be the one for inbox!");
 	NSString *waveId = [[waveUrl waveletId] waveletId];
 	/*
 	ProtocolHashedVersion *resultingVersion = [update resultingVersion];

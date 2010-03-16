@@ -23,6 +23,7 @@
 @synthesize statusLabel;
 @synthesize currentUser;
 @synthesize inboxTableView;
+@synthesize currentWave;
 
 - (id)init {
 	if (self = [super init]) {
@@ -31,6 +32,7 @@
 		seqNo = 0;
 		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
 		inboxViewDelegate = [[NGInboxViewDelegate alloc] init];
+		hasWaveOpened = NO;
 	}
 	return self;
 }
@@ -46,6 +48,9 @@
 	[NSThread detachNewThreadSelector:@selector(newReceiveThread) toTarget:self withObject:nil];
 	
 	[inboxTableView setDataSource:inboxViewDelegate];
+	[inboxTableView setDoubleAction:@selector(openWave:)];
+	
+	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
 }
 
 - (void) newReceiveThread {
@@ -79,6 +84,20 @@
 			}
 		}
 	}
+}
+
+- (IBAction) openWave:(id)sender {
+	NSInteger rowIndex = [inboxTableView clickedRow];
+	NSString *waveId = [[inboxViewDelegate getWaveIdByRowIndex:rowIndex] retain];
+	openedWaveId = waveId;
+	hasWaveOpened = YES;
+	[self.currentWave setStringValue:openedWaveId];
+	[waveId release];
+}
+
+- (IBAction) closeWave:(id)sender {
+	hasWaveOpened = NO;
+	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
 }
 
 - (void) connectionStatueControllerThread {

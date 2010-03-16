@@ -23,5 +23,6 @@
 }
 
 - (void) passSignal:(ProtocolWaveletUpdate *)update;
+- (NSString *) getWaveIdByRowIndex:(NSInteger)rowIndex;
 
 @end
