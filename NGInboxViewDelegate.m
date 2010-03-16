@@ -21,14 +21,19 @@
 	NSMutableArray *_participants;
 	NSMutableArray *_authors;
 	NSString *waveId;
+	NSMutableString *_digest;
 }
 
 @property (retain) NSString *waveId;
 
 - (void) addParticipant:(NGParticipantId *)newParticipant;
+- (void) rmParticipant:(NGParticipantId *)oldParticipant;
 - (NSString *) stringParticipants;
 - (void) addAuthor:(NGParticipantId *)newAuthor;
 - (NSString *)stringAuthors;
+- (void) insertChars:(NSString *)chars atPosition:(int)pos;
+- (void) deleteChars:(NSString *)chars atPosition:(int)pos;
+- (NSString *)stringDigest;
 
 @end
 
@@ -40,6 +45,7 @@
 	if (self = [super init]) {
 		_participants = [[NSMutableArray alloc] init];
 		_authors = [[NSMutableArray alloc] init];
+		_digest = [[NSMutableString alloc] init];
 	}
 	return self;
 }
@@ -47,12 +53,19 @@
 - (void) dealloc {
 	[_participants release];
 	[_authors release];
+	[_digest release];
 	[super dealloc];
 }
 
 - (void) addParticipant:(NGParticipantId *)newParticipant {
 	if (![_participants containsObject:newParticipant]) {
 		[_participants addObject:newParticipant];
+	}
+}
+
+- (void) rmParticipant:(NGParticipantId *)oldParticipant {
+	if ([_participants containsObject:oldParticipant]) {
+		[_participants removeObject:oldParticipant];
 	}
 }
 
@@ -76,6 +89,23 @@
 		[returnString appendFormat:@"%@, ", [participantId participantIdAtDomain]];
 	}
 	return returnString;
+}
+
+- (void) insertChars:(NSString *)chars atPosition:(int)pos {
+	assert(pos <= [_digest length]);
+	[_digest insertString:chars atIndex:pos];
+}
+
+- (void) deleteChars:(NSString *)chars atPosition:(int)pos {
+	assert((pos + [chars length]) <= [_digest length]);
+	NSRange deleteRange = {pos, [chars length]};
+	NSString *toBeDeletedChars = [_digest substringWithRange:deleteRange];
+	assert([toBeDeletedChars isEqual:chars]);
+	[_digest deleteCharactersInRange:deleteRange];
+}
+
+- (NSString *)stringDigest {
+	return _digest;
 }
 
 - (BOOL) isEqual:(id)object {
@@ -111,6 +141,12 @@
 	}
 	if ([identifier isEqual:@"authors"]) {
 		return [waveDigest stringAuthors];
+	}
+	if ([identifier isEqual:@"participants"]) {
+		return [waveDigest stringParticipants];
+	}
+	if ([identifier isEqual:@"digest"]) {
+		return [waveDigest stringDigest];
 	}
 	return @"TODO";
 }
@@ -150,7 +186,36 @@
 		}
 
 		for (ProtocolWaveletOperation *op in [wd operationList]) {
-			//
+			if ([op hasAddParticipant]) {
+				NSArray *paLst = [[op addParticipant] componentsSeparatedByString:@"@"];
+				[waveDigest addParticipant:[NGParticipantId participantIdWithDomain:[paLst objectAtIndex:1] participantId:[paLst objectAtIndex:0]]];
+			}
+			if ([op hasRemoveParticipant]) {
+				NSArray *paLst = [[op removeParticipant] componentsSeparatedByString:@"@"];
+				[waveDigest rmParticipant:[NGParticipantId participantIdWithDomain:[paLst objectAtIndex:1] participantId:[paLst objectAtIndex:0]]];
+			}
+			if ([op hasMutateDocument]) {
+				ProtocolWaveletOperation_MutateDocument *md = [op mutateDocument];
+				//assert([[md documentId] isEqual:@"digest"]);
+				int pos = 0;
+				for (ProtocolDocumentOperation_Component *comp in [[md documentOperation] componentList]) {
+					if ([comp hasCharacters]) {
+						NSString *chars = [comp characters];
+						[waveDigest insertChars:chars atPosition:pos];
+						pos += [chars length];
+					}
+					if ([comp hasDeleteCharacters]) {
+						NSString *chars = [comp deleteCharacters];
+						[waveDigest deleteChars:chars atPosition:pos];
+					}
+					if ([comp hasRetainItemCount]) {
+						pos = [comp retainItemCount];
+					}
+				}
+			}
+			if ([op hasNoOp]) {
+				NSLog(@"TODO: No operation!");
+			}
 		}
 	}
 	if (oldIndex == -1) {
