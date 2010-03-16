@@ -178,21 +178,18 @@
 	for (ProtocolWaveletDelta *wd in [update appliedDeltaList]) {
 		NSString *wdAuthor = [wd author];
 		if (![wdAuthor isEqual:@"digest-author"]) {
-			NSArray *wdAuthorLst = [wdAuthor componentsSeparatedByString:@"@"];
-			[waveDigest addAuthor:[NGParticipantId participantIdWithDomain:[wdAuthorLst objectAtIndex:1] participantId:[wdAuthorLst objectAtIndex:0]]];
+			[waveDigest addAuthor:[NGParticipantId participantIdWithParticipantIdAtDomain:wdAuthor]];
 		}
 		else {
-			[waveDigest addAuthor:[NGParticipantId participantIdWithDomain:@"digest-author" participantId:@"digest-author"]];
+			[waveDigest addAuthor:[NGParticipantId participantIdWithDomain:@"google" participantId:@"digest-author"]];
 		}
 
 		for (ProtocolWaveletOperation *op in [wd operationList]) {
 			if ([op hasAddParticipant]) {
-				NSArray *paLst = [[op addParticipant] componentsSeparatedByString:@"@"];
-				[waveDigest addParticipant:[NGParticipantId participantIdWithDomain:[paLst objectAtIndex:1] participantId:[paLst objectAtIndex:0]]];
+				[waveDigest addParticipant:[NGParticipantId participantIdWithParticipantIdAtDomain:[op addParticipant]]];
 			}
 			if ([op hasRemoveParticipant]) {
-				NSArray *paLst = [[op removeParticipant] componentsSeparatedByString:@"@"];
-				[waveDigest rmParticipant:[NGParticipantId participantIdWithDomain:[paLst objectAtIndex:1] participantId:[paLst objectAtIndex:0]]];
+				[waveDigest rmParticipant:[NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]]];
 			}
 			if ([op hasMutateDocument]) {
 				ProtocolWaveletOperation_MutateDocument *md = [op mutateDocument];
