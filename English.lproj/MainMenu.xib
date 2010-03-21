@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="372"/>
+			<integer value="582"/>
 			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -1532,7 +1532,7 @@
 																</object>
 																<object class="NSTableColumn" id="221106286">
 																	<string key="NSIdentifier">digest</string>
-																	<double key="NSWidth">233</double>
+																	<double key="NSWidth">283</double>
 																	<double key="NSMinWidth">10</double>
 																	<double key="NSMaxWidth">3.4028234663852886e+38</double>
 																	<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -1665,6 +1665,22 @@
 									<int key="NSvFlags">256</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
+										<object class="NSTextField" id="392008415">
+											<reference key="NSNextResponder" ref="346089553"/>
+											<int key="NSvFlags">266</int>
+											<string key="NSFrame">{{-3, 549}, {606, 17}}</string>
+											<reference key="NSSuperview" ref="346089553"/>
+											<bool key="NSEnabled">YES</bool>
+											<object class="NSTextFieldCell" key="NSCell" id="914269230">
+												<int key="NSCellFlags">68288064</int>
+												<int key="NSCellFlags2">272630784</int>
+												<string key="NSContents">Wave Version Info</string>
+												<reference key="NSSupport" ref="898726965"/>
+												<reference key="NSControlView" ref="392008415"/>
+												<reference key="NSBackgroundColor" ref="740080937"/>
+												<reference key="NSTextColor" ref="723376143"/>
+											</object>
+										</object>
 										<object class="NSTextField" id="39490800">
 											<reference key="NSNextResponder" ref="346089553"/>
 											<int key="NSvFlags">270</int>
@@ -1717,7 +1733,7 @@
 																	<string>public.url</string>
 																</object>
 															</object>
-															<string key="NSFrameSize">{583, 14}</string>
+															<string key="NSFrameSize">{583, 48}</string>
 															<reference key="NSSuperview" ref="1011757171"/>
 															<object class="NSTextContainer" key="NSTextContainer" id="450420519">
 																<object class="NSLayoutManager" key="NSLayoutManager">
@@ -1791,12 +1807,12 @@
 																<nil key="NSDefaultParagraphStyle"/>
 															</object>
 															<int key="NSTVFlags">6</int>
-															<string key="NSMaxSize">{583, 1e+07}</string>
+															<string key="NSMaxSize">{1183, 1e+07}</string>
 															<string key="NSMinize">{223, 0}</string>
 															<nil key="NSDelegate"/>
 														</object>
 													</object>
-													<string key="NSFrame">{{1, 1}, {583, 564}}</string>
+													<string key="NSFrame">{{1, 1}, {583, 539}}</string>
 													<reference key="NSSuperview" ref="895129351"/>
 													<reference key="NSNextKeyView" ref="199872513"/>
 													<reference key="NSDocView" ref="199872513"/>
@@ -1810,7 +1826,7 @@
 												<object class="NSScroller" id="97552204">
 													<reference key="NSNextResponder" ref="895129351"/>
 													<int key="NSvFlags">256</int>
-													<string key="NSFrame">{{584, 1}, {15, 564}}</string>
+													<string key="NSFrame">{{584, 1}, {15, 539}}</string>
 													<reference key="NSSuperview" ref="895129351"/>
 													<reference key="NSTarget" ref="895129351"/>
 													<string key="NSAction">_doScroller:</string>
@@ -1829,7 +1845,7 @@
 													<double key="NSPercent">0.94565218687057495</double>
 												</object>
 											</object>
-											<string key="NSFrameSize">{600, 566}</string>
+											<string key="NSFrameSize">{600, 541}</string>
 											<reference key="NSSuperview" ref="346089553"/>
 											<reference key="NSNextKeyView" ref="1011757171"/>
 											<int key="NSsFlags">18</int>
@@ -2794,6 +2810,14 @@
 						<reference key="destination" ref="1043941608"/>
 					</object>
 					<int key="connectionID">615</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">versionInfo</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="392008415"/>
+					</object>
+					<int key="connectionID">618</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3890,6 +3914,7 @@
 							<reference ref="488251409"/>
 							<reference ref="895129351"/>
 							<reference ref="39490800"/>
+							<reference ref="392008415"/>
 						</object>
 						<reference key="parent" ref="172614458"/>
 					</object>
@@ -4153,6 +4178,20 @@
 						<int key="objectID">613</int>
 						<reference key="object" ref="747751924"/>
 						<reference key="parent" ref="39490800"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">616</int>
+						<reference key="object" ref="392008415"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="914269230"/>
+						</object>
+						<reference key="parent" ref="346089553"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">617</int>
+						<reference key="object" ref="914269230"/>
+						<reference key="parent" ref="392008415"/>
 					</object>
 				</object>
 			</object>
@@ -4426,6 +4465,8 @@
 					<string>611.IBPluginDependency</string>
 					<string>612.IBPluginDependency</string>
 					<string>613.IBPluginDependency</string>
+					<string>616.IBPluginDependency</string>
+					<string>617.IBPluginDependency</string>
 					<string>72.IBPluginDependency</string>
 					<string>72.ImportedFromIB2</string>
 					<string>73.IBPluginDependency</string>
@@ -4584,9 +4625,9 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{373, 135}, {1091, 718}}</string>
+					<string>{{280, 78}, {1091, 718}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{373, 135}, {1091, 718}}</string>
+					<string>{{280, 78}, {1091, 718}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<string>{3.40282e+38, 3.40282e+38}</string>
@@ -4722,6 +4763,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
@@ -4765,7 +4808,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">615</int>
+			<int key="maxID">618</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4796,6 +4839,7 @@
 							<string>currentWave</string>
 							<string>inboxTableView</string>
 							<string>statusLabel</string>
+							<string>versionInfo</string>
 							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -4803,6 +4847,7 @@
 							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSTableView</string>
+							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSWindow</string>
 						</object>

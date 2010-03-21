@@ -24,6 +24,7 @@
 @synthesize currentUser;
 @synthesize inboxTableView;
 @synthesize currentWave;
+@synthesize versionInfo;
 
 - (id)init {
 	if (self = [super init]) {
@@ -75,6 +76,9 @@
 					if ([[[waveUrl waveId] waveId] isEqual:@"indexwave!indexwave"]) {
 						[inboxViewDelegate passSignal:waveletUpdate];
 					}
+					else {
+						[versionInfo setStringValue:[NSString stringWithFormat:@"%d, %@", [[waveletUpdate resultingVersion] version], [[waveletUpdate resultingVersion] historyHash]]];
+					}
 					[waveUrl release];
 					[inboxTableView reloadData];
 				}
@@ -87,11 +91,21 @@
 }
 
 - (IBAction) openWave:(id)sender {
+	if (![network isConnected]) {
+		return;
+	}
+	
 	NSInteger rowIndex = [inboxTableView clickedRow];
 	NSString *waveId = [[inboxViewDelegate getWaveIdByRowIndex:rowIndex] retain];
 	openedWaveId = waveId;
 	hasWaveOpened = YES;
 	[self.currentWave setStringValue:openedWaveId];
+	
+	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
+	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
+	[openRequestBuilder setWaveId:[NSString stringWithFormat:@"%@!%@", domain, waveId]];
+	[NGRpc send:[NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:seqNo++] viaOutputStream:[network pbOutputStream]];	
+	
 	[waveId release];
 }
 

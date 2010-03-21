@@ -27,6 +27,7 @@
 	NSTextField *currentUser;
 	NSTableView *inboxTableView;
 	NSTextField *currentWave;
+	NSTextField *versionInfo;
 	
 	NSString *domain;
 	NGParticipantId *participantId;
@@ -44,6 +45,7 @@
 @property (assign) IBOutlet NSTextField *currentUser;
 @property (assign) IBOutlet NSTableView *inboxTableView;
 @property (assign) IBOutlet NSTextField *currentWave;
+@property (assign) IBOutlet NSTextField *versionInfo;
 
 - (void) connectionStatueController;
 - (void) openInbox;
