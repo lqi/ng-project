@@ -73,11 +73,14 @@
 				if ([[[[msg message] class] description] isEqual:@"ProtocolWaveletUpdate"]) {
 					ProtocolWaveletUpdate *waveletUpdate = (ProtocolWaveletUpdate *)[msg message];
 					NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithString:[waveletUpdate waveletName]];
-					if ([[[waveUrl waveId] waveId] isEqual:@"indexwave!indexwave"]) {
+					NSString *updateWaveId = [[waveUrl waveId] waveId];
+					if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
 						[inboxViewDelegate passSignal:waveletUpdate];
 					}
-					else {
-						[versionInfo setStringValue:[NSString stringWithFormat:@"%d, %@", [[waveletUpdate resultingVersion] version], [[waveletUpdate resultingVersion] historyHash]]];
+					else if (hasWaveOpened && [updateWaveId isEqual:openedWaveId]) {
+						int waveletVersion = [[waveletUpdate resultingVersion] version];
+						NSData *waveletHistoryHash = [[waveletUpdate resultingVersion] historyHash];
+						[versionInfo setStringValue:[NSString stringWithFormat:@"%d, %@", waveletVersion, [waveletHistoryHash description]]];
 					}
 					[waveUrl release];
 					[inboxTableView reloadData];
@@ -112,6 +115,7 @@
 - (IBAction) closeWave:(id)sender {
 	hasWaveOpened = NO;
 	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
+	[self.versionInfo setStringValue:@""];
 }
 
 - (void) connectionStatueControllerThread {
