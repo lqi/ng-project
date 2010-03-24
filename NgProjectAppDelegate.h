@@ -21,7 +21,7 @@
 
 #import "NGInboxViewDelegate.h"
 
-@interface NgProjectAppDelegate : NSObject <NSApplicationDelegate> {
+@interface NgProjectAppDelegate : NSObject /*<NSApplicationDelegate>*/ {
     NSWindow *window;
 	NSTextField *statusLabel;
 	NSTextField *currentUser;

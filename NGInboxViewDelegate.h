@@ -18,7 +18,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface NGInboxViewDelegate : NSObject <NSTableViewDataSource> {
+@interface NGInboxViewDelegate : NSObject /*<NSTableViewDataSource>*/ {
 	NSMutableArray *inboxArray;
 }
 
