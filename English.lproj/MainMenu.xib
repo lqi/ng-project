@@ -13,7 +13,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="29"/>
-			<integer value="372"/>
+			<integer value="582"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2818,6 +2818,46 @@
 					</object>
 					<int key="connectionID">618</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">participantAdd</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="916075488"/>
+					</object>
+					<int key="connectionID">619</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">participantList</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="92128365"/>
+					</object>
+					<int key="connectionID">620</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">addParticipant:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="88386521"/>
+					</object>
+					<int key="connectionID">621</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">rmParticipant:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="122096947"/>
+					</object>
+					<int key="connectionID">622</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">rmSelf:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="488251409"/>
+					</object>
+					<int key="connectionID">624</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -4807,7 +4847,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">618</int>
+			<int key="maxID">624</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4819,12 +4859,18 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addParticipant:</string>
 							<string>closeWave:</string>
 							<string>newWave:</string>
 							<string>openWave:</string>
+							<string>rmParticipant:</string>
+							<string>rmSelf:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -4837,6 +4883,8 @@
 							<string>currentUser</string>
 							<string>currentWave</string>
 							<string>inboxTableView</string>
+							<string>participantAdd</string>
+							<string>participantList</string>
 							<string>statusLabel</string>
 							<string>versionInfo</string>
 							<string>window</string>
@@ -4846,6 +4894,8 @@
 							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSTableView</string>
+							<string>NSTextField</string>
+							<string>NSComboBox</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSWindow</string>

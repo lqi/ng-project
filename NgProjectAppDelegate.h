@@ -28,6 +28,8 @@
 	NSTableView *inboxTableView;
 	NSTextField *currentWave;
 	NSTextField *versionInfo;
+	NSTextField *participantAdd;
+	NSComboBox *participantList;
 	
 	NSString *domain;
 	NGParticipantId *participantId;
@@ -38,6 +40,9 @@
 	
 	BOOL hasWaveOpened;
 	NSString *openedWaveId;
+	
+	int _waveletVersion;
+	NSData *_waveletHistoryHash;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -46,6 +51,8 @@
 @property (assign) IBOutlet NSTableView *inboxTableView;
 @property (assign) IBOutlet NSTextField *currentWave;
 @property (assign) IBOutlet NSTextField *versionInfo;
+@property (assign) IBOutlet NSTextField *participantAdd;
+@property (assign) IBOutlet NSComboBox *participantList;
 
 - (void) connectionStatueController;
 - (void) openInbox;
@@ -55,4 +62,8 @@
 - (IBAction) closeWave:(id)sender;
 
 - (IBAction) newWave:(id)sender;
+- (IBAction) addParticipant:(id)sender;
+- (IBAction) rmParticipant:(id)sender;
+- (IBAction) rmSelf:(id)sender;
+
 @end
