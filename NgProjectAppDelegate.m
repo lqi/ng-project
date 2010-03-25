@@ -197,6 +197,7 @@
 	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[idGenerator newWaveId] WaveletId:[idGenerator newConversationRootWaveletId]];
 	NSString *waveName = [waveUrl stringValue];
 	[waveUrl release];
+	NSString *blipName = [idGenerator newDocumentId];
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
 	[submitRequestBuilder setWaveletName:waveName];
@@ -212,8 +213,16 @@
 	// Second Operation to create the conversation
 	ProtocolDocumentOperation_Component_ElementStart_Builder *conversationElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
 	[conversationElementStartBuilder setType:@"conversation"];
+	ProtocolDocumentOperation_Component_ElementStart_Builder *newBlipElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
+	[newBlipElementStartBuilder setType:@"blip"];
+	ProtocolDocumentOperation_Component_KeyValuePair_Builder *newBlipAttributeBuilder = [ProtocolDocumentOperation_Component_KeyValuePair builder];
+	[newBlipAttributeBuilder setKey:@"id"];
+	[newBlipAttributeBuilder setValue:blipName];
+	[newBlipElementStartBuilder addAttribute:[newBlipAttributeBuilder build]];
 	ProtocolDocumentOperation_Builder *docOpBuilder = [ProtocolDocumentOperation builder];
 	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[conversationElementStartBuilder build]] build]];
+	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[newBlipElementStartBuilder build]] build]];
+	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
 	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
 	ProtocolWaveletOperation_MutateDocument_Builder *mutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
 	[mutateDocBuilder setDocumentId:@"conversation"];
@@ -221,6 +230,33 @@
 	ProtocolWaveletOperation_Builder *opCreateConversationBuilder = [ProtocolWaveletOperation builder];
 	[opCreateConversationBuilder setMutateDocument:[mutateDocBuilder build]];
 	[deltaBuilder addOperation:[opCreateConversationBuilder build]];
+	
+	// Third Operation to add a new document in the conversation
+	ProtocolDocumentOperation_Component_ElementStart_Builder *blipContributorElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
+	[blipContributorElementStartBuilder setType:@"contributor"];
+	ProtocolDocumentOperation_Component_KeyValuePair_Builder *contributorAttributeBuilder = [ProtocolDocumentOperation_Component_KeyValuePair builder];
+	[contributorAttributeBuilder setKey:@"name"];
+	[contributorAttributeBuilder setValue:[participantId participantIdAtDomain]];
+	[blipContributorElementStartBuilder addAttribute:[contributorAttributeBuilder build]];
+	ProtocolDocumentOperation_Component_ElementStart_Builder *blipBodyElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
+	[blipBodyElementStartBuilder setType:@"body"];
+	ProtocolDocumentOperation_Component_ElementStart_Builder *blipLineElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
+	[blipLineElementStartBuilder setType:@"line"];
+	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
+	
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipContributorElementStartBuilder build]] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipBodyElementStartBuilder build]] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipLineElementStartBuilder build]] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setCharacters:@"wave!"] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
+	ProtocolWaveletOperation_MutateDocument_Builder *blipMutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
+	[blipMutateDocBuilder setDocumentId:blipName];
+	[blipMutateDocBuilder setDocumentOperation:[blipDocOpBuilder build]];
+	ProtocolWaveletOperation_Builder *blipOpCreateConversationBuilder = [ProtocolWaveletOperation builder];
+	[blipOpCreateConversationBuilder setMutateDocument:[blipMutateDocBuilder build]];
+	[deltaBuilder addOperation:[blipOpCreateConversationBuilder build]];
 	
 	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
 	[hashedVersionBuilder setVersion:0];
