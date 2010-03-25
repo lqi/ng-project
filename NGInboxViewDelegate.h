@@ -20,7 +20,10 @@
 
 @interface NGInboxViewDelegate : NSObject /*<NSTableViewDataSource>*/ {
 	NSMutableArray *inboxArray;
+	NGParticipantId *currentUser;
 }
+
+@property (assign) NGParticipantId *currentUser;
 
 - (void) passSignal:(ProtocolWaveletUpdate *)update;
 - (NSString *) getWaveIdByRowIndex:(NSInteger)rowIndex;

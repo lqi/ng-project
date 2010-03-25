@@ -35,6 +35,7 @@
 		seqNo = 0;
 		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
 		inboxViewDelegate = [[NGInboxViewDelegate alloc] init];
+		inboxViewDelegate.currentUser = participantId;
 		hasWaveOpened = NO;
 	}
 	return self;
@@ -301,8 +302,6 @@
 	if (![network isConnected] || !hasWaveOpened) {
 		return;
 	}
-	
-	NSLog(@"abc");
 	
 	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:openedWaveId] WaveletId:[idGenerator newConversationRootWaveletId]];
 	NSString *waveName = [waveUrl stringValue];

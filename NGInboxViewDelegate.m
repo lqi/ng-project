@@ -117,6 +117,8 @@
 
 @implementation NGInboxViewDelegate
 
+@synthesize currentUser;
+
 - (id) init {
 	if (self = [super init]) {
 		inboxArray = [[NSMutableArray alloc] init];
@@ -193,7 +195,15 @@
 				[waveDigest addParticipant:[NGParticipantId participantIdWithParticipantIdAtDomain:[op addParticipant]]];
 			}
 			if ([op hasRemoveParticipant]) {
-				[waveDigest rmParticipant:[NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]]];
+				NGParticipantId *removeParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]];
+				if ([removeParticipantId isEqual:self.currentUser]) {
+					NSAssert(oldIndex != -1, @"there should be a waveDigest which will contains this participant");
+					[inboxArray removeObjectAtIndex:oldIndex];
+					return;
+				}
+				else {
+					[waveDigest rmParticipant:removeParticipantId];
+				}
 			}
 			if ([op hasMutateDocument]) {
 				ProtocolWaveletOperation_MutateDocument *md = [op mutateDocument];
