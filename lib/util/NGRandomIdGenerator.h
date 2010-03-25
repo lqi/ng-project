@@ -28,6 +28,8 @@
 
 - (id) initWithDomain:(NSString *)domain;
 - (NGWaveId *) newWaveId;
+- (NGWaveletId *) newConversationWaveletId;
 - (NGWaveletId *) newConversationRootWaveletId;
+- (NSString *) newDocumentId;
 
 @end
