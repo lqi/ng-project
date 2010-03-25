@@ -30,6 +30,7 @@
 	NSTextField *versionInfo;
 	NSTextField *participantAdd;
 	NSComboBox *participantList;
+	NSTextView *waveTextView;
 	
 	NSString *domain;
 	NGParticipantId *participantId;
@@ -53,6 +54,7 @@
 @property (assign) IBOutlet NSTextField *versionInfo;
 @property (assign) IBOutlet NSTextField *participantAdd;
 @property (assign) IBOutlet NSComboBox *participantList;
+@property (assign) IBOutlet NSTextView *waveTextView;
 
 - (void) connectionStatueController;
 - (void) openInbox;

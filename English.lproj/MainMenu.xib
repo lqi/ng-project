@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="29"/>
 			<integer value="582"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2858,6 +2858,14 @@
 					</object>
 					<int key="connectionID">624</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">waveTextView</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="199872513"/>
+					</object>
+					<int key="connectionID">625</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -4847,7 +4855,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">624</int>
+			<int key="maxID">625</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4887,6 +4895,7 @@
 							<string>participantList</string>
 							<string>statusLabel</string>
 							<string>versionInfo</string>
+							<string>waveTextView</string>
 							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -4898,6 +4907,7 @@
 							<string>NSComboBox</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
+							<string>NSTextView</string>
 							<string>NSWindow</string>
 						</object>
 					</object>

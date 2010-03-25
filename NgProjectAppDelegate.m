@@ -27,10 +27,11 @@
 @synthesize versionInfo;
 @synthesize participantAdd;
 @synthesize participantList;
+@synthesize waveTextView;
 
 - (id)init {
 	if (self = [super init]) {
-		domain = @"192.168.131.5";
+		domain = @"192.168.1.5";
 		participantId = [[NGParticipantId alloc] initWithDomain:domain participantId:@"test"];
 		seqNo = 0;
 		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
@@ -95,25 +96,24 @@
 									[participantList removeItemWithObjectValue:[[NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]] participantIdAtDomain]];
 								}
 								if ([op hasMutateDocument]) {
-									/*
 									ProtocolWaveletOperation_MutateDocument *md = [op mutateDocument];
 									int pos = 0;
+									[[self.waveTextView textStorage] beginEditing];
 									for (ProtocolDocumentOperation_Component *comp in [[md documentOperation] componentList]) {
 										if ([comp hasCharacters]) {
 											NSString *chars = [comp characters];
-											[waveDigest insertChars:chars atPosition:pos];
+											[[self.waveTextView textStorage] replaceCharactersInRange:NSMakeRange(pos - 5, 0) withString:chars];
 											pos += [chars length];
 										}
 										if ([comp hasDeleteCharacters]) {
 											NSString *chars = [comp deleteCharacters];
-											[waveDigest deleteChars:chars atPosition:pos];
+											[[self.waveTextView textStorage] deleteCharactersInRange:NSMakeRange(pos - 5, [chars length])];
 										}
 										if ([comp hasRetainItemCount]) {
 											pos = [comp retainItemCount];
 										}
 									}
-									 */
-									NSLog(@"md");
+									[[self.waveTextView textStorage] endEditing];
 								}
 								if ([op hasNoOp]) {
 									NSLog(@"TODO: No operation!");
@@ -139,6 +139,10 @@
 		return;
 	}
 	
+	if (hasWaveOpened) {
+		[self closeWave:nil];
+	}
+	
 	NSInteger rowIndex = [inboxTableView clickedRow];
 	NSString *waveId = [[inboxViewDelegate getWaveIdByRowIndex:rowIndex] retain];
 	openedWaveId = waveId;
@@ -154,6 +158,10 @@
 }
 
 - (IBAction) closeWave:(id)sender {
+	if (!hasWaveOpened) {
+		return;
+	}
+	
 	hasWaveOpened = NO;
 	_waveletVersion = 0;
 	_waveletHistoryHash = [NSData data];
@@ -161,6 +169,7 @@
 	[self.versionInfo setStringValue:@""];
 	[self.participantAdd setStringValue:@""];
 	[self.participantList setStringValue:@""];
+	[self.waveTextView setString:@""];
 }
 
 - (void) connectionStatueControllerThread {
@@ -249,7 +258,7 @@
 	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipBodyElementStartBuilder build]] build]];
 	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipLineElementStartBuilder build]] build]];
 	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setCharacters:@"wave!"] build]];
+	//[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setCharacters:@"wave!"] build]];
 	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
 	ProtocolWaveletOperation_MutateDocument_Builder *blipMutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
 	[blipMutateDocBuilder setDocumentId:blipName];
