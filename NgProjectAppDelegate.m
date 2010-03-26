@@ -96,24 +96,7 @@
 									[participantList removeItemWithObjectValue:[[NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]] participantIdAtDomain]];
 								}
 								if ([op hasMutateDocument]) {
-									ProtocolWaveletOperation_MutateDocument *md = [op mutateDocument];
-									int pos = 0;
-									[[self.waveTextView textStorage] beginEditing];
-									for (ProtocolDocumentOperation_Component *comp in [[md documentOperation] componentList]) {
-										if ([comp hasCharacters]) {
-											NSString *chars = [comp characters];
-											[[self.waveTextView textStorage] replaceCharactersInRange:NSMakeRange(pos - 5, 0) withString:chars];
-											pos += [chars length];
-										}
-										if ([comp hasDeleteCharacters]) {
-											NSString *chars = [comp deleteCharacters];
-											[[self.waveTextView textStorage] deleteCharactersInRange:NSMakeRange(pos - 5, [chars length])];
-										}
-										if ([comp hasRetainItemCount]) {
-											pos = [comp retainItemCount];
-										}
-									}
-									[[self.waveTextView textStorage] endEditing];
+									[self apply:[op mutateDocument] to:[self.waveTextView textStorage]];
 								}
 								if ([op hasNoOp]) {
 									NSLog(@"TODO: No operation!");
@@ -134,6 +117,122 @@
 	}
 }
 
+- (void) apply:(ProtocolWaveletOperation_MutateDocument *)mutateDocument to:(NSTextStorage *)textStorage {
+	NSMutableArray *elementStack = [[NSMutableArray alloc] init];
+	int cursor = 0;
+	int rpcPosition = 0;
+	[textStorage beginEditing];
+	for (ProtocolDocumentOperation_Component *comp in [[mutateDocument documentOperation] componentList]) {
+		if ([comp hasCharacters]) {
+			NSString *chars = [comp characters];
+			[textStorage replaceCharactersInRange:NSMakeRange(cursor, 0) withString:chars];
+			cursor += [chars length];
+			for (int i = 0; i < [chars length]; i++) {
+				[_waveRpcItems insertObject:@"character" atIndex:rpcPosition++];
+			}
+		}
+		if ([comp hasDeleteCharacters]) {
+			NSString *chars = [comp deleteCharacters];
+			// TODO: There should be validation before deleting the characters
+			[textStorage deleteCharactersInRange:NSMakeRange(cursor, [chars length])];
+			for (int i = 0; i < [chars length]; i++) {
+				[_waveRpcItems removeObjectAtIndex:rpcPosition];
+			}
+		}
+		if ([comp hasRetainItemCount]) {
+			rpcPosition = [comp retainItemCount];
+			cursor = 0;
+			for (int i = 0; i < rpcPosition; i++) {
+				NSString *thisItem = [_waveRpcItems objectAtIndex:i];
+				if ([thisItem isEqual:@"lineStart"]) {
+					BOOL firstLine = YES;
+					for (int j = 0; j < i; j++) {
+						if ([[_waveRpcItems objectAtIndex:j] isEqual:@"lineStart"]) {
+							firstLine = NO;
+							break;
+						}
+					}
+					if (!firstLine) {
+						cursor++;
+					}
+				}
+				if ([thisItem isEqual:@"character"]) {
+					cursor++;
+				}
+			}
+		}
+		if ([comp hasElementStart]) {
+			ProtocolDocumentOperation_Component_ElementStart *elementStart = [comp elementStart];
+			NSString *elementType = [elementStart type];
+			[elementStack addObject:elementType];
+			if ([elementType isEqual:@"blip"] || [elementType isEqual:@"conversation"]) {
+				// TODO: ignore at the moment as there is only one blip
+			}
+			else if ([elementType isEqual:@"contributor"]) {
+				[_waveRpcItems insertObject:@"contributorStart" atIndex:rpcPosition++];
+			}
+			else if ([elementType isEqual:@"body"]) {
+				[_waveRpcItems insertObject:@"bodyStart" atIndex:rpcPosition++];
+			}
+			else if ([elementType isEqual:@"line"]) {
+				BOOL firstLine = YES;
+				for (int i = 0; i < rpcPosition; i++) {
+					if ([[_waveRpcItems objectAtIndex:i] isEqual:@"lineStart"]) {
+						firstLine = NO;
+						break;
+					}
+				}
+				if (!firstLine) {
+					[textStorage replaceCharactersInRange:NSMakeRange(cursor, 0) withString:@"\n"];
+					cursor++;
+				}
+				[_waveRpcItems insertObject:@"lineStart" atIndex:rpcPosition++];
+			}
+		}
+		if ([comp hasElementEnd]) {
+			if ([comp elementEnd]) {
+				NSString *elementType = [[elementStack lastObject] retain];
+				[elementStack removeLastObject];
+				if ([elementType isEqual:@"blip"] || [elementType isEqual:@"conversation"]) {
+					// TODO: ignore at the moment as there is only one blip
+				}
+				else {
+					[_waveRpcItems insertObject:@"elementEnd" atIndex:rpcPosition++];
+				}
+				[elementType release];
+			}
+		}
+		if ([comp hasDeleteElementStart]) {
+			ProtocolDocumentOperation_Component_ElementStart *deleteElementStart = [comp deleteElementStart];
+			NSString *elementType = [deleteElementStart type];
+			if ([elementType isEqual:@"line"]) {
+				NSAssert([[_waveRpcItems objectAtIndex:rpcPosition] isEqual:@"lineStart"], @"Technically, this element should be lineStart");
+				BOOL firstLine = YES;
+				for (int i = 0; i < rpcPosition; i++) {
+					if ([[_waveRpcItems objectAtIndex:i] isEqual:@"lineStart"]) {
+						firstLine = NO;
+						break;
+					}
+				}
+				if (!firstLine) {
+					[textStorage deleteCharactersInRange:NSMakeRange(cursor, 1)];
+				}
+				[_waveRpcItems removeObjectAtIndex:rpcPosition];
+			}
+			else {
+				// TODO: at the moment, only lineBreak could be deleted
+			}
+		}
+		if ([comp hasDeleteElementEnd]) {
+			if ([comp deleteElementEnd]) {
+				NSAssert([[_waveRpcItems objectAtIndex:rpcPosition] isEqual:@"elementEnd"], @"Technically, this element should be elementEnd for a lineStart");
+				[_waveRpcItems removeObjectAtIndex:rpcPosition];
+			}
+		}
+	}
+	[textStorage endEditing];
+}
+
 - (IBAction) openWave:(id)sender {
 	if (![network isConnected]) {
 		return;
@@ -148,6 +247,8 @@
 	openedWaveId = waveId;
 	hasWaveOpened = YES;
 	[self.currentWave setStringValue:openedWaveId];
+	
+	_waveRpcItems = [[NSMutableArray alloc] init];
 	
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
@@ -170,6 +271,7 @@
 	[self.participantAdd setStringValue:@""];
 	[self.participantList setStringValue:@""];
 	[self.waveTextView setString:@""];
+	[_waveRpcItems release];
 }
 
 - (void) connectionStatueControllerThread {

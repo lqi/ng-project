@@ -44,6 +44,8 @@
 	
 	int _waveletVersion;
 	NSData *_waveletHistoryHash;
+	
+	NSMutableArray *_waveRpcItems;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -59,6 +61,7 @@
 - (void) connectionStatueController;
 - (void) openInbox;
 - (void) newReceive;
+- (void) apply:(ProtocolWaveletOperation_MutateDocument *)mutateDocument to:(NSTextStorage *)textStorage;
 
 - (IBAction) openWave:(id)sender;
 - (IBAction) closeWave:(id)sender;
