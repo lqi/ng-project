@@ -33,7 +33,7 @@
 	if (self = [super init]) {
 		domain = @"192.168.1.5";
 		participantId = [[NGParticipantId alloc] initWithDomain:domain participantId:@"test"];
-		seqNo = 0;
+		_seqNo = 0;
 		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
 		inboxViewDelegate = [[NGInboxViewDelegate alloc] init];
 		inboxViewDelegate.currentUser = participantId;
@@ -81,10 +81,10 @@
 					if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
 						[inboxViewDelegate passSignal:waveletUpdate];
 					}
-					else if (hasWaveOpened && [updateWaveId isEqual:openedWaveId]) {
-						_waveletVersion = [[waveletUpdate resultingVersion] version];
-						_waveletHistoryHash = [[waveletUpdate resultingVersion] historyHash];
-						[versionInfo setStringValue:[NSString stringWithFormat:@"%d, %@", _waveletVersion, [_waveletHistoryHash description]]];
+					else if (hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
+						self.waveTextView.waveletVersion = [[waveletUpdate resultingVersion] version];
+						self.waveTextView.waveletHistoryHash = [[waveletUpdate resultingVersion] historyHash];
+						[versionInfo setStringValue:[NSString stringWithFormat:@"%d, %@", self.waveTextView.waveletVersion, [self.waveTextView.waveletHistoryHash description]]];
 						// mutation document for open wave
 						
 						for (ProtocolWaveletDelta *wd in [waveletUpdate appliedDeltaList]) {
@@ -96,7 +96,7 @@
 									[participantList removeItemWithObjectValue:[[NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]] participantIdAtDomain]];
 								}
 								if ([op hasMutateDocument]) {
-									[self apply:[op mutateDocument] to:[self.waveTextView textStorage]];
+									[self.waveTextView apply:[op mutateDocument]];
 								}
 								if ([op hasNoOp]) {
 									NSLog(@"TODO: No operation!");
@@ -117,122 +117,6 @@
 	}
 }
 
-- (void) apply:(ProtocolWaveletOperation_MutateDocument *)mutateDocument to:(NSTextStorage *)textStorage {
-	NSMutableArray *elementStack = [[NSMutableArray alloc] init];
-	int cursor = 0;
-	int rpcPosition = 0;
-	[textStorage beginEditing];
-	for (ProtocolDocumentOperation_Component *comp in [[mutateDocument documentOperation] componentList]) {
-		if ([comp hasCharacters]) {
-			NSString *chars = [comp characters];
-			[textStorage replaceCharactersInRange:NSMakeRange(cursor, 0) withString:chars];
-			cursor += [chars length];
-			for (int i = 0; i < [chars length]; i++) {
-				[_waveRpcItems insertObject:@"character" atIndex:rpcPosition++];
-			}
-		}
-		if ([comp hasDeleteCharacters]) {
-			NSString *chars = [comp deleteCharacters];
-			// TODO: There should be validation before deleting the characters
-			[textStorage deleteCharactersInRange:NSMakeRange(cursor, [chars length])];
-			for (int i = 0; i < [chars length]; i++) {
-				[_waveRpcItems removeObjectAtIndex:rpcPosition];
-			}
-		}
-		if ([comp hasRetainItemCount]) {
-			rpcPosition = [comp retainItemCount];
-			cursor = 0;
-			for (int i = 0; i < rpcPosition; i++) {
-				NSString *thisItem = [_waveRpcItems objectAtIndex:i];
-				if ([thisItem isEqual:@"lineStart"]) {
-					BOOL firstLine = YES;
-					for (int j = 0; j < i; j++) {
-						if ([[_waveRpcItems objectAtIndex:j] isEqual:@"lineStart"]) {
-							firstLine = NO;
-							break;
-						}
-					}
-					if (!firstLine) {
-						cursor++;
-					}
-				}
-				if ([thisItem isEqual:@"character"]) {
-					cursor++;
-				}
-			}
-		}
-		if ([comp hasElementStart]) {
-			ProtocolDocumentOperation_Component_ElementStart *elementStart = [comp elementStart];
-			NSString *elementType = [elementStart type];
-			[elementStack addObject:elementType];
-			if ([elementType isEqual:@"blip"] || [elementType isEqual:@"conversation"]) {
-				// TODO: ignore at the moment as there is only one blip
-			}
-			else if ([elementType isEqual:@"contributor"]) {
-				[_waveRpcItems insertObject:@"contributorStart" atIndex:rpcPosition++];
-			}
-			else if ([elementType isEqual:@"body"]) {
-				[_waveRpcItems insertObject:@"bodyStart" atIndex:rpcPosition++];
-			}
-			else if ([elementType isEqual:@"line"]) {
-				BOOL firstLine = YES;
-				for (int i = 0; i < rpcPosition; i++) {
-					if ([[_waveRpcItems objectAtIndex:i] isEqual:@"lineStart"]) {
-						firstLine = NO;
-						break;
-					}
-				}
-				if (!firstLine) {
-					[textStorage replaceCharactersInRange:NSMakeRange(cursor, 0) withString:@"\n"];
-					cursor++;
-				}
-				[_waveRpcItems insertObject:@"lineStart" atIndex:rpcPosition++];
-			}
-		}
-		if ([comp hasElementEnd]) {
-			if ([comp elementEnd]) {
-				NSString *elementType = [[elementStack lastObject] retain];
-				[elementStack removeLastObject];
-				if ([elementType isEqual:@"blip"] || [elementType isEqual:@"conversation"]) {
-					// TODO: ignore at the moment as there is only one blip
-				}
-				else {
-					[_waveRpcItems insertObject:@"elementEnd" atIndex:rpcPosition++];
-				}
-				[elementType release];
-			}
-		}
-		if ([comp hasDeleteElementStart]) {
-			ProtocolDocumentOperation_Component_ElementStart *deleteElementStart = [comp deleteElementStart];
-			NSString *elementType = [deleteElementStart type];
-			if ([elementType isEqual:@"line"]) {
-				NSAssert([[_waveRpcItems objectAtIndex:rpcPosition] isEqual:@"lineStart"], @"Technically, this element should be lineStart");
-				BOOL firstLine = YES;
-				for (int i = 0; i < rpcPosition; i++) {
-					if ([[_waveRpcItems objectAtIndex:i] isEqual:@"lineStart"]) {
-						firstLine = NO;
-						break;
-					}
-				}
-				if (!firstLine) {
-					[textStorage deleteCharactersInRange:NSMakeRange(cursor, 1)];
-				}
-				[_waveRpcItems removeObjectAtIndex:rpcPosition];
-			}
-			else {
-				// TODO: at the moment, only lineBreak could be deleted
-			}
-		}
-		if ([comp hasDeleteElementEnd]) {
-			if ([comp deleteElementEnd]) {
-				NSAssert([[_waveRpcItems objectAtIndex:rpcPosition] isEqual:@"elementEnd"], @"Technically, this element should be elementEnd for a lineStart");
-				[_waveRpcItems removeObjectAtIndex:rpcPosition];
-			}
-		}
-	}
-	[textStorage endEditing];
-}
-
 - (IBAction) openWave:(id)sender {
 	if (![network isConnected]) {
 		return;
@@ -244,16 +128,15 @@
 	
 	NSInteger rowIndex = [inboxTableView clickedRow];
 	NSString *waveId = [[inboxViewDelegate getWaveIdByRowIndex:rowIndex] retain];
-	openedWaveId = waveId;
 	hasWaveOpened = YES;
-	[self.currentWave setStringValue:openedWaveId];
 	
-	_waveRpcItems = [[NSMutableArray alloc] init];
+	[self.waveTextView openWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:waveId] waveletId:[NGWaveletId waveletIdWithDomain:domain waveletId:@"conv+root"] sequenceNo:_seqNo];
+	[self.currentWave setStringValue:[self.waveTextView openWaveId]];
 	
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
 	[openRequestBuilder setWaveId:[NSString stringWithFormat:@"%@!%@", domain, waveId]];
-	[NGRpc send:[NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:seqNo++] viaOutputStream:[network pbOutputStream]];	
+	[NGRpc send:[NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];	
 	
 	[waveId release];
 }
@@ -263,15 +146,13 @@
 		return;
 	}
 	
+	_seqNo = [self.waveTextView seqNo];
 	hasWaveOpened = NO;
-	_waveletVersion = 0;
-	_waveletHistoryHash = [NSData data];
 	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
 	[self.versionInfo setStringValue:@""];
 	[self.participantAdd setStringValue:@""];
 	[self.participantList setStringValue:@""];
-	[self.waveTextView setString:@""];
-	[_waveRpcItems release];
+	[self.waveTextView close];
 }
 
 - (void) connectionStatueControllerThread {
@@ -297,7 +178,7 @@
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
 	[openRequestBuilder setWaveId:@"indexwave!indexwave"];
-	[NGRpc send:[NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:seqNo++] viaOutputStream:[network pbOutputStream]];	
+	[NGRpc send:[NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];	
 }
 
 - (IBAction) newWave:(id)sender {
@@ -354,13 +235,11 @@
 	ProtocolDocumentOperation_Component_ElementStart_Builder *blipLineElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
 	[blipLineElementStartBuilder setType:@"line"];
 	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
-	
 	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipContributorElementStartBuilder build]] build]];
 	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
 	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipBodyElementStartBuilder build]] build]];
 	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipLineElementStartBuilder build]] build]];
 	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
-	//[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setCharacters:@"wave!"] build]];
 	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
 	ProtocolWaveletOperation_MutateDocument_Builder *blipMutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
 	[blipMutateDocBuilder setDocumentId:blipName];
@@ -376,7 +255,7 @@
 	
 	[submitRequestBuilder setDelta:[deltaBuilder build]];
 	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:seqNo++] viaOutputStream:[network pbOutputStream]];	
+	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];	
 }
 
 - (IBAction) addParticipant:(id)sender {
@@ -384,7 +263,7 @@
 		return;
 	}
 	
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:openedWaveId] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
 	NSString *waveName = [waveUrl stringValue];
 	[waveUrl release];
 	
@@ -394,20 +273,19 @@
 	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
 	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
 	
-	// First Operation to add current user as the participant
 	ProtocolWaveletOperation_Builder *opAddParticipantBuilder = [ProtocolWaveletOperation builder];
 	NGParticipantId *addParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[self.participantAdd stringValue]];
 	[opAddParticipantBuilder setAddParticipant:[addParticipantId participantIdAtDomain]];
 	[deltaBuilder addOperation:[opAddParticipantBuilder build]];
 	
 	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:_waveletVersion];
-	[hashedVersionBuilder setHistoryHash:_waveletHistoryHash];
+	[hashedVersionBuilder setVersion:self.waveTextView.waveletVersion];
+	[hashedVersionBuilder setHistoryHash:self.waveTextView.waveletHistoryHash];
 	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
 	
 	[submitRequestBuilder setDelta:[deltaBuilder build]];
 	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:seqNo++] viaOutputStream:[network pbOutputStream]];
+	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
 	
 	[self.participantAdd setStringValue:@""];
 }
@@ -417,7 +295,7 @@
 		return;
 	}
 	
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:openedWaveId] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
 	NSString *waveName = [waveUrl stringValue];
 	[waveUrl release];
 	
@@ -427,20 +305,19 @@
 	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
 	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
 	
-	// First Operation to add current user as the participant
 	ProtocolWaveletOperation_Builder *opRemoveParticipantBuilder = [ProtocolWaveletOperation builder];
 	NGParticipantId *rmParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[self.participantList stringValue]];
 	[opRemoveParticipantBuilder setRemoveParticipant:[rmParticipantId participantIdAtDomain]];
 	[deltaBuilder addOperation:[opRemoveParticipantBuilder build]];
 	
 	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:_waveletVersion];
-	[hashedVersionBuilder setHistoryHash:_waveletHistoryHash];
+	[hashedVersionBuilder setVersion:self.waveTextView.waveletVersion];
+	[hashedVersionBuilder setHistoryHash:self.waveTextView.waveletHistoryHash];
 	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
 	
 	[submitRequestBuilder setDelta:[deltaBuilder build]];
 	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:seqNo++] viaOutputStream:[network pbOutputStream]];
+	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
 	
 	[self.participantList setStringValue:@""];
 }
@@ -450,7 +327,7 @@
 		return;
 	}
 	
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:openedWaveId] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
 	NSString *waveName = [waveUrl stringValue];
 	[waveUrl release];
 	
@@ -460,21 +337,30 @@
 	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
 	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
 	
-	// First Operation to add current user as the participant
 	ProtocolWaveletOperation_Builder *opRemoveParticipantBuilder = [ProtocolWaveletOperation builder];
 	[opRemoveParticipantBuilder setRemoveParticipant:[participantId participantIdAtDomain]];
 	[deltaBuilder addOperation:[opRemoveParticipantBuilder build]];
 	
 	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:_waveletVersion];
-	[hashedVersionBuilder setHistoryHash:_waveletHistoryHash];
+	[hashedVersionBuilder setVersion:self.waveTextView.waveletVersion];
+	[hashedVersionBuilder setHistoryHash:self.waveTextView.waveletHistoryHash];
 	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
 	
 	[submitRequestBuilder setDelta:[deltaBuilder build]];
 	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:seqNo++] viaOutputStream:[network pbOutputStream]];
+	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
 	
 	[self closeWave:nil];
+}
+
+- (int) getSequenceNo {
+	if (hasWaveOpened) {
+		return [self.waveTextView seqNo];
+	}
+	else {
+		return _seqNo++;
+	}
+
 }
 
 - (void) dealloc {

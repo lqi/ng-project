@@ -20,6 +20,7 @@
 #import "NGHeader.h"
 
 #import "NGInboxViewDelegate.h"
+#import "NGTextView.h"
 
 @interface NgProjectAppDelegate : NSObject /*<NSApplicationDelegate>*/ {
     NSWindow *window;
@@ -30,22 +31,16 @@
 	NSTextField *versionInfo;
 	NSTextField *participantAdd;
 	NSComboBox *participantList;
-	NSTextView *waveTextView;
+	NGTextView *waveTextView;
 	
 	NSString *domain;
 	NGParticipantId *participantId;
-	long seqNo;
+	long _seqNo;
 	NGNetwork *network;
 	NGRandomIdGenerator *idGenerator;
 	NGInboxViewDelegate *inboxViewDelegate;
 	
 	BOOL hasWaveOpened;
-	NSString *openedWaveId;
-	
-	int _waveletVersion;
-	NSData *_waveletHistoryHash;
-	
-	NSMutableArray *_waveRpcItems;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -56,12 +51,11 @@
 @property (assign) IBOutlet NSTextField *versionInfo;
 @property (assign) IBOutlet NSTextField *participantAdd;
 @property (assign) IBOutlet NSComboBox *participantList;
-@property (assign) IBOutlet NSTextView *waveTextView;
+@property (assign) IBOutlet NGTextView *waveTextView;
 
 - (void) connectionStatueController;
 - (void) openInbox;
 - (void) newReceive;
-- (void) apply:(ProtocolWaveletOperation_MutateDocument *)mutateDocument to:(NSTextStorage *)textStorage;
 
 - (IBAction) openWave:(id)sender;
 - (IBAction) closeWave:(id)sender;
@@ -70,5 +64,7 @@
 - (IBAction) addParticipant:(id)sender;
 - (IBAction) rmParticipant:(id)sender;
 - (IBAction) rmSelf:(id)sender;
+
+- (int) getSequenceNo;
 
 @end
