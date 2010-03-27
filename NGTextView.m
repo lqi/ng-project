@@ -60,66 +60,37 @@
 }
 
 - (void)insertText:(id)characters {
-	//NSLog(@"CaretOffset:%d, textLegnth:%d, positionOffset:%d, positionLength:%d, %@", [self caretOffset], [self textLength], [self positionOffset], [self positionLength], characters);
-	
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:_waveId WaveletId:_waveletId];
-	NSString *waveName = [waveUrl stringValue];
-	[waveUrl release];
-	
-	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
-	[submitRequestBuilder setWaveletName:waveName];
-	
-	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[_participantId participantIdAtDomain]];
-	
-	int retainItemCount = [self positionOffset];
-	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCount] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setCharacters:characters] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - retainItemCount)] build]]; 
-	
-	ProtocolWaveletOperation_MutateDocument_Builder *blipMutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
-	[blipMutateDocBuilder setDocumentId:_blipId];
-	[blipMutateDocBuilder setDocumentOperation:[blipDocOpBuilder build]];
-	ProtocolWaveletOperation_Builder *blipOpCreateConversationBuilder = [ProtocolWaveletOperation builder];
-	[blipOpCreateConversationBuilder setMutateDocument:[blipMutateDocBuilder build]];
-	[deltaBuilder addOperation:[blipOpCreateConversationBuilder build]];
-	
-	
-	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:self.waveletVersion];
-	[hashedVersionBuilder setHistoryHash:self.waveletHistoryHash];
-	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
-	
-	[submitRequestBuilder setDelta:[deltaBuilder build]];
-	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self seqNo]] viaOutputStream:[_network pbOutputStream]];
+	[self insertCharacters:characters caretOffset:[self caretOffset]];
 }
 
 - (void)insertLineBreak:(id)sender {
-	[self insertLineMutationDocument];
+	[self insertLineMutationDocument:[self caretOffset]];
 }
 
 - (void)insertNewline:(id)sender {
-	[self insertLineMutationDocument];
+	[self insertLineMutationDocument:[self caretOffset]];
 }
 
 - (void)deleteBackward:(id)sender {
-	if ([self caretOffset] == 0) {
+	int caretOffset = [self caretOffset];
+	
+	if (caretOffset == 0) {
 		NSLog(@"Reach the very beginning!");
 		return;
 	}
 	
-	NSLog(@"%d, DELETEBACKWARD", [self caretOffset]);
+	[self deleteCurrentElement:(caretOffset - 1)];
 }
 
 - (void)deleteForward:(id)sender {
-	if ([self caretOffset] == [self textLength]) {
+	int caretOffset = [self caretOffset];
+	
+	if (caretOffset == [self textLength]) {
 		NSLog(@"Reach the very ending!");
 		return;
 	}
 	
-	NSLog(@"%d, DELETEFORWARD", [self caretOffset]);
+	[self deleteCurrentElement:caretOffset];
 }
 
 - (NSInteger)caretOffset {
@@ -130,8 +101,7 @@
 	return [[self string] length];
 }
 
-- (NSInteger)positionOffset {
-	int caretOffset = [self caretOffset];
+- (NSInteger)positionOffset:(int)caretOffset {
 	if (caretOffset == 0) {
 		return 5; // TODO: Hard define this, before the first element, there should be <contributor></contributor><body><line></line>
 	}
@@ -175,8 +145,82 @@
 	return [_waveRpcItems count];
 }
 
-- (void)insertLineMutationDocument {
-	NSLog(@"%d, NEWLINE", [self caretOffset]);
+- (void)insertCharacters:(NSString *)characters caretOffset:(int)caretOffset {
+	int retainItemCount = [self positionOffset:caretOffset];
+	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCount] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setCharacters:characters] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - retainItemCount)] build]]; 
+	
+	[self sendDocumentOperation:[blipDocOpBuilder build]];
+}
+
+- (void)insertLineMutationDocument:(int)caretOffset {
+	ProtocolDocumentOperation_Component_ElementStart_Builder *blipLineElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
+	[blipLineElementStartBuilder setType:@"line"];
+	
+	int retainItemCount = [self positionOffset:caretOffset];
+	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCount] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipLineElementStartBuilder build]] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - retainItemCount)] build]]; 
+	
+	[self sendDocumentOperation:[blipDocOpBuilder build]];
+}
+
+- (void)deleteCurrentElement:(int)caretOffset {
+	int positionOffset = [self positionOffset:caretOffset];
+	NSString *thisItem = [_waveRpcItems objectAtIndex:positionOffset];
+	if ([thisItem isEqual:@"character"]) {
+		NSString *charactersToBeDeleted = [[self string] substringWithRange:NSMakeRange(caretOffset, 1)];
+		ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
+		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:positionOffset] build]];
+		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteCharacters:charactersToBeDeleted] build]];
+		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - positionOffset - [charactersToBeDeleted length])] build]]; 
+		
+		[self sendDocumentOperation:[blipDocOpBuilder build]];
+	}
+	else if ([thisItem isEqual:@"lineStart"]) {
+		ProtocolDocumentOperation_Component_ElementStart_Builder *blipLineElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
+		[blipLineElementStartBuilder setType:@"line"];
+		
+		ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
+		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:positionOffset] build]];
+		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteElementStart:[blipLineElementStartBuilder build]] build]];
+		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteElementEnd:YES] build]];
+		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - positionOffset - 2)] build]]; 
+		
+		[self sendDocumentOperation:[blipDocOpBuilder build]];
+	}
+}
+
+- (void)sendDocumentOperation:(ProtocolDocumentOperation *)docOp {
+	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:_waveId WaveletId:_waveletId];
+	NSString *waveName = [waveUrl stringValue];
+	[waveUrl release];
+	
+	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
+	[submitRequestBuilder setWaveletName:waveName];
+	
+	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
+	[deltaBuilder setAuthor:[_participantId participantIdAtDomain]];
+	
+	ProtocolWaveletOperation_MutateDocument_Builder *blipMutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
+	[blipMutateDocBuilder setDocumentId:_blipId];
+	[blipMutateDocBuilder setDocumentOperation:docOp];
+	ProtocolWaveletOperation_Builder *blipOpBuilder = [ProtocolWaveletOperation builder];
+	[blipOpBuilder setMutateDocument:[blipMutateDocBuilder build]];
+	[deltaBuilder addOperation:[blipOpBuilder build]];
+	
+	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
+	[hashedVersionBuilder setVersion:self.waveletVersion];
+	[hashedVersionBuilder setHistoryHash:self.waveletHistoryHash];
+	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
+	
+	[submitRequestBuilder setDelta:[deltaBuilder build]];
+	
+	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self seqNo]] viaOutputStream:[_network pbOutputStream]];
 }
 
 - (void) apply:(ProtocolWaveletOperation_MutateDocument *)mutateDocument {

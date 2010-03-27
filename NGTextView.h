@@ -37,9 +37,13 @@
 
 - (NSInteger)caretOffset;
 - (NSInteger)textLength;
-- (NSInteger)positionOffset;
+- (NSInteger)positionOffset:(int)caretOffset;
 - (NSInteger)positionLength;
-- (void)insertLineMutationDocument;
+
+- (void)insertCharacters:(NSString *)characters caretOffset:(int)caretOffset;
+- (void)insertLineMutationDocument:(int)caretOffset;
+- (void)deleteCurrentElement:(int)caretOffset;
+- (void)sendDocumentOperation:(ProtocolDocumentOperation *)docOp;
 
 - (void)openWithNetwork:(NGNetwork *)network WaveId:(NGWaveId *)waveId waveletId:(NGWaveletId *)waveletId participantId:(NGParticipantId *)participantId sequenceNo:(long)seqNo;
 - (void)close;
