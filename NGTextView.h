@@ -21,8 +21,10 @@
 @interface NGTextView : NSTextView {
 	NGWaveId *_waveId;
 	NGWaveletId *_waveletId;
+	NGParticipantId *_participantId;
 	NSString *_blipId;
 	long _seqNo;
+	NGNetwork *_network;
 	
 	NSInteger waveletVersion;
 	NSData *waveletHistoryHash;
@@ -35,9 +37,11 @@
 
 - (NSInteger)caretOffset;
 - (NSInteger)textLength;
+- (NSInteger)positionOffset;
+- (NSInteger)positionLength;
 - (void)insertLineMutationDocument;
 
-- (void)openWithWaveId:(NGWaveId *)waveId waveletId:(NGWaveletId *)waveletId sequenceNo:(long)seqNo;
+- (void)openWithNetwork:(NGNetwork *)network WaveId:(NGWaveId *)waveId waveletId:(NGWaveletId *)waveletId participantId:(NGParticipantId *)participantId sequenceNo:(long)seqNo;
 - (void)close;
 
 - (NSString *)openWaveId;

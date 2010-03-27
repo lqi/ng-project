@@ -130,7 +130,7 @@
 	NSString *waveId = [[inboxViewDelegate getWaveIdByRowIndex:rowIndex] retain];
 	hasWaveOpened = YES;
 	
-	[self.waveTextView openWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:waveId] waveletId:[NGWaveletId waveletIdWithDomain:domain waveletId:@"conv+root"] sequenceNo:_seqNo];
+	[self.waveTextView openWithNetwork:network WaveId:[NGWaveId waveIdWithDomain:domain waveId:waveId] waveletId:[NGWaveletId waveletIdWithDomain:domain waveletId:@"conv+root"] participantId:participantId sequenceNo:_seqNo];
 	[self.currentWave setStringValue:[self.waveTextView openWaveId]];
 	
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];

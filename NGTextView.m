@@ -22,9 +22,11 @@
 @synthesize waveletVersion;
 @synthesize waveletHistoryHash;
 
-- (void)openWithWaveId:(NGWaveId *)waveId waveletId:(NGWaveletId *)waveletId sequenceNo:(long)seqNo {
+- (void)openWithNetwork:(NGNetwork *)network WaveId:(NGWaveId *)waveId waveletId:(NGWaveletId *)waveletId participantId:(NGParticipantId *)participantId sequenceNo:(long)seqNo {
 	_waveId = [waveId retain];
 	_waveletId = [waveletId retain];
+	_participantId = [participantId retain];
+	_network = [network retain];
 	_seqNo = seqNo;
 	_waveRpcItems = [[NSMutableArray alloc] init];
 }
@@ -33,6 +35,8 @@
 	[_waveRpcItems release];
 	[_waveId release];
 	[_waveletId release];
+	[_participantId release];
+	[_network release];
 	_seqNo = 0;
 	self.waveletVersion = 0;
 	self.waveletHistoryHash = [NSData data];
@@ -56,7 +60,40 @@
 }
 
 - (void)insertText:(id)characters {
-	NSLog(@"%d, %@", [self caretOffset], characters);
+	//NSLog(@"CaretOffset:%d, textLegnth:%d, positionOffset:%d, positionLength:%d, %@", [self caretOffset], [self textLength], [self positionOffset], [self positionLength], characters);
+	
+	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:_waveId WaveletId:_waveletId];
+	NSString *waveName = [waveUrl stringValue];
+	[waveUrl release];
+	
+	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
+	[submitRequestBuilder setWaveletName:waveName];
+	
+	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
+	[deltaBuilder setAuthor:[_participantId participantIdAtDomain]];
+	
+	int retainItemCount = [self positionOffset];
+	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCount] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setCharacters:characters] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - retainItemCount)] build]]; 
+	
+	ProtocolWaveletOperation_MutateDocument_Builder *blipMutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
+	[blipMutateDocBuilder setDocumentId:_blipId];
+	[blipMutateDocBuilder setDocumentOperation:[blipDocOpBuilder build]];
+	ProtocolWaveletOperation_Builder *blipOpCreateConversationBuilder = [ProtocolWaveletOperation builder];
+	[blipOpCreateConversationBuilder setMutateDocument:[blipMutateDocBuilder build]];
+	[deltaBuilder addOperation:[blipOpCreateConversationBuilder build]];
+	
+	
+	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
+	[hashedVersionBuilder setVersion:self.waveletVersion];
+	[hashedVersionBuilder setHistoryHash:self.waveletHistoryHash];
+	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
+	
+	[submitRequestBuilder setDelta:[deltaBuilder build]];
+	
+	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self seqNo]] viaOutputStream:[_network pbOutputStream]];
 }
 
 - (void)insertLineBreak:(id)sender {
@@ -91,6 +128,51 @@
 
 - (NSInteger)textLength {
 	return [[self string] length];
+}
+
+- (NSInteger)positionOffset {
+	int caretOffset = [self caretOffset];
+	if (caretOffset == 0) {
+		return 5; // TODO: Hard define this, before the first element, there should be <contributor></contributor><body><line></line>
+	}
+	
+	int currentCaretOffset = 0;
+	int returnPosition = 0;
+	while (returnPosition < [self positionLength]) {
+		NSString *thisItem = [_waveRpcItems objectAtIndex:returnPosition];
+		if ([thisItem isEqual:@"contributorStart"]) {
+			returnPosition += 2;
+		}
+		else if ([thisItem isEqual:@"bodyStart"]) {
+			returnPosition++;
+		}
+		else if ([thisItem isEqual:@"lineStart"]) {
+			BOOL firstLine = YES;
+			for (int j = 0; j < returnPosition; j++) {
+				if ([[_waveRpcItems objectAtIndex:j] isEqual:@"lineStart"]) {
+					firstLine = NO;
+					break;
+				}
+			}
+			if (!firstLine) {
+				currentCaretOffset++;
+			}
+			returnPosition += 2;
+		}
+		else if ([thisItem isEqual:@"character"]) {
+			currentCaretOffset++;
+			returnPosition++;
+		}
+		
+		if (currentCaretOffset == caretOffset) {
+			break;
+		}
+	}
+	return returnPosition;
+}
+
+- (NSInteger)positionLength {
+	return [_waveRpcItems count];
 }
 
 - (void)insertLineMutationDocument {
