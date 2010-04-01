@@ -381,11 +381,18 @@
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
 		}
+		if ([comp hasUpdateAttributes]) {
+			NSLog(@"TODO: Update Attribute: %@", [_waveRpcItems objectAtIndex:rpcPosition++]); // TODO: update attribute
+		}
+		if ([comp hasReplaceAttributes]) {
+			NSLog(@"TODO: Replace Attribute: %@", [_waveRpcItems objectAtIndex:rpcPosition++]); // TODO: replace attribute
+		}
 		if ([comp hasAnnotationBoundary]) {
 			// TODO: annotationBoundary
 		}
 	}
 	[textStorage endEditing];
+	NSAssert(rpcPosition == [self positionLength], @"for each set of document operations, entire document should be went through.");
 }
 
 @end
