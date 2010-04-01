@@ -103,7 +103,17 @@
 
 - (NSInteger)positionOffset:(int)caretOffset {
 	if (caretOffset == 0) {
-		return 5; // TODO: Hard define this, before the first element, there should be <contributor></contributor><body><line></line>
+		int firstCharacterPosition = 0;
+		while (YES) {
+			NSString *thisItem = [_waveRpcItems objectAtIndex:firstCharacterPosition];
+			firstCharacterPosition++;
+			if ([thisItem isEqual:@"lineStart"]) {
+				if ([[_waveRpcItems objectAtIndex:firstCharacterPosition] isEqual:@"elementEnd"]) {
+					break;
+				}
+			}
+		}
+		return firstCharacterPosition + 1;
 	}
 	
 	int currentCaretOffset = 0;
@@ -224,6 +234,38 @@
 }
 
 - (void) apply:(ProtocolWaveletOperation_MutateDocument *)mutateDocument {
+	NSString *documentId = [mutateDocument documentId];
+	if ([documentId isEqual:@"conversation"]) {
+		for (ProtocolDocumentOperation_Component *comp in [[mutateDocument documentOperation] componentList]) {
+			if ([comp hasElementStart]) {
+				ProtocolDocumentOperation_Component_ElementStart *elementStart = [comp elementStart];
+				NSString *elementType = [elementStart type];
+				if ([elementType isEqual:@"conversation"]) {
+					// TODO: ignore at the moment as there is only one blip
+				}
+				else if ([elementType isEqual:@"blip"]) {
+					ProtocolDocumentOperation_Component_KeyValuePair *blipIdAttribute = [elementStart attributeAtIndex:0];
+					NSAssert([[blipIdAttribute key] isEqual:@"id"], @"blip id attribute should has the key of id");
+					_blipId = [blipIdAttribute value];
+				}
+			}
+			if ([comp hasElementEnd]) {
+				if ([comp elementEnd]) {
+					// :)
+				}
+			}
+		}
+		return;
+	}
+	else {
+		// TODO: only handle blip document
+		NSString *firstTwoCharacterOfDocumentId = [documentId substringWithRange:NSMakeRange(0, 2)];
+		if (![firstTwoCharacterOfDocumentId isEqual:@"b+"]) {
+			return;
+		}
+	}
+
+	
 	NSTextStorage *textStorage = [self textStorage];
 	NSMutableArray *elementStack = [[NSMutableArray alloc] init];
 	int cursor = 0;
@@ -247,7 +289,7 @@
 			}
 		}
 		if ([comp hasRetainItemCount]) {
-			rpcPosition = [comp retainItemCount];
+			rpcPosition += [comp retainItemCount];
 			cursor = 0;
 			for (int i = 0; i < rpcPosition; i++) {
 				NSString *thisItem = [_waveRpcItems objectAtIndex:i];
@@ -273,12 +315,10 @@
 			NSString *elementType = [elementStart type];
 			[elementStack addObject:elementType];
 			if ([elementType isEqual:@"conversation"]) {
-				// TODO: ignore at the moment as there is only one blip
+				NSLog(@"should nenver reach here at the moment"); // TODO: ignore at the moment as there is only one blip
 			}
 			else if ([elementType isEqual:@"blip"]) {
-				ProtocolDocumentOperation_Component_KeyValuePair *blipIdAttribute = [elementStart attributeAtIndex:0];
-				NSAssert([[blipIdAttribute key] isEqual:@"id"], @"blip id attribute should has the key of id");
-				_blipId = [blipIdAttribute value];
+				NSLog(@"should nenver reach here at the moment"); // TODO: ignore at the moment as there is only one blip
 			}
 			else if ([elementType isEqual:@"contributor"]) {
 				[_waveRpcItems insertObject:@"contributorStart" atIndex:rpcPosition++];
@@ -306,7 +346,7 @@
 				NSString *elementType = [[elementStack lastObject] retain];
 				[elementStack removeLastObject];
 				if ([elementType isEqual:@"blip"] || [elementType isEqual:@"conversation"]) {
-					// TODO: ignore at the moment as there is only one blip
+					NSLog(@"never reach here at the moment!"); // TODO: ignore at the moment as there is only one blip
 				}
 				else {
 					[_waveRpcItems insertObject:@"elementEnd" atIndex:rpcPosition++];
@@ -340,6 +380,9 @@
 				NSAssert([[_waveRpcItems objectAtIndex:rpcPosition] isEqual:@"elementEnd"], @"Technically, this element should be elementEnd for a lineStart");
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
+		}
+		if ([comp hasAnnotationBoundary]) {
+			// TODO: annotationBoundary
 		}
 	}
 	[textStorage endEditing];

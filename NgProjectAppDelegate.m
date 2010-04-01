@@ -31,7 +31,7 @@
 
 - (id)init {
 	if (self = [super init]) {
-		domain = @"192.168.1.5";
+		domain = @"sandbox.ng.longyiqi.com";
 		participantId = [[NGParticipantId alloc] initWithDomain:domain participantId:@"test"];
 		_seqNo = 0;
 		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
@@ -127,15 +127,15 @@
 	}
 	
 	NSInteger rowIndex = [inboxTableView clickedRow];
-	NSString *waveId = [[inboxViewDelegate getWaveIdByRowIndex:rowIndex] retain];
+	NGWaveId *waveId = [[inboxViewDelegate getWaveIdByRowIndex:rowIndex] retain];
 	hasWaveOpened = YES;
 	
-	[self.waveTextView openWithNetwork:network WaveId:[NGWaveId waveIdWithDomain:domain waveId:waveId] waveletId:[NGWaveletId waveletIdWithDomain:domain waveletId:@"conv+root"] participantId:participantId sequenceNo:_seqNo];
+	[self.waveTextView openWithNetwork:network WaveId:[NGWaveId waveIdWithDomain:[waveId domain] waveId:[waveId waveId]] waveletId:[NGWaveletId waveletIdWithDomain:[waveId domain] waveletId:@"conv+root"] participantId:participantId sequenceNo:_seqNo];
 	[self.currentWave setStringValue:[self.waveTextView openWaveId]];
 	
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
-	[openRequestBuilder setWaveId:[NSString stringWithFormat:@"%@!%@", domain, waveId]];
+	[openRequestBuilder setWaveId:[NSString stringWithFormat:@"%@!%@", [waveId domain], [waveId waveId]]];
 	[NGRpc send:[NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];	
 	
 	[waveId release];

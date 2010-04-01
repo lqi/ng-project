@@ -26,6 +26,6 @@
 @property (assign) NGParticipantId *currentUser;
 
 - (void) passSignal:(ProtocolWaveletUpdate *)update;
-- (NSString *) getWaveIdByRowIndex:(NSInteger)rowIndex;
+- (NGWaveId *) getWaveIdByRowIndex:(NSInteger)rowIndex;
 
 @end

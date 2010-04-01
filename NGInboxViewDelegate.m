@@ -20,11 +20,11 @@
 @interface NGWaveDigest : NSObject {
 	NSMutableArray *_participants;
 	NSMutableArray *_authors;
-	NSString *waveId;
+	NGWaveId *waveId;
 	NSMutableString *_digest;
 }
 
-@property (retain) NSString *waveId;
+@property (retain) NGWaveId *waveId;
 
 - (void) addParticipant:(NGParticipantId *)newParticipant;
 - (void) rmParticipant:(NGParticipantId *)oldParticipant;
@@ -139,7 +139,7 @@
 	NGWaveDigest *waveDigest = [inboxArray objectAtIndex:rowIndex];
 	NSString *identifier = [aTableColumn identifier];
 	if ([identifier isEqual:@"waveId"]) {
-		return [waveDigest waveId];
+		return [[waveDigest waveId] waveId];
 	}
 	if ([identifier isEqual:@"authors"]) {
 		return [waveDigest stringAuthors];
@@ -153,14 +153,15 @@
 	return @"TODO";
 }
 
-- (NSString *) getWaveIdByRowIndex:(NSInteger)rowIndex {
-	return [[inboxArray objectAtIndex:rowIndex] waveId];
+- (NGWaveId *) getWaveIdByRowIndex:(NSInteger)rowIndex {
+	NGWaveDigest *waveDigest = [inboxArray objectAtIndex:rowIndex];
+	return [waveDigest waveId];
 }
 
 - (void) passSignal:(ProtocolWaveletUpdate *)update {
 	NGWaveUrl *waveUrl = [[[NGWaveUrl alloc] initWithString:[update waveletName]] autorelease];
 	NSAssert([[[waveUrl waveId] waveId] isEqual:@"indexwave!indexwave"], @"Message here must be the one for inbox!");
-	NSString *waveId = [[waveUrl waveletId] waveletId];
+	NGWaveletId *waveId = [waveUrl waveletId];
 	/*
 	ProtocolHashedVersion *resultingVersion = [update resultingVersion];
 	int64_t version = [resultingVersion version];
@@ -171,7 +172,7 @@
 	NSUInteger i, count = [inboxArray count];
 	for (i = 0; i < count; i++) {
 		NGWaveDigest *it = [inboxArray objectAtIndex:i];
-		if ([[it waveId] isEqual:waveId]) {
+		if ([[it waveId] isEqual:[NGWaveId waveIdWithDomain:[waveId domain] waveId:[waveId waveletId]]]) {
 			waveDigest = it;
 			oldIndex = i;
 			break;
@@ -179,7 +180,7 @@
 	}
 	if (oldIndex == -1) {
 		waveDigest = [[[NGWaveDigest alloc] init] autorelease];
-		[waveDigest setWaveId:waveId];
+		[waveDigest setWaveId:[NGWaveId waveIdWithDomain:[waveId domain] waveId:[waveId waveletId]]];
 	}
 	for (ProtocolWaveletDelta *wd in [update appliedDeltaList]) {
 		NSString *wdAuthor = [wd author];
