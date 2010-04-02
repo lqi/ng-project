@@ -382,7 +382,45 @@
 			}
 		}
 		if ([comp hasUpdateAttributes]) {
-			NSLog(@"TODO: Update Attribute: %@", [_waveRpcItems objectAtIndex:rpcPosition++]); // TODO: update attribute
+			NSString *elementType = [_waveRpcItems objectAtIndex:rpcPosition++];
+			for (ProtocolDocumentOperation_Component_KeyValueUpdate *attributeUpdate in [[comp updateAttributes] attributeUpdateList]) {
+				if ([elementType isEqual:@"lineStart"]) {
+					NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+					[paragraphStyle setParagraphStyle:[textStorage attribute:NSParagraphStyleAttributeName atIndex:cursor effectiveRange:NULL]];
+					if ([[attributeUpdate key] isEqual:@"i"]) {
+						int value = 0;
+						if ([attributeUpdate hasOldValue]) {
+							value = [[attributeUpdate oldValue] intValue];
+						}
+						if ([attributeUpdate hasNewValue]) {
+							value = [[attributeUpdate newValue] intValue];
+						}
+						[paragraphStyle setHeadIndent:(CGFloat) (24 * value)];
+						[paragraphStyle setFirstLineHeadIndent:(CGFloat) (24 * value)];
+					}
+					if ([[attributeUpdate key] isEqual:@"a"]) {
+						NSString *alignment = @"l";
+						if ([attributeUpdate hasOldValue]) {
+							alignment = [attributeUpdate oldValue];
+						}
+						if ([attributeUpdate hasNewValue]) {
+							alignment = [attributeUpdate newValue];
+						}
+						if ([alignment isEqual:@"l"]) {
+							[paragraphStyle setAlignment:NSNaturalTextAlignment];
+						}
+						else if ([alignment isEqual:@"c"]) {
+							[paragraphStyle setAlignment:NSCenterTextAlignment];
+						}
+						else if([alignment isEqual:@"r"]) {
+							[paragraphStyle setAlignment:NSRightTextAlignment];
+						}
+					}
+					NSRange paragraphRange = [[textStorage string] paragraphRangeForRange: NSMakeRange(cursor + 1, 0)]; // why cursor + 1?
+					NSLog(@"%d, %d", paragraphRange.location, paragraphRange.length);
+					[textStorage addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:paragraphRange];
+				}
+			}
 		}
 		if ([comp hasReplaceAttributes]) {
 			NSLog(@"TODO: Replace Attribute: %@", [_waveRpcItems objectAtIndex:rpcPosition++]); // TODO: replace attribute
