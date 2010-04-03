@@ -29,9 +29,11 @@
 	_network = [network retain];
 	_seqNo = seqNo;
 	_waveRpcItems = [[NSMutableArray alloc] init];
+	_elementAttributes = [[NSMutableArray alloc] init];
 }
 
 - (void)close {
+	[_elementAttributes release];
 	[_waveRpcItems release];
 	[_waveId release];
 	[_waveletId release];
@@ -56,7 +58,26 @@
 }
 
 - (void)insertTab:(id)sender {
-	NSLog(@"TAB");
+	NSInteger lineStartPositionOffset = [self positionOffsetOfCurrentLineStart:[self caretOffset]];
+	NSDictionary *elementAttribtues = [_elementAttributes objectAtIndex:lineStartPositionOffset];
+	if ([elementAttribtues objectForKey:@"i"] == nil) {
+		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"i" value:@"1"];
+	}
+	else {
+		NSString *currentIndentString = [elementAttribtues valueForKey:@"i"];
+		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"i" oldValue:currentIndentString newValue:[NSString stringWithFormat:@"%d", ([currentIndentString intValue] + 1)]];
+	}
+}
+
+- (void)insertBacktab:(id)sender {
+	NSInteger lineStartPositionOffset = [self positionOffsetOfCurrentLineStart:[self caretOffset]];
+	NSDictionary *elementAttribtues = [_elementAttributes objectAtIndex:lineStartPositionOffset];
+	if ([elementAttribtues objectForKey:@"i"] != nil) {
+		NSString *currentIndentString = [elementAttribtues valueForKey:@"i"];
+		if ([currentIndentString intValue] > 0) {
+			[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"i" oldValue:currentIndentString newValue:[NSString stringWithFormat:@"%d", ([currentIndentString intValue] - 1)]];
+		}
+	}
 }
 
 - (void)insertText:(id)characters {
@@ -151,6 +172,18 @@
 	return returnPosition;
 }
 
+- (NSInteger)positionOffsetOfCurrentLineStart:(int)caretOffset {
+	NSInteger currentPositionOffset = [self positionOffset:caretOffset];
+	while (currentPositionOffset >= 0) {
+		if ([[_waveRpcItems objectAtIndex:currentPositionOffset] isEqual:@"lineStart"]) {
+			break;
+		}
+		currentPositionOffset--;
+	}
+	NSAssert(currentPositionOffset != 0, @"I am quite sure it should not be zero!");
+	return currentPositionOffset;
+}
+
 - (NSInteger)positionLength {
 	return [_waveRpcItems count];
 }
@@ -203,6 +236,39 @@
 		
 		[self sendDocumentOperation:[blipDocOpBuilder build]];
 	}
+}
+
+- (void)updateAttributeInPosition:(int)positionOffset forKey:(NSString *)key value:(NSString *)value {
+	ProtocolDocumentOperation_Component_KeyValueUpdate_Builder *keyValueUpdateBuilder = [ProtocolDocumentOperation_Component_KeyValueUpdate builder];
+	[keyValueUpdateBuilder setKey:key];
+	[keyValueUpdateBuilder setNewValue:value];
+	
+	ProtocolDocumentOperation_Component_UpdateAttributes_Builder *updateAttributesBuilder = [ProtocolDocumentOperation_Component_UpdateAttributes builder];
+	[updateAttributesBuilder addAttributeUpdate:[keyValueUpdateBuilder build]];
+	
+	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:positionOffset] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setUpdateAttributes:[updateAttributesBuilder build]] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - positionOffset - 1)] build]]; 
+	
+	[self sendDocumentOperation:[blipDocOpBuilder build]];
+}
+
+- (void)replaceAttributeInPosition:(int)positionOffset forKey:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue {
+	ProtocolDocumentOperation_Component_KeyValueUpdate_Builder *keyValueUpdateBuilder = [ProtocolDocumentOperation_Component_KeyValueUpdate builder];
+	[keyValueUpdateBuilder setKey:key];
+	[keyValueUpdateBuilder setOldValue:oldValue];
+	[keyValueUpdateBuilder setNewValue:newValue];
+	
+	ProtocolDocumentOperation_Component_UpdateAttributes_Builder *updateAttributesBuilder = [ProtocolDocumentOperation_Component_UpdateAttributes builder];
+	[updateAttributesBuilder addAttributeUpdate:[keyValueUpdateBuilder build]];
+	
+	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:positionOffset] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setUpdateAttributes:[updateAttributesBuilder build]] build]];
+	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - positionOffset - 1)] build]]; 
+	
+	[self sendDocumentOperation:[blipDocOpBuilder build]];
 }
 
 - (void)sendDocumentOperation:(ProtocolDocumentOperation *)docOp {
@@ -277,6 +343,7 @@
 			[textStorage replaceCharactersInRange:NSMakeRange(cursor, 0) withString:chars];
 			cursor += [chars length];
 			for (int i = 0; i < [chars length]; i++) {
+				[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"character" atIndex:rpcPosition++];
 			}
 		}
@@ -285,6 +352,7 @@
 			// TODO: There should be validation before deleting the characters
 			[textStorage deleteCharactersInRange:NSMakeRange(cursor, [chars length])];
 			for (int i = 0; i < [chars length]; i++) {
+				[_elementAttributes removeObjectAtIndex:rpcPosition];
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
 		}
@@ -321,9 +389,11 @@
 				NSLog(@"should nenver reach here at the moment"); // TODO: ignore at the moment as there is only one blip
 			}
 			else if ([elementType isEqual:@"contributor"]) {
+				[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"contributorStart" atIndex:rpcPosition++];
 			}
 			else if ([elementType isEqual:@"body"]) {
+				[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"bodyStart" atIndex:rpcPosition++];
 			}
 			else if ([elementType isEqual:@"line"]) {
@@ -338,6 +408,7 @@
 					[textStorage replaceCharactersInRange:NSMakeRange(cursor, 0) withString:@"\n"];
 					cursor++;
 				}
+				[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"lineStart" atIndex:rpcPosition++];
 			}
 		}
@@ -349,6 +420,7 @@
 					NSLog(@"never reach here at the moment!"); // TODO: ignore at the moment as there is only one blip
 				}
 				else {
+					[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
 					[_waveRpcItems insertObject:@"elementEnd" atIndex:rpcPosition++];
 				}
 				[elementType release];
@@ -369,6 +441,7 @@
 				if (!firstLine) {
 					[textStorage deleteCharactersInRange:NSMakeRange(cursor, 1)];
 				}
+				[_elementAttributes removeObjectAtIndex:rpcPosition];
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
 			else {
@@ -378,22 +451,29 @@
 		if ([comp hasDeleteElementEnd]) {
 			if ([comp deleteElementEnd]) {
 				NSAssert([[_waveRpcItems objectAtIndex:rpcPosition] isEqual:@"elementEnd"], @"Technically, this element should be elementEnd for a lineStart");
+				[_elementAttributes removeObjectAtIndex:rpcPosition];
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
 		}
 		if ([comp hasUpdateAttributes]) {
-			NSString *elementType = [_waveRpcItems objectAtIndex:rpcPosition++];
+			NSMutableDictionary *elementAttributes = [NSMutableDictionary dictionaryWithDictionary:[_elementAttributes objectAtIndex:rpcPosition]];
+			NSString *elementType = [_waveRpcItems objectAtIndex:rpcPosition];
 			for (ProtocolDocumentOperation_Component_KeyValueUpdate *attributeUpdate in [[comp updateAttributes] attributeUpdateList]) {
 				if ([elementType isEqual:@"lineStart"]) {
 					NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
 					[paragraphStyle setParagraphStyle:[textStorage attribute:NSParagraphStyleAttributeName atIndex:cursor effectiveRange:NULL]];
 					if ([[attributeUpdate key] isEqual:@"i"]) {
-						int value = 0;
+						int value;
+						/* TODO: assert old value
 						if ([attributeUpdate hasOldValue]) {
-							value = [[attributeUpdate oldValue] intValue];
+							NSString *oldValueString = [attributeUpdate oldValue];
+							NSAssert([oldValueString isEqual:[elementAttributes valueForKey:@"i"]], @"old value should equals to the one in the element attribute array");
 						}
+						 */
 						if ([attributeUpdate hasNewValue]) {
-							value = [[attributeUpdate newValue] intValue];
+							NSString *newValueString = [attributeUpdate newValue];
+							[elementAttributes setValue:newValueString forKey:@"i"];
+							value = [newValueString intValue];
 						}
 						[paragraphStyle setHeadIndent:(CGFloat) (24 * value)];
 						[paragraphStyle setFirstLineHeadIndent:(CGFloat) (24 * value)];
@@ -416,11 +496,13 @@
 							[paragraphStyle setAlignment:NSRightTextAlignment];
 						}
 					}
-					NSRange paragraphRange = [[textStorage string] paragraphRangeForRange: NSMakeRange(cursor + 1, 0)]; // why cursor + 1?
-					NSLog(@"%d, %d", paragraphRange.location, paragraphRange.length);
+					NSRange paragraphRange = [[textStorage string] paragraphRangeForRange: NSMakeRange(cursor + 1, 0)]; // TODO: why cursor + 1?
 					[textStorage addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:paragraphRange];
+					[paragraphStyle release];
 				}
 			}
+			[_elementAttributes replaceObjectAtIndex:rpcPosition withObject:elementAttributes];
+			rpcPosition++;
 		}
 		if ([comp hasReplaceAttributes]) {
 			NSLog(@"TODO: Replace Attribute: %@", [_waveRpcItems objectAtIndex:rpcPosition++]); // TODO: replace attribute

@@ -30,6 +30,7 @@
 	NSData *waveletHistoryHash;
 	
 	NSMutableArray *_waveRpcItems;
+	NSMutableArray *_elementAttributes;
 }
 
 @property (assign) NSInteger waveletVersion;
@@ -39,10 +40,13 @@
 - (NSInteger)textLength;
 - (NSInteger)positionOffset:(int)caretOffset;
 - (NSInteger)positionLength;
+- (NSInteger)positionOffsetOfCurrentLineStart:(int)caretOffset;
 
 - (void)insertCharacters:(NSString *)characters caretOffset:(int)caretOffset;
 - (void)insertLineMutationDocument:(int)caretOffset;
 - (void)deleteCurrentElement:(int)caretOffset;
+- (void)updateAttributeInPosition:(int)positionOffset forKey:(NSString *)key value:(NSString *)value;
+- (void)replaceAttributeInPosition:(int)positionOffset forKey:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
 - (void)sendDocumentOperation:(ProtocolDocumentOperation *)docOp;
 
 - (void)openWithNetwork:(NGNetwork *)network WaveId:(NGWaveId *)waveId waveletId:(NGWaveletId *)waveletId participantId:(NGParticipantId *)participantId sequenceNo:(long)seqNo;
