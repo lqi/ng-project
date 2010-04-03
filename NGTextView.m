@@ -114,6 +114,42 @@
 	[self deleteCurrentElement:caretOffset];
 }
 
+- (void)alignLeft:(id)sender {
+	NSInteger lineStartPositionOffset = [self positionOffsetOfCurrentLineStart:[self caretOffset]];
+	NSDictionary *elementAttribtues = [_elementAttributes objectAtIndex:lineStartPositionOffset];
+	if ([elementAttribtues objectForKey:@"a"] == nil) {
+		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"a" value:@"l"];
+	}
+	else {
+		NSString *currentAlignment = [elementAttribtues valueForKey:@"a"];
+		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"a" oldValue:currentAlignment newValue:@"l"];
+	}
+}
+
+- (void)alignCenter:(id)sender {
+	NSInteger lineStartPositionOffset = [self positionOffsetOfCurrentLineStart:[self caretOffset]];
+	NSDictionary *elementAttribtues = [_elementAttributes objectAtIndex:lineStartPositionOffset];
+	if ([elementAttribtues objectForKey:@"a"] == nil) {
+		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"a" value:@"c"];
+	}
+	else {
+		NSString *currentAlignment = [elementAttribtues valueForKey:@"a"];
+		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"a" oldValue:currentAlignment newValue:@"c"];
+	}
+}
+
+- (void)alignRight:(id)sender {
+	NSInteger lineStartPositionOffset = [self positionOffsetOfCurrentLineStart:[self caretOffset]];
+	NSDictionary *elementAttribtues = [_elementAttributes objectAtIndex:lineStartPositionOffset];
+	if ([elementAttribtues objectForKey:@"a"] == nil) {
+		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"a" value:@"r"];
+	}
+	else {
+		NSString *currentAlignment = [elementAttribtues valueForKey:@"a"];
+		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"a" oldValue:currentAlignment newValue:@"r"];
+	}
+}
+
 - (NSInteger)caretOffset {
 	return [[[self selectedRanges] objectAtIndex:0] rangeValue].location;
 }
@@ -479,12 +515,16 @@
 						[paragraphStyle setFirstLineHeadIndent:(CGFloat) (24 * value)];
 					}
 					if ([[attributeUpdate key] isEqual:@"a"]) {
-						NSString *alignment = @"l";
+						NSString *alignment;
+						/* TODO: assert old alignment
 						if ([attributeUpdate hasOldValue]) {
-							alignment = [attributeUpdate oldValue];
+							NSString *oldAlignment = [attributeUpdate oldValue];
+							NSAssert([oldAlignment isEqual:[elementAttributes valueForKey:@"a"]], @"old alignment should equals to the one in the element attribute array");
 						}
+						 */
 						if ([attributeUpdate hasNewValue]) {
 							alignment = [attributeUpdate newValue];
+							[elementAttributes setValue:alignment forKey:@"a"];
 						}
 						if ([alignment isEqual:@"l"]) {
 							[paragraphStyle setAlignment:NSNaturalTextAlignment];
