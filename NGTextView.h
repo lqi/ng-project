@@ -41,6 +41,7 @@
 - (NSInteger)positionOffset:(int)caretOffset;
 - (NSInteger)positionLength;
 - (NSInteger)positionOffsetOfCurrentLineStart:(int)caretOffset;
+- (NSInteger)positionOffsetOfPreviousLineStart:(int)positionOffset;
 
 - (void)insertCharacters:(NSString *)characters caretOffset:(int)caretOffset;
 - (void)insertLineMutationDocument:(int)caretOffset;

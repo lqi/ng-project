@@ -209,7 +209,12 @@
 }
 
 - (NSInteger)positionOffsetOfCurrentLineStart:(int)caretOffset {
-	NSInteger currentPositionOffset = [self positionOffset:caretOffset];
+	NSInteger positionOffset = [self positionOffset:caretOffset];
+	return [self positionOffsetOfPreviousLineStart:positionOffset];
+}
+
+- (NSInteger)positionOffsetOfPreviousLineStart:(int)positionOffset {
+	int currentPositionOffset = positionOffset;
 	while (currentPositionOffset >= 0) {
 		if ([[_waveRpcItems objectAtIndex:currentPositionOffset] isEqual:@"lineStart"]) {
 			break;
@@ -370,6 +375,10 @@
 	
 	NSTextStorage *textStorage = [self textStorage];
 	NSMutableArray *elementStack = [[NSMutableArray alloc] init];
+	
+	NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+	[paragraphStyle setAlignment:NSLeftTextAlignment];
+	
 	int cursor = 0;
 	int rpcPosition = 0;
 	[textStorage beginEditing];
@@ -377,6 +386,7 @@
 		if ([comp hasCharacters]) {
 			NSString *chars = [comp characters];
 			[textStorage replaceCharactersInRange:NSMakeRange(cursor, 0) withString:chars];
+			[textStorage addAttribute:NSParagraphStyleAttributeName value:[paragraphStyle copy] range:NSMakeRange(cursor, [chars length])];
 			cursor += [chars length];
 			for (int i = 0; i < [chars length]; i++) {
 				[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
@@ -394,6 +404,34 @@
 		}
 		if ([comp hasRetainItemCount]) {
 			rpcPosition += [comp retainItemCount];
+			
+			if (rpcPosition == [self positionLength]) {
+				break;
+			}
+			
+			int currentLineStartPositionOffset = [self positionOffsetOfPreviousLineStart:rpcPosition];
+			NSAssert([[_waveRpcItems objectAtIndex:currentLineStartPositionOffset] isEqual:@"lineStart"], @"this position should be a line start");
+			NSDictionary *thisElementAttribute = [_elementAttributes objectAtIndex:currentLineStartPositionOffset];
+			paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+			[paragraphStyle setAlignment:NSLeftTextAlignment];
+			if ([thisElementAttribute objectForKey:@"i"] != nil) {
+				int value = [[thisElementAttribute valueForKey:@"i"] intValue];
+				[paragraphStyle setHeadIndent:(CGFloat) (24 * value)];
+				[paragraphStyle setFirstLineHeadIndent:(CGFloat) (24 * value)];
+			}
+			if ([thisElementAttribute objectForKey:@"a"] != nil) {
+				NSString *attributeValue = [thisElementAttribute valueForKey:@"a"];
+				if ([attributeValue isEqual:@"l"]) {
+					[paragraphStyle setAlignment:NSLeftTextAlignment];
+				}
+				else if ([attributeValue isEqual:@"c"]) {
+					[paragraphStyle setAlignment:NSCenterTextAlignment];
+				}
+				else if([attributeValue isEqual:@"r"]) {
+					[paragraphStyle setAlignment:NSRightTextAlignment];
+				}
+			}
+			
 			cursor = 0;
 			for (int i = 0; i < rpcPosition; i++) {
 				NSString *thisItem = [_waveRpcItems objectAtIndex:i];
@@ -444,7 +482,34 @@
 					[textStorage replaceCharactersInRange:NSMakeRange(cursor, 0) withString:@"\n"];
 					cursor++;
 				}
-				[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
+				
+				paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+				[paragraphStyle setAlignment:NSLeftTextAlignment];
+				
+				NSMutableDictionary *elementAttributes = [NSMutableDictionary dictionary];
+				for (ProtocolDocumentOperation_Component_KeyValuePair *attribute in [elementStart attributeList]) {
+					NSString *attributeKey = [attribute key];
+					NSString *attributeValue = [attribute value];
+					[elementAttributes setValue:attributeValue forKey:attributeKey];
+					
+					if ([attributeKey isEqual:@"i"]) {
+						int value = [attributeValue intValue];
+						[paragraphStyle setHeadIndent:(CGFloat) (24 * value)];
+						[paragraphStyle setFirstLineHeadIndent:(CGFloat) (24 * value)];
+					}
+					if ([attributeKey isEqual:@"a"]) {
+						if ([attributeValue isEqual:@"l"]) {
+							[paragraphStyle setAlignment:NSLeftTextAlignment];
+						}
+						else if ([attributeValue isEqual:@"c"]) {
+							[paragraphStyle setAlignment:NSCenterTextAlignment];
+						}
+						else if([attributeValue isEqual:@"r"]) {
+							[paragraphStyle setAlignment:NSRightTextAlignment];
+						}
+					}
+				}
+				[_elementAttributes insertObject:elementAttributes atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"lineStart" atIndex:rpcPosition++];
 			}
 		}
@@ -494,18 +559,36 @@
 		if ([comp hasUpdateAttributes]) {
 			NSMutableDictionary *elementAttributes = [NSMutableDictionary dictionaryWithDictionary:[_elementAttributes objectAtIndex:rpcPosition]];
 			NSString *elementType = [_waveRpcItems objectAtIndex:rpcPosition];
+			
+			NSDictionary *thisElementAttribute = [_elementAttributes objectAtIndex:rpcPosition];
+			paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+			[paragraphStyle setAlignment:NSLeftTextAlignment];
+			if ([thisElementAttribute objectForKey:@"i"] != nil) {
+				int value = [[thisElementAttribute valueForKey:@"i"] intValue];
+				[paragraphStyle setHeadIndent:(CGFloat) (24 * value)];
+				[paragraphStyle setFirstLineHeadIndent:(CGFloat) (24 * value)];
+			}
+			if ([thisElementAttribute objectForKey:@"a"] != nil) {
+				NSString *attributeValue = [thisElementAttribute valueForKey:@"a"];
+				if ([attributeValue isEqual:@"l"]) {
+					[paragraphStyle setAlignment:NSLeftTextAlignment];
+				}
+				else if ([attributeValue isEqual:@"c"]) {
+					[paragraphStyle setAlignment:NSCenterTextAlignment];
+				}
+				else if([attributeValue isEqual:@"r"]) {
+					[paragraphStyle setAlignment:NSRightTextAlignment];
+				}
+			}
+			
 			for (ProtocolDocumentOperation_Component_KeyValueUpdate *attributeUpdate in [[comp updateAttributes] attributeUpdateList]) {
 				if ([elementType isEqual:@"lineStart"]) {
-					NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-					[paragraphStyle setParagraphStyle:[textStorage attribute:NSParagraphStyleAttributeName atIndex:cursor effectiveRange:NULL]];
 					if ([[attributeUpdate key] isEqual:@"i"]) {
 						int value;
-						/* TODO: assert old value
 						if ([attributeUpdate hasOldValue]) {
 							NSString *oldValueString = [attributeUpdate oldValue];
 							NSAssert([oldValueString isEqual:[elementAttributes valueForKey:@"i"]], @"old value should equals to the one in the element attribute array");
 						}
-						 */
 						if ([attributeUpdate hasNewValue]) {
 							NSString *newValueString = [attributeUpdate newValue];
 							[elementAttributes setValue:newValueString forKey:@"i"];
@@ -516,12 +599,10 @@
 					}
 					if ([[attributeUpdate key] isEqual:@"a"]) {
 						NSString *alignment;
-						/* TODO: assert old alignment
 						if ([attributeUpdate hasOldValue]) {
 							NSString *oldAlignment = [attributeUpdate oldValue];
 							NSAssert([oldAlignment isEqual:[elementAttributes valueForKey:@"a"]], @"old alignment should equals to the one in the element attribute array");
 						}
-						 */
 						if ([attributeUpdate hasNewValue]) {
 							alignment = [attributeUpdate newValue];
 							[elementAttributes setValue:alignment forKey:@"a"];
@@ -537,8 +618,7 @@
 						}
 					}
 					NSRange paragraphRange = [[textStorage string] paragraphRangeForRange: NSMakeRange(cursor + 1, 0)]; // TODO: why cursor + 1?
-					[textStorage addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:paragraphRange];
-					[paragraphStyle release];
+					[textStorage addAttribute:NSParagraphStyleAttributeName value:[paragraphStyle copy] range:paragraphRange];
 				}
 			}
 			[_elementAttributes replaceObjectAtIndex:rpcPosition withObject:elementAttributes];
@@ -552,6 +632,7 @@
 		}
 	}
 	[textStorage endEditing];
+	[paragraphStyle release];
 	NSAssert(rpcPosition == [self positionLength], @"for each set of document operations, entire document should be went through.");
 }
 
