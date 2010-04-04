@@ -209,7 +209,7 @@
 }
 
 - (NSInteger)positionOffsetOfCurrentLineStart:(int)caretOffset {
-	NSInteger positionOffset = [self positionOffset:caretOffset];
+	NSInteger positionOffset = [self positionOffset:caretOffset] - 1; // a little tricky here, as <line></line>characters, so before the first character of each line, there is a </line> tag
 	return [self positionOffsetOfPreviousLineStart:positionOffset];
 }
 
@@ -617,7 +617,13 @@
 							[paragraphStyle setAlignment:NSRightTextAlignment];
 						}
 					}
-					NSRange paragraphRange = [[textStorage string] paragraphRangeForRange: NSMakeRange(cursor + 1, 0)]; // TODO: why cursor + 1?
+					NSRange paragraphRange;
+					if ([[textStorage string] length] == 0) {
+						paragraphRange = NSMakeRange(0, 0);
+					}
+					else {
+						paragraphRange = [[textStorage string] paragraphRangeForRange: NSMakeRange(cursor + 1, 0)];
+					}
 					[textStorage addAttribute:NSParagraphStyleAttributeName value:[paragraphStyle copy] range:paragraphRange];
 				}
 			}
