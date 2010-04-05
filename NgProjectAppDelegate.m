@@ -166,7 +166,11 @@
 	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
 	[self.versionInfo setStringValue:@""];
 	[self.participantAdd setStringValue:@""];
+	[self.participantList removeAllItems];
 	[self.participantList setStringValue:@""];
+	[self.tagAdd setStringValue:@""];
+	[self.tagList removeAllItems];
+	[self.tagList setStringValue:@""];
 	[self.waveTextView close];
 }
 
