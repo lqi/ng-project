@@ -373,7 +373,48 @@
 		return;
 	}
 	
-	NSLog(@"add tag: %@", [self.tagAdd stringValue]);
+	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NSString *waveName = [waveUrl stringValue];
+	[waveUrl release];
+	
+	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
+	[submitRequestBuilder setWaveletName:waveName];
+	
+	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
+	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
+	
+	ProtocolDocumentOperation_Component_ElementStart_Builder *tagElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
+	[tagElementStartBuilder setType:@"tag"];
+	
+	ProtocolDocumentOperation_Builder *docOpBuilder = [ProtocolDocumentOperation builder];
+	if ([self.tagList numberOfItems] != 0) {
+		int retainItemCount = 0;
+		for (NSString *thisTag in [self.tagList objectValues]) {
+			retainItemCount += 2 + [thisTag length];
+		}
+		[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCount] build]];
+	}
+	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[tagElementStartBuilder build]] build]];
+	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setCharacters:[self.tagAdd stringValue]] build]];
+	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
+	
+	ProtocolWaveletOperation_MutateDocument_Builder *mutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
+	[mutateDocBuilder setDocumentId:@"tags"];
+	[mutateDocBuilder setDocumentOperation:[docOpBuilder build]];
+	
+	ProtocolWaveletOperation_Builder *opAddTagBuilder = [ProtocolWaveletOperation builder];
+	[opAddTagBuilder setMutateDocument:[mutateDocBuilder build]];
+	[deltaBuilder addOperation:[opAddTagBuilder build]];
+	
+	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
+	[hashedVersionBuilder setVersion:self.waveTextView.waveletVersion];
+	[hashedVersionBuilder setHistoryHash:self.waveTextView.waveletHistoryHash];
+	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
+	
+	[submitRequestBuilder setDelta:[deltaBuilder build]];
+	
+	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
+	
 	[self.tagAdd setStringValue:@""];
 }
 
@@ -382,7 +423,65 @@
 		return;
 	}
 	
-	NSLog(@"rm tag: %@", [self.tagList stringValue]);
+	NSString *tagToBeDeleted = [self.tagList stringValue];
+	
+	int retainItemCountBackward = 0;
+	int retainItemCountForward = 0;
+	int tagIndex = [self.tagList indexOfItemWithObjectValue:tagToBeDeleted];
+	if (tagIndex != 0) {
+		for (int i = 0; i < tagIndex; i++) {
+			NSString *thisTag = [self.tagList itemObjectValueAtIndex:i];
+			retainItemCountBackward += 2 + [thisTag length];
+		}
+	}
+	if (tagIndex != ([self.tagList numberOfItems] - 1)) {
+		for (int i = tagIndex + 1; i < [self.tagList numberOfItems]; i++) {
+			NSString *thisTag = [self.tagList itemObjectValueAtIndex:i];
+			retainItemCountForward += 2 + [thisTag length];
+		}
+	}
+	
+	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NSString *waveName = [waveUrl stringValue];
+	[waveUrl release];
+	
+	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
+	[submitRequestBuilder setWaveletName:waveName];
+	
+	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
+	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
+	
+	ProtocolDocumentOperation_Component_ElementStart_Builder *tagElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
+	[tagElementStartBuilder setType:@"tag"];
+	
+	ProtocolDocumentOperation_Builder *docOpBuilder = [ProtocolDocumentOperation builder];
+	if (retainItemCountBackward != 0) {
+		[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCountBackward] build]];
+	}
+	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteElementStart:[tagElementStartBuilder build]] build]];
+	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteCharacters:tagToBeDeleted] build]];
+	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteElementEnd:YES] build]];
+	if (retainItemCountForward != 0) {
+		[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCountForward] build]];
+	}
+	
+	ProtocolWaveletOperation_MutateDocument_Builder *mutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
+	[mutateDocBuilder setDocumentId:@"tags"];
+	[mutateDocBuilder setDocumentOperation:[docOpBuilder build]];
+	
+	ProtocolWaveletOperation_Builder *opRmTagBuilder = [ProtocolWaveletOperation builder];
+	[opRmTagBuilder setMutateDocument:[mutateDocBuilder build]];
+	[deltaBuilder addOperation:[opRmTagBuilder build]];
+	
+	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
+	[hashedVersionBuilder setVersion:self.waveTextView.waveletVersion];
+	[hashedVersionBuilder setHistoryHash:self.waveTextView.waveletHistoryHash];
+	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
+	
+	[submitRequestBuilder setDelta:[deltaBuilder build]];
+	
+	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
+	
 	[self.tagList setStringValue:@""];
 }
 
