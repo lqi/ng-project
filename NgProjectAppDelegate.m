@@ -28,6 +28,8 @@
 @synthesize participantAdd;
 @synthesize participantList;
 @synthesize waveTextView;
+@synthesize tagAdd;
+@synthesize tagList;
 
 - (id)init {
 	if (self = [super init]) {
@@ -96,7 +98,20 @@
 									[participantList removeItemWithObjectValue:[[NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]] participantIdAtDomain]];
 								}
 								if ([op hasMutateDocument]) {
-									[self.waveTextView apply:[op mutateDocument]];
+									ProtocolWaveletOperation_MutateDocument *md = [op mutateDocument];
+									if ([[md documentId] isEqual:@"tags"]) {
+										for (ProtocolDocumentOperation_Component *comp in [[md documentOperation] componentList]) {
+											if ([comp hasCharacters]) {
+												[tagList addItemWithObjectValue:[comp characters]];
+											}
+											if ([comp hasDeleteCharacters]) {
+												[tagList removeItemWithObjectValue:[comp deleteCharacters]];
+											}
+										}
+									}
+									else {
+										[self.waveTextView apply:[op mutateDocument]];
+									}
 								}
 								if ([op hasNoOp]) {
 									NSLog(@"TODO: No operation!");
@@ -351,6 +366,24 @@
 	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
 	
 	[self closeWave:nil];
+}
+
+- (IBAction) addTag:(id)sender {
+	if (![network isConnected] || !hasWaveOpened) {
+		return;
+	}
+	
+	NSLog(@"add tag: %@", [self.tagAdd stringValue]);
+	[self.tagAdd setStringValue:@""];
+}
+
+- (IBAction) rmTag:(id)sender {
+	if (![network isConnected] || !hasWaveOpened) {
+		return;
+	}
+	
+	NSLog(@"rm tag: %@", [self.tagList stringValue]);
+	[self.tagList setStringValue:@""];
 }
 
 - (int) getSequenceNo {

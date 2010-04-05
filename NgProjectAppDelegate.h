@@ -32,6 +32,8 @@
 	NSTextField *participantAdd;
 	NSComboBox *participantList;
 	NGTextView *waveTextView;
+	NSTextField *tagAdd;
+	NSComboBox *tagList;
 	
 	NSString *domain;
 	NGParticipantId *participantId;
@@ -52,6 +54,8 @@
 @property (assign) IBOutlet NSTextField *participantAdd;
 @property (assign) IBOutlet NSComboBox *participantList;
 @property (assign) IBOutlet NGTextView *waveTextView;
+@property (assign) IBOutlet NSTextField *tagAdd;
+@property (assign) IBOutlet NSComboBox *tagList;
 
 - (void) connectionStatueController;
 - (void) openInbox;
@@ -64,6 +68,8 @@
 - (IBAction) addParticipant:(id)sender;
 - (IBAction) rmParticipant:(id)sender;
 - (IBAction) rmSelf:(id)sender;
+- (IBAction) addTag:(id)sender;
+- (IBAction) rmTag:(id)sender;
 
 - (int) getSequenceNo;
 
