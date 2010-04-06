@@ -37,6 +37,10 @@
 		29BD958C1142495C00AA22AE /* NGWaveIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD958B1142495C00AA22AE /* NGWaveIdTest.m */; };
 		29BD95CD11424F3300AA22AE /* NGWaveletIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */; };
 		29CDE9C9114C8C6100B95C82 /* NGRpcMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */; };
+		29DA8A08116BADEE00D50DFC /* NGElementAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DA8A07116BADEE00D50DFC /* NGElementAttribute.m */; };
+		29DA8A09116BADEE00D50DFC /* NGElementAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DA8A07116BADEE00D50DFC /* NGElementAttribute.m */; };
+		29DA8A0C116BB44A00D50DFC /* NGTextViewEditingStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DA8A0B116BB44A00D50DFC /* NGTextViewEditingStyle.m */; };
+		29DA8A0D116BB44A00D50DFC /* NGTextViewEditingStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DA8A0B116BB44A00D50DFC /* NGTextViewEditingStyle.m */; };
 		29E14CDA115D214100B76AFA /* NGTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E14CD9115D214100B76AFA /* NGTextView.m */; };
 		29E14CDB115D214100B76AFA /* NGTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E14CD9115D214100B76AFA /* NGTextView.m */; };
 		29E7B7D01140A692001E3644 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E7B7CB1140A67A001E3644 /* libProtocolBuffers.a */; };
@@ -139,6 +143,10 @@
 		29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletIdTest.m; path = test/lib/model/NGWaveletIdTest.m; sourceTree = "<group>"; };
 		29CDE9C7114C8C6100B95C82 /* NGRpcMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpcMessage.h; path = lib/model/NGRpcMessage.h; sourceTree = "<group>"; };
 		29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGRpcMessage.m; path = lib/model/NGRpcMessage.m; sourceTree = "<group>"; };
+		29DA8A06116BADEE00D50DFC /* NGElementAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGElementAttribute.h; path = lib/model/NGElementAttribute.h; sourceTree = "<group>"; };
+		29DA8A07116BADEE00D50DFC /* NGElementAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGElementAttribute.m; path = lib/model/NGElementAttribute.m; sourceTree = "<group>"; };
+		29DA8A0A116BB44A00D50DFC /* NGTextViewEditingStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGTextViewEditingStyle.h; sourceTree = "<group>"; };
+		29DA8A0B116BB44A00D50DFC /* NGTextViewEditingStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGTextViewEditingStyle.m; sourceTree = "<group>"; };
 		29E14CD8115D214100B76AFA /* NGTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGTextView.h; sourceTree = "<group>"; };
 		29E14CD9115D214100B76AFA /* NGTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGTextView.m; sourceTree = "<group>"; };
 		29E7B7C11140A67A001E3644 /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = "third-party/ProtocolBuffers/ProtocolBuffers.xcodeproj"; sourceTree = "<group>"; };
@@ -184,6 +192,8 @@
 				29A7E7F1114DEF02006D61A8 /* NGInboxViewDelegate.m */,
 				29E14CD8115D214100B76AFA /* NGTextView.h */,
 				29E14CD9115D214100B76AFA /* NGTextView.m */,
+				29DA8A0A116BB44A00D50DFC /* NGTextViewEditingStyle.h */,
+				29DA8A0B116BB44A00D50DFC /* NGTextViewEditingStyle.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -316,6 +326,8 @@
 				29A7E76A114DAE3D006D61A8 /* NGParticipantId.m */,
 				29258AFD114ECC4200ED4F98 /* NGWaveUrl.h */,
 				29258AFE114ECC4200ED4F98 /* NGWaveUrl.m */,
+				29DA8A06116BADEE00D50DFC /* NGElementAttribute.h */,
+				29DA8A07116BADEE00D50DFC /* NGElementAttribute.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -506,6 +518,8 @@
 				29258AFF114ECC4200ED4F98 /* NGWaveUrl.m in Sources */,
 				29258B03114ED59800ED4F98 /* NGWaveUrlTest.m in Sources */,
 				29E14CDA115D214100B76AFA /* NGTextView.m in Sources */,
+				29DA8A08116BADEE00D50DFC /* NGElementAttribute.m in Sources */,
+				29DA8A0C116BB44A00D50DFC /* NGTextViewEditingStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +541,8 @@
 				29A7E7F2114DEF02006D61A8 /* NGInboxViewDelegate.m in Sources */,
 				29258B00114ECC4200ED4F98 /* NGWaveUrl.m in Sources */,
 				29E14CDB115D214100B76AFA /* NGTextView.m in Sources */,
+				29DA8A09116BADEE00D50DFC /* NGElementAttribute.m in Sources */,
+				29DA8A0D116BB44A00D50DFC /* NGTextViewEditingStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

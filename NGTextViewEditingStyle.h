@@ -15,19 +15,13 @@
  * 
  */
 
-#import "ProtocolBuffers.h"
+#import <Cocoa/Cocoa.h>
+#import "NGHeader.h"
 
-#import "proto/Common.pb.h"
-#import "proto/WaveclientRpc.pb.h"
+@interface NGTextViewEditingStyle : NSObject {
 
-#import "model/NGRpcMessage.h"
-#import "model/NGWaveId.h"
-#import "model/NGWaveletId.h"
-#import "model/NGParticipantId.h"
-#import "model/NGWaveUrl.h"
-#import "model/NGElementAttribute.h"
+}
 
-#import "util/NGRandomIdGenerator.h"
++ (NSParagraphStyle *) styleFromElementAttributes:(NGElementAttribute *)elementAttributes; 
 
-#import "network/NGNetwork.h"
-#import "network/NGRpc.h"
+@end

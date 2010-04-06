@@ -15,19 +15,20 @@
  * 
  */
 
-#import "ProtocolBuffers.h"
+#import <Foundation/Foundation.h>
 
-#import "proto/Common.pb.h"
-#import "proto/WaveclientRpc.pb.h"
+@interface NGElementAttribute : NSObject {
+	NSMutableDictionary *_attribtues;
+}
 
-#import "model/NGRpcMessage.h"
-#import "model/NGWaveId.h"
-#import "model/NGWaveletId.h"
-#import "model/NGParticipantId.h"
-#import "model/NGWaveUrl.h"
-#import "model/NGElementAttribute.h"
++ (NGElementAttribute *) attributes;
 
-#import "util/NGRandomIdGenerator.h"
+- (void) insertAttribute:(NSString *)key value:(NSString *)value;
+- (void) replaceAttribute:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
+- (BOOL) hasAttribute:(NSString *)key;
+- (NSString *) attribute:(NSString *)key;
 
-#import "network/NGNetwork.h"
-#import "network/NGRpc.h"
+- (void) parseFromKeyValuePairs:(NSArray *)keyValuePairs;
+- (void) parseFromKeyValueUpdates:(NSArray *)keyValueUpdates;
+
+@end
