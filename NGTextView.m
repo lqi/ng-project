@@ -29,11 +29,11 @@
 	_network = [network retain];
 	_seqNo = seqNo;
 	_waveRpcItems = [[NSMutableArray alloc] init];
-	_elementAttributes = [[NSMutableArray alloc] init];
+	_ngElementAttributes = [[NSMutableArray alloc] init];
 }
 
 - (void)close {
-	[_elementAttributes release];
+	[_ngElementAttributes release];
 	[_waveRpcItems release];
 	[_waveId release];
 	[_waveletId release];
@@ -59,21 +59,21 @@
 
 - (void)insertTab:(id)sender {
 	NSInteger lineStartPositionOffset = [self positionOffsetOfCurrentLineStart:[self caretOffset]];
-	NSDictionary *elementAttribtues = [_elementAttributes objectAtIndex:lineStartPositionOffset];
-	if ([elementAttribtues objectForKey:@"i"] == nil) {
-		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"i" value:@"1"];
+	NGElementAttribute *elementAttribtues = [_ngElementAttributes objectAtIndex:lineStartPositionOffset];
+	if ([elementAttribtues hasAttribute:@"i"]) {
+		NSString *currentIndentString = [elementAttribtues attribute:@"i"];
+		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"i" oldValue:currentIndentString newValue:[NSString stringWithFormat:@"%d", ([currentIndentString intValue] + 1)]];
 	}
 	else {
-		NSString *currentIndentString = [elementAttribtues valueForKey:@"i"];
-		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"i" oldValue:currentIndentString newValue:[NSString stringWithFormat:@"%d", ([currentIndentString intValue] + 1)]];
+		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"i" value:@"1"];
 	}
 }
 
 - (void)insertBacktab:(id)sender {
 	NSInteger lineStartPositionOffset = [self positionOffsetOfCurrentLineStart:[self caretOffset]];
-	NSDictionary *elementAttribtues = [_elementAttributes objectAtIndex:lineStartPositionOffset];
-	if ([elementAttribtues objectForKey:@"i"] != nil) {
-		NSString *currentIndentString = [elementAttribtues valueForKey:@"i"];
+	NGElementAttribute *elementAttribtues = [_ngElementAttributes objectAtIndex:lineStartPositionOffset];
+	if ([elementAttribtues hasAttribute:@"i"]) {
+		NSString *currentIndentString = [elementAttribtues attribute:@"i"];
 		if ([currentIndentString intValue] > 0) {
 			[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"i" oldValue:currentIndentString newValue:[NSString stringWithFormat:@"%d", ([currentIndentString intValue] - 1)]];
 		}
@@ -116,37 +116,37 @@
 
 - (void)alignLeft:(id)sender {
 	NSInteger lineStartPositionOffset = [self positionOffsetOfCurrentLineStart:[self caretOffset]];
-	NSDictionary *elementAttribtues = [_elementAttributes objectAtIndex:lineStartPositionOffset];
-	if ([elementAttribtues objectForKey:@"a"] == nil) {
-		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"a" value:@"l"];
+	NGElementAttribute *elementAttribtues = [_ngElementAttributes objectAtIndex:lineStartPositionOffset];
+	if ([elementAttribtues hasAttribute:@"a"]) {
+		NSString *currentAlignment = [elementAttribtues attribute:@"a"];
+		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"a" oldValue:currentAlignment newValue:@"l"];
 	}
 	else {
-		NSString *currentAlignment = [elementAttribtues valueForKey:@"a"];
-		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"a" oldValue:currentAlignment newValue:@"l"];
+		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"a" value:@"l"];
 	}
 }
 
 - (void)alignCenter:(id)sender {
 	NSInteger lineStartPositionOffset = [self positionOffsetOfCurrentLineStart:[self caretOffset]];
-	NSDictionary *elementAttribtues = [_elementAttributes objectAtIndex:lineStartPositionOffset];
-	if ([elementAttribtues objectForKey:@"a"] == nil) {
-		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"a" value:@"c"];
+	NGElementAttribute *elementAttribtues = [_ngElementAttributes objectAtIndex:lineStartPositionOffset];
+	if ([elementAttribtues hasAttribute:@"a"]) {
+		NSString *currentAlignment = [elementAttribtues attribute:@"a"];
+		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"a" oldValue:currentAlignment newValue:@"c"];
 	}
 	else {
-		NSString *currentAlignment = [elementAttribtues valueForKey:@"a"];
-		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"a" oldValue:currentAlignment newValue:@"c"];
+		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"a" value:@"c"];
 	}
 }
 
 - (void)alignRight:(id)sender {
 	NSInteger lineStartPositionOffset = [self positionOffsetOfCurrentLineStart:[self caretOffset]];
-	NSDictionary *elementAttribtues = [_elementAttributes objectAtIndex:lineStartPositionOffset];
-	if ([elementAttribtues objectForKey:@"a"] == nil) {
-		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"a" value:@"r"];
+	NGElementAttribute *elementAttribtues = [_ngElementAttributes objectAtIndex:lineStartPositionOffset];
+	if ([elementAttribtues hasAttribute:@"a"]) {
+		NSString *currentAlignment = [elementAttribtues attribute:@"a"];
+		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"a" oldValue:currentAlignment newValue:@"r"];
 	}
 	else {
-		NSString *currentAlignment = [elementAttribtues valueForKey:@"a"];
-		[self replaceAttributeInPosition:lineStartPositionOffset forKey:@"a" oldValue:currentAlignment newValue:@"r"];
+		[self updateAttributeInPosition:lineStartPositionOffset forKey:@"a" value:@"r"];
 	}
 }
 
@@ -376,8 +376,7 @@
 	NSTextStorage *textStorage = [self textStorage];
 	NSMutableArray *elementStack = [[NSMutableArray alloc] init];
 	
-	NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-	[paragraphStyle setAlignment:NSLeftTextAlignment];
+	NSParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] copy];
 	
 	int cursor = 0;
 	int rpcPosition = 0;
@@ -389,7 +388,7 @@
 			[textStorage addAttribute:NSParagraphStyleAttributeName value:[paragraphStyle copy] range:NSMakeRange(cursor, [chars length])];
 			cursor += [chars length];
 			for (int i = 0; i < [chars length]; i++) {
-				[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
+				[_ngElementAttributes insertObject:[NGElementAttribute attributes] atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"character" atIndex:rpcPosition++];
 			}
 		}
@@ -398,7 +397,7 @@
 			// TODO: There should be validation before deleting the characters
 			[textStorage deleteCharactersInRange:NSMakeRange(cursor, [chars length])];
 			for (int i = 0; i < [chars length]; i++) {
-				[_elementAttributes removeObjectAtIndex:rpcPosition];
+				[_ngElementAttributes removeObjectAtIndex:rpcPosition];
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
 		}
@@ -411,26 +410,8 @@
 			
 			int currentLineStartPositionOffset = [self positionOffsetOfPreviousLineStart:rpcPosition];
 			NSAssert([[_waveRpcItems objectAtIndex:currentLineStartPositionOffset] isEqual:@"lineStart"], @"this position should be a line start");
-			NSDictionary *thisElementAttribute = [_elementAttributes objectAtIndex:currentLineStartPositionOffset];
-			paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-			[paragraphStyle setAlignment:NSLeftTextAlignment];
-			if ([thisElementAttribute objectForKey:@"i"] != nil) {
-				int value = [[thisElementAttribute valueForKey:@"i"] intValue];
-				[paragraphStyle setHeadIndent:(CGFloat) (24 * value)];
-				[paragraphStyle setFirstLineHeadIndent:(CGFloat) (24 * value)];
-			}
-			if ([thisElementAttribute objectForKey:@"a"] != nil) {
-				NSString *attributeValue = [thisElementAttribute valueForKey:@"a"];
-				if ([attributeValue isEqual:@"l"]) {
-					[paragraphStyle setAlignment:NSLeftTextAlignment];
-				}
-				else if ([attributeValue isEqual:@"c"]) {
-					[paragraphStyle setAlignment:NSCenterTextAlignment];
-				}
-				else if([attributeValue isEqual:@"r"]) {
-					[paragraphStyle setAlignment:NSRightTextAlignment];
-				}
-			}
+			NGElementAttribute *thisElementAttribute = [_ngElementAttributes objectAtIndex:currentLineStartPositionOffset];
+			paragraphStyle = [NGTextViewEditingStyle styleFromElementAttributes:thisElementAttribute];
 			
 			cursor = 0;
 			for (int i = 0; i < rpcPosition; i++) {
@@ -463,11 +444,11 @@
 				NSLog(@"should nenver reach here at the moment"); // TODO: ignore at the moment as there is only one blip
 			}
 			else if ([elementType isEqual:@"contributor"]) {
-				[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
+				[_ngElementAttributes insertObject:[NGElementAttribute attributes] atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"contributorStart" atIndex:rpcPosition++];
 			}
 			else if ([elementType isEqual:@"body"]) {
-				[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
+				[_ngElementAttributes insertObject:[NGElementAttribute attributes] atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"bodyStart" atIndex:rpcPosition++];
 			}
 			else if ([elementType isEqual:@"line"]) {
@@ -483,33 +464,11 @@
 					cursor++;
 				}
 				
-				paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-				[paragraphStyle setAlignment:NSLeftTextAlignment];
-				
-				NSMutableDictionary *elementAttributes = [NSMutableDictionary dictionary];
-				for (ProtocolDocumentOperation_Component_KeyValuePair *attribute in [elementStart attributeList]) {
-					NSString *attributeKey = [attribute key];
-					NSString *attributeValue = [attribute value];
-					[elementAttributes setValue:attributeValue forKey:attributeKey];
-					
-					if ([attributeKey isEqual:@"i"]) {
-						int value = [attributeValue intValue];
-						[paragraphStyle setHeadIndent:(CGFloat) (24 * value)];
-						[paragraphStyle setFirstLineHeadIndent:(CGFloat) (24 * value)];
-					}
-					if ([attributeKey isEqual:@"a"]) {
-						if ([attributeValue isEqual:@"l"]) {
-							[paragraphStyle setAlignment:NSLeftTextAlignment];
-						}
-						else if ([attributeValue isEqual:@"c"]) {
-							[paragraphStyle setAlignment:NSCenterTextAlignment];
-						}
-						else if([attributeValue isEqual:@"r"]) {
-							[paragraphStyle setAlignment:NSRightTextAlignment];
-						}
-					}
-				}
-				[_elementAttributes insertObject:elementAttributes atIndex:rpcPosition];
+				NGElementAttribute *elementStartAttributes = [[NGElementAttribute alloc] init];
+				[elementStartAttributes parseFromKeyValuePairs:[elementStart attributeList]];
+				[_ngElementAttributes insertObject:elementStartAttributes atIndex:rpcPosition];
+				[elementStartAttributes release];
+				paragraphStyle = [NGTextViewEditingStyle styleFromElementAttributes:[_ngElementAttributes objectAtIndex:rpcPosition]];
 				[_waveRpcItems insertObject:@"lineStart" atIndex:rpcPosition++];
 			}
 		}
@@ -521,7 +480,7 @@
 					NSLog(@"never reach here at the moment!"); // TODO: ignore at the moment as there is only one blip
 				}
 				else {
-					[_elementAttributes insertObject:[NSDictionary dictionary] atIndex:rpcPosition];
+					[_ngElementAttributes insertObject:[NGElementAttribute attributes] atIndex:rpcPosition];
 					[_waveRpcItems insertObject:@"elementEnd" atIndex:rpcPosition++];
 				}
 				[elementType release];
@@ -542,7 +501,7 @@
 				if (!firstLine) {
 					[textStorage deleteCharactersInRange:NSMakeRange(cursor, 1)];
 				}
-				[_elementAttributes removeObjectAtIndex:rpcPosition];
+				[_ngElementAttributes removeObjectAtIndex:rpcPosition];
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
 			else {
@@ -552,82 +511,25 @@
 		if ([comp hasDeleteElementEnd]) {
 			if ([comp deleteElementEnd]) {
 				NSAssert([[_waveRpcItems objectAtIndex:rpcPosition] isEqual:@"elementEnd"], @"Technically, this element should be elementEnd for a lineStart");
-				[_elementAttributes removeObjectAtIndex:rpcPosition];
+				[_ngElementAttributes removeObjectAtIndex:rpcPosition];
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
 		}
 		if ([comp hasUpdateAttributes]) {
-			NSMutableDictionary *elementAttributes = [NSMutableDictionary dictionaryWithDictionary:[_elementAttributes objectAtIndex:rpcPosition]];
-			NSString *elementType = [_waveRpcItems objectAtIndex:rpcPosition];
+			NGElementAttribute *elementAttributes = [_ngElementAttributes objectAtIndex:rpcPosition];
+			[elementAttributes parseFromKeyValueUpdates:[[comp updateAttributes] attributeUpdateList]];
 			
-			NSDictionary *thisElementAttribute = [_elementAttributes objectAtIndex:rpcPosition];
-			paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-			[paragraphStyle setAlignment:NSLeftTextAlignment];
-			if ([thisElementAttribute objectForKey:@"i"] != nil) {
-				int value = [[thisElementAttribute valueForKey:@"i"] intValue];
-				[paragraphStyle setHeadIndent:(CGFloat) (24 * value)];
-				[paragraphStyle setFirstLineHeadIndent:(CGFloat) (24 * value)];
+			paragraphStyle = [NGTextViewEditingStyle styleFromElementAttributes:elementAttributes];
+			NSRange paragraphRange;
+			if ([[textStorage string] length] == 0) {
+				paragraphRange = NSMakeRange(0, 0);
 			}
-			if ([thisElementAttribute objectForKey:@"a"] != nil) {
-				NSString *attributeValue = [thisElementAttribute valueForKey:@"a"];
-				if ([attributeValue isEqual:@"l"]) {
-					[paragraphStyle setAlignment:NSLeftTextAlignment];
-				}
-				else if ([attributeValue isEqual:@"c"]) {
-					[paragraphStyle setAlignment:NSCenterTextAlignment];
-				}
-				else if([attributeValue isEqual:@"r"]) {
-					[paragraphStyle setAlignment:NSRightTextAlignment];
-				}
+			else {
+				paragraphRange = [[textStorage string] paragraphRangeForRange: NSMakeRange(cursor + 1, 0)];
 			}
+			[textStorage addAttribute:NSParagraphStyleAttributeName value:[paragraphStyle copy] range:paragraphRange];
 			
-			for (ProtocolDocumentOperation_Component_KeyValueUpdate *attributeUpdate in [[comp updateAttributes] attributeUpdateList]) {
-				if ([elementType isEqual:@"lineStart"]) {
-					if ([[attributeUpdate key] isEqual:@"i"]) {
-						int value;
-						if ([attributeUpdate hasOldValue]) {
-							NSString *oldValueString = [attributeUpdate oldValue];
-							NSAssert([oldValueString isEqual:[elementAttributes valueForKey:@"i"]], @"old value should equals to the one in the element attribute array");
-						}
-						if ([attributeUpdate hasNewValue]) {
-							NSString *newValueString = [attributeUpdate newValue];
-							[elementAttributes setValue:newValueString forKey:@"i"];
-							value = [newValueString intValue];
-						}
-						[paragraphStyle setHeadIndent:(CGFloat) (24 * value)];
-						[paragraphStyle setFirstLineHeadIndent:(CGFloat) (24 * value)];
-					}
-					if ([[attributeUpdate key] isEqual:@"a"]) {
-						NSString *alignment;
-						if ([attributeUpdate hasOldValue]) {
-							NSString *oldAlignment = [attributeUpdate oldValue];
-							NSAssert([oldAlignment isEqual:[elementAttributes valueForKey:@"a"]], @"old alignment should equals to the one in the element attribute array");
-						}
-						if ([attributeUpdate hasNewValue]) {
-							alignment = [attributeUpdate newValue];
-							[elementAttributes setValue:alignment forKey:@"a"];
-						}
-						if ([alignment isEqual:@"l"]) {
-							[paragraphStyle setAlignment:NSNaturalTextAlignment];
-						}
-						else if ([alignment isEqual:@"c"]) {
-							[paragraphStyle setAlignment:NSCenterTextAlignment];
-						}
-						else if([alignment isEqual:@"r"]) {
-							[paragraphStyle setAlignment:NSRightTextAlignment];
-						}
-					}
-					NSRange paragraphRange;
-					if ([[textStorage string] length] == 0) {
-						paragraphRange = NSMakeRange(0, 0);
-					}
-					else {
-						paragraphRange = [[textStorage string] paragraphRangeForRange: NSMakeRange(cursor + 1, 0)];
-					}
-					[textStorage addAttribute:NSParagraphStyleAttributeName value:[paragraphStyle copy] range:paragraphRange];
-				}
-			}
-			[_elementAttributes replaceObjectAtIndex:rpcPosition withObject:elementAttributes];
+			[_ngElementAttributes replaceObjectAtIndex:rpcPosition withObject:elementAttributes];
 			rpcPosition++;
 		}
 		if ([comp hasReplaceAttributes]) {

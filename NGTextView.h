@@ -17,6 +17,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NGHeader.h"
+#import "NGTextViewEditingStyle.h"
 
 @interface NGTextView : NSTextView {
 	NGWaveId *_waveId;
@@ -30,7 +31,7 @@
 	NSData *waveletHistoryHash;
 	
 	NSMutableArray *_waveRpcItems;
-	NSMutableArray *_elementAttributes;
+	NSMutableArray *_ngElementAttributes;
 }
 
 @property (assign) NSInteger waveletVersion;
