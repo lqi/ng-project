@@ -20,7 +20,7 @@
 #import "NGWaveId.h"
 #import "NGWaveletId.h"
 
-@interface NGWaveUrl : NSObject {
+@interface NGWaveName : NSObject {
 	NGWaveId *waveId;
 	NGWaveletId *waveletId;
 }
@@ -34,6 +34,6 @@
 - (id) initWithString:(NSString *)stringWaveUrl;
 
 - (void) parse:(NSString *)stringWaveUrl;
-- (NSString *) stringValue;
+- (NSString *) url;
 
 @end

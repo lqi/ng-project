@@ -56,14 +56,7 @@
 }
 
 - (void)keyDown:(NSEvent *)theEvent {
-	//[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
-	int i = 0;
-	for(NGElementAnnotation *anno in _ngElementAnnotations) {
-		if ([anno hasAnnotation:@"style/color"]) {
-			NSLog(@"%d, %@", i, [anno annotation:@"style/color"]);
-		}
-		i++;
-	}
+	[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
 }
 
 - (void)insertTab:(id)sender {
@@ -345,8 +338,8 @@
 }
 
 - (void)sendDocumentOperation:(ProtocolDocumentOperation *)docOp {
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:_waveId WaveletId:_waveletId];
-	NSString *waveName = [waveUrl stringValue];
+	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:_waveId WaveletId:_waveletId];
+	NSString *waveName = [waveUrl url];
 	[waveUrl release];
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];

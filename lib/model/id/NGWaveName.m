@@ -15,9 +15,9 @@
  * 
  */
 
-#import "NGWaveUrl.h"
+#import "NGWaveName.h"
 
-@implementation NGWaveUrl
+@implementation NGWaveName
 
 @synthesize waveId;
 @synthesize waveletId;
@@ -53,7 +53,7 @@
 	[self setWaveletId:[NGWaveletId waveletIdWithDomain:domain waveletId:thisWaveletId]];
 }
 
-- (NSString *) stringValue {
+- (NSString *) url {
 	return [NSString stringWithFormat:@"wave://%@/%@/%@", [self domain], [[self waveId] waveId], [[self waveletId] waveletId]];
 }
 

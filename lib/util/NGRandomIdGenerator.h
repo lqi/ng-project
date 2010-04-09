@@ -19,8 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../model/NGWaveId.h"
-#import "../model/NGWaveletId.h"
+#import "../model/id/NGWaveId.h"
+#import "../model/id/NGWaveletId.h"
 
 @interface NGRandomIdGenerator : NSObject {
 	NSString *_domain;

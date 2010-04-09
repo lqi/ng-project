@@ -20,11 +20,12 @@
 #import "proto/Common.pb.h"
 #import "proto/WaveclientRpc.pb.h"
 
+#import "model/id/NGWaveId.h"
+#import "model/id/NGWaveletId.h"
+#import "model/id/NGParticipantId.h"
+#import "model/id/NGWaveName.h"
+
 #import "model/NGRpcMessage.h"
-#import "model/NGWaveId.h"
-#import "model/NGWaveletId.h"
-#import "model/NGParticipantId.h"
-#import "model/NGWaveUrl.h"
 #import "model/NGElementAttribute.h"
 #import "model/NGElementAnnotation.h"
 #import "model/NGElementAnnotationUpdate.h"

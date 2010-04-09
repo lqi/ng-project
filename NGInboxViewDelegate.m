@@ -159,7 +159,7 @@
 }
 
 - (void) passSignal:(ProtocolWaveletUpdate *)update {
-	NGWaveUrl *waveUrl = [[[NGWaveUrl alloc] initWithString:[update waveletName]] autorelease];
+	NGWaveName *waveUrl = [[[NGWaveName alloc] initWithString:[update waveletName]] autorelease];
 	NSAssert([[[waveUrl waveId] waveId] isEqual:@"indexwave!indexwave"], @"Message here must be the one for inbox!");
 	NGWaveletId *waveId = [waveUrl waveletId];
 	/*

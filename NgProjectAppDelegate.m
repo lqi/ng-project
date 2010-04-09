@@ -33,7 +33,7 @@
 
 - (id)init {
 	if (self = [super init]) {
-		domain = @"sandbox.ng.longyiqi.com";
+		domain = @"192.168.131.5";
 		participantId = [[NGParticipantId alloc] initWithDomain:domain participantId:@"test"];
 		_seqNo = 0;
 		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
@@ -78,7 +78,7 @@
 				NGRpcMessage *msg = [NGRpc receive:[network pbInputStream]];
 				if ([[[[msg message] class] description] isEqual:@"ProtocolWaveletUpdate"]) {
 					ProtocolWaveletUpdate *waveletUpdate = (ProtocolWaveletUpdate *)[msg message];
-					NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithString:[waveletUpdate waveletName]];
+					NGWaveName *waveUrl = [[NGWaveName alloc] initWithString:[waveletUpdate waveletName]];
 					NSString *updateWaveId = [[waveUrl waveId] waveId];
 					if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
 						[inboxViewDelegate passSignal:waveletUpdate];
@@ -205,8 +205,8 @@
 		return;
 	}
 	
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[idGenerator newWaveId] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl stringValue];
+	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[idGenerator newWaveId] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NSString *waveName = [waveUrl url];
 	[waveUrl release];
 	NSString *blipName = [idGenerator newDocumentId];
 	
@@ -282,8 +282,8 @@
 		return;
 	}
 	
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl stringValue];
+	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NSString *waveName = [waveUrl url];
 	[waveUrl release];
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
@@ -314,8 +314,8 @@
 		return;
 	}
 	
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl stringValue];
+	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NSString *waveName = [waveUrl url];
 	[waveUrl release];
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
@@ -346,8 +346,8 @@
 		return;
 	}
 	
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl stringValue];
+	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NSString *waveName = [waveUrl url];
 	[waveUrl release];
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
@@ -377,8 +377,8 @@
 		return;
 	}
 	
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl stringValue];
+	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NSString *waveName = [waveUrl url];
 	[waveUrl release];
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
@@ -445,8 +445,8 @@
 		}
 	}
 	
-	NGWaveUrl *waveUrl = [[NGWaveUrl alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl stringValue];
+	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
+	NSString *waveName = [waveUrl url];
 	[waveUrl release];
 	
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
