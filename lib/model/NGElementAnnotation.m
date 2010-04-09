@@ -63,10 +63,12 @@
 }
 
 - (void) merge:(NGElementAnnotationUpdate *)updates {
+	/*
 	NSArray *annotationEnds = [updates annotationEnds];
 	for (NSString *key in annotationEnds) {
 		[_annotations removeObjectForKey:key];
 	}
+	 */
 	NSDictionary *annotationUpdates = [updates annotationUpdates];
 	for (NSString *key in annotationUpdates) {
 		[self updateAnnotation:key value:[annotationUpdates valueForKey:key]];

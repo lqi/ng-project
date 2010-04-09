@@ -45,8 +45,10 @@
 	
 	if ([elementAnnotations hasAnnotation:@"style/color"]) {
 		NSString *colorString = [elementAnnotations annotation:@"style/color"];
-		NSColor *foregroundColor = [self colorFromAnnotationString:colorString];
-		[styleDictionary setObject:foregroundColor forKey:NSForegroundColorAttributeName];
+		if ([colorString length] > 0) {
+			NSColor *foregroundColor = [self colorFromAnnotationString:colorString];
+			[styleDictionary setObject:foregroundColor forKey:NSForegroundColorAttributeName];
+		}
 	}
 	return styleDictionary;
 }

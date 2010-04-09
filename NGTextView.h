@@ -39,6 +39,7 @@
 @property (assign) NSData *waveletHistoryHash;
 
 - (NSInteger)caretOffset;
+- (NSInteger)caretOffsetOfPositionOffset:(int)positionOffset;
 - (NSInteger)textLength;
 - (NSInteger)positionOffset:(int)caretOffset;
 - (NSInteger)positionLength;
