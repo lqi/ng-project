@@ -15,22 +15,40 @@
  * 
  */
 
-#import <stdlib.h>
+#import "NGIdConstant.h"
 
-#import <Foundation/Foundation.h>
+@implementation NGIdConstant
 
-#import "../model/id/NGWaveId.h"
-#import "../model/id/NGWaveletId.h"
-#import "../model/id/NGIdConstant.h"
-
-@interface NGRandomIdGenerator : NSObject {
-	NSString *_domain;
++ (NSString *) TOKEN_SEPARATOR {
+	return @"+";
 }
 
-- (id) initWithDomain:(NSString *)domain;
-- (NGWaveId *) newWaveId;
-- (NGWaveletId *) newConversationWaveletId;
-- (NGWaveletId *) newConversationRootWaveletId;
-- (NSString *) newDocumentId;
++ (NSString *) WAVE_URI_SCHEME; {
+	return @"wave";
+}
+
++ (NSString *) WAVE_PREFIX {
+	return @"w";
+}
+
++ (NSString *) CONVERSATION_WAVELET_PREFIX {
+	return @"conv";
+}
+
++ (NSString *) USER_DATA_WAVELET_PREFIX {
+	return @"user";
+}
+
++ (NSString *) BLIP_PREFIX {
+	return @"b";
+}
+
++ (NSString *) TAGS_DOC_ID {
+	return @"tags";
+}
+
++ (NSString *) CONVERSATION_ROOT_WAVELET {
+	return [NSString stringWithFormat:@"%@%@root", [NGIdConstant CONVERSATION_WAVELET_PREFIX], [NGIdConstant TOKEN_SEPARATOR]];
+}
 
 @end

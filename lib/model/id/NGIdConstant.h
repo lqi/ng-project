@@ -15,22 +15,19 @@
  * 
  */
 
-#import <stdlib.h>
-
 #import <Foundation/Foundation.h>
 
-#import "../model/id/NGWaveId.h"
-#import "../model/id/NGWaveletId.h"
-#import "../model/id/NGIdConstant.h"
+@interface NGIdConstant : NSObject {
 
-@interface NGRandomIdGenerator : NSObject {
-	NSString *_domain;
 }
 
-- (id) initWithDomain:(NSString *)domain;
-- (NGWaveId *) newWaveId;
-- (NGWaveletId *) newConversationWaveletId;
-- (NGWaveletId *) newConversationRootWaveletId;
-- (NSString *) newDocumentId;
++ (NSString *) TOKEN_SEPARATOR;
++ (NSString *) WAVE_URI_SCHEME;
++ (NSString *) WAVE_PREFIX;
++ (NSString *) CONVERSATION_WAVELET_PREFIX;
++ (NSString *) USER_DATA_WAVELET_PREFIX;
++ (NSString *) BLIP_PREFIX;
++ (NSString *) TAGS_DOC_ID;
++ (NSString *) CONVERSATION_ROOT_WAVELET;
 
 @end

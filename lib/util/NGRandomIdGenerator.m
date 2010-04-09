@@ -17,13 +17,6 @@
 
 #import "NGRandomIdGenerator.h"
 
-static NSString *const TOKEN_SEPARATOR = @"+";
-static NSString *const WAVE_URI_SCHEME = @"wave";
-static NSString *const WAVE_PREFIX = @"w";
-static NSString *const BLIP_PREFIX = @"b";
-static NSString *const CONVERSATION_WAVELET_PREFIX = @"conv";
-static NSString *const CONVERSATION_ROOT_WAVELET = @"conv+root";
-
 static NSString *const WEB64_ALPHABET = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
 @interface NGRandomIdGenerator()
@@ -61,11 +54,7 @@ static NSString *const WEB64_ALPHABET = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl
 }
 
 - (NSString *) generateId:(NSString *)namespace length:(int)bits {
-	NSMutableString *result = [[NSMutableString alloc] init];
-	[result appendString:namespace];
-	[result appendString:TOKEN_SEPARATOR];
-	[result appendString:[self generateUniqueToken:bits]];
-	return result;
+	return [NSString stringWithFormat:@"%@%@%@", namespace, [NGIdConstant TOKEN_SEPARATOR], [self generateUniqueToken:bits]];
 }
 
 - (NSString *) generateUniqueToken:(int)bits {
@@ -74,19 +63,19 @@ static NSString *const WEB64_ALPHABET = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl
 }
 
 - (NGWaveId *) newWaveId {
-	return [NGWaveId waveIdWithDomain:_domain waveId:[self generateId:WAVE_PREFIX length:72]];
+	return [NGWaveId waveIdWithDomain:_domain waveId:[self generateId:[NGIdConstant WAVE_PREFIX] length:72]];
 }
 
 - (NGWaveletId *) newConversationWaveletId {
-	return [NGWaveletId waveletIdWithDomain:_domain waveletId:[self generateId:CONVERSATION_WAVELET_PREFIX length:48]];
+	return [NGWaveletId waveletIdWithDomain:_domain waveletId:[self generateId:[NGIdConstant CONVERSATION_WAVELET_PREFIX] length:48]];
 }
 
 - (NGWaveletId *) newConversationRootWaveletId {
-	return [NGWaveletId waveletIdWithDomain:_domain waveletId:CONVERSATION_ROOT_WAVELET];
+	return [NGWaveletId waveletIdWithDomain:_domain waveletId:[NGIdConstant CONVERSATION_ROOT_WAVELET]];
 }
 
 - (NSString *) newDocumentId {
-	return [self generateId:BLIP_PREFIX length:36];
+	return [self generateId:[NGIdConstant BLIP_PREFIX] length:36];
 }
 
 @end
