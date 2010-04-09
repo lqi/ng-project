@@ -32,6 +32,7 @@
 	
 	NSMutableArray *_waveRpcItems;
 	NSMutableArray *_ngElementAttributes;
+	NSMutableArray *_ngElementAnnotations;
 }
 
 @property (assign) NSInteger waveletVersion;

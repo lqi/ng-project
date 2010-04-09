@@ -30,9 +30,11 @@
 	_seqNo = seqNo;
 	_waveRpcItems = [[NSMutableArray alloc] init];
 	_ngElementAttributes = [[NSMutableArray alloc] init];
+	_ngElementAnnotations = [[NSMutableArray alloc] init];
 }
 
 - (void)close {
+	[_ngElementAnnotations release];
 	[_ngElementAttributes release];
 	[_waveRpcItems release];
 	[_waveId release];
@@ -375,20 +377,26 @@
 	
 	NSTextStorage *textStorage = [self textStorage];
 	NSMutableArray *elementStack = [[NSMutableArray alloc] init];
+	NGElementAnnotationUpdate *annotationUpdates = [[NGElementAnnotationUpdate alloc] init];
 	
-	NSParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] copy];
+	NSDictionary *styleDictionary = [NSDictionary dictionary];
+	NGElementAnnotation *elementAnnotations = [NGElementAnnotation annotations];
 	
 	int cursor = 0;
 	int rpcPosition = 0;
 	[textStorage beginEditing];
 	for (ProtocolDocumentOperation_Component *comp in [[mutateDocument documentOperation] componentList]) {
 		if ([comp hasCharacters]) {
+			int currentLineStartPositionOffset = [self positionOffsetOfPreviousLineStart:rpcPosition - 1];
+			styleDictionary = [NGTextViewEditingStyle styleFromElementAttributes:[_ngElementAttributes objectAtIndex:currentLineStartPositionOffset] andElementAnnotations:[elementAnnotations copy]];
+			
 			NSString *chars = [comp characters];
 			[textStorage replaceCharactersInRange:NSMakeRange(cursor, 0) withString:chars];
-			[textStorage addAttribute:NSParagraphStyleAttributeName value:[paragraphStyle copy] range:NSMakeRange(cursor, [chars length])];
+			[textStorage setAttributes:[styleDictionary copy] range:NSMakeRange(cursor, [chars length])];
 			cursor += [chars length];
 			for (int i = 0; i < [chars length]; i++) {
 				[_ngElementAttributes insertObject:[NGElementAttribute attributes] atIndex:rpcPosition];
+				[_ngElementAnnotations insertObject:[elementAnnotations copy] atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"character" atIndex:rpcPosition++];
 			}
 		}
@@ -398,11 +406,19 @@
 			[textStorage deleteCharactersInRange:NSMakeRange(cursor, [chars length])];
 			for (int i = 0; i < [chars length]; i++) {
 				[_ngElementAttributes removeObjectAtIndex:rpcPosition];
+				[_ngElementAnnotations removeObjectAtIndex:rpcPosition];
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
 		}
 		if ([comp hasRetainItemCount]) {
+			int oldRpcPosition = rpcPosition;
 			rpcPosition += [comp retainItemCount];
+			
+			for (int i = oldRpcPosition; i < rpcPosition - 1; i++) {
+				NGElementAnnotation *currentElementAnnotation = [_ngElementAnnotations objectAtIndex:i];
+				[currentElementAnnotation merge:annotationUpdates];
+				[_ngElementAnnotations replaceObjectAtIndex:i withObject:currentElementAnnotation];
+			}
 			
 			if (rpcPosition == [self positionLength]) {
 				break;
@@ -411,7 +427,8 @@
 			int currentLineStartPositionOffset = [self positionOffsetOfPreviousLineStart:rpcPosition];
 			NSAssert([[_waveRpcItems objectAtIndex:currentLineStartPositionOffset] isEqual:@"lineStart"], @"this position should be a line start");
 			NGElementAttribute *thisElementAttribute = [_ngElementAttributes objectAtIndex:currentLineStartPositionOffset];
-			paragraphStyle = [NGTextViewEditingStyle styleFromElementAttributes:thisElementAttribute];
+			elementAnnotations = [_ngElementAnnotations objectAtIndex:rpcPosition];
+			styleDictionary = [NGTextViewEditingStyle styleFromElementAttributes:thisElementAttribute andElementAnnotations:elementAnnotations];
 			
 			cursor = 0;
 			for (int i = 0; i < rpcPosition; i++) {
@@ -445,10 +462,12 @@
 			}
 			else if ([elementType isEqual:@"contributor"]) {
 				[_ngElementAttributes insertObject:[NGElementAttribute attributes] atIndex:rpcPosition];
+				[_ngElementAnnotations insertObject:[NGElementAnnotation annotations] atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"contributorStart" atIndex:rpcPosition++];
 			}
 			else if ([elementType isEqual:@"body"]) {
 				[_ngElementAttributes insertObject:[NGElementAttribute attributes] atIndex:rpcPosition];
+				[_ngElementAnnotations insertObject:[elementAnnotations copy] atIndex:rpcPosition];
 				[_waveRpcItems insertObject:@"bodyStart" atIndex:rpcPosition++];
 			}
 			else if ([elementType isEqual:@"line"]) {
@@ -468,7 +487,8 @@
 				[elementStartAttributes parseFromKeyValuePairs:[elementStart attributeList]];
 				[_ngElementAttributes insertObject:elementStartAttributes atIndex:rpcPosition];
 				[elementStartAttributes release];
-				paragraphStyle = [NGTextViewEditingStyle styleFromElementAttributes:[_ngElementAttributes objectAtIndex:rpcPosition]];
+				[_ngElementAnnotations insertObject:[elementAnnotations copy] atIndex:rpcPosition];
+				styleDictionary = [NGTextViewEditingStyle styleFromElementAttributes:[_ngElementAttributes objectAtIndex:rpcPosition] andElementAnnotations:[_ngElementAnnotations objectAtIndex:rpcPosition]];
 				[_waveRpcItems insertObject:@"lineStart" atIndex:rpcPosition++];
 			}
 		}
@@ -481,6 +501,7 @@
 				}
 				else {
 					[_ngElementAttributes insertObject:[NGElementAttribute attributes] atIndex:rpcPosition];
+					[_ngElementAnnotations insertObject:[elementAnnotations copy] atIndex:rpcPosition];
 					[_waveRpcItems insertObject:@"elementEnd" atIndex:rpcPosition++];
 				}
 				[elementType release];
@@ -502,6 +523,7 @@
 					[textStorage deleteCharactersInRange:NSMakeRange(cursor, 1)];
 				}
 				[_ngElementAttributes removeObjectAtIndex:rpcPosition];
+				[_ngElementAnnotations removeObjectAtIndex:rpcPosition];
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
 			else {
@@ -512,6 +534,7 @@
 			if ([comp deleteElementEnd]) {
 				NSAssert([[_waveRpcItems objectAtIndex:rpcPosition] isEqual:@"elementEnd"], @"Technically, this element should be elementEnd for a lineStart");
 				[_ngElementAttributes removeObjectAtIndex:rpcPosition];
+				[_ngElementAnnotations removeObjectAtIndex:rpcPosition];
 				[_waveRpcItems removeObjectAtIndex:rpcPosition];
 			}
 		}
@@ -519,7 +542,7 @@
 			NGElementAttribute *elementAttributes = [_ngElementAttributes objectAtIndex:rpcPosition];
 			[elementAttributes parseFromKeyValueUpdates:[[comp updateAttributes] attributeUpdateList]];
 			
-			paragraphStyle = [NGTextViewEditingStyle styleFromElementAttributes:elementAttributes];
+			styleDictionary = [NGTextViewEditingStyle styleFromElementAttributes:elementAttributes andElementAnnotations:[_ngElementAnnotations objectAtIndex:rpcPosition]];
 			NSRange paragraphRange;
 			if ([[textStorage string] length] == 0) {
 				paragraphRange = NSMakeRange(0, 0);
@@ -527,7 +550,7 @@
 			else {
 				paragraphRange = [[textStorage string] paragraphRangeForRange: NSMakeRange(cursor + 1, 0)];
 			}
-			[textStorage addAttribute:NSParagraphStyleAttributeName value:[paragraphStyle copy] range:paragraphRange];
+			[textStorage setAttributes:[styleDictionary copy] range:paragraphRange];
 			
 			[_ngElementAttributes replaceObjectAtIndex:rpcPosition withObject:elementAttributes];
 			rpcPosition++;
@@ -536,11 +559,14 @@
 			NSLog(@"TODO: Replace Attribute: %@", [_waveRpcItems objectAtIndex:rpcPosition++]); // TODO: replace attribute
 		}
 		if ([comp hasAnnotationBoundary]) {
-			// TODO: annotationBoundary
+			ProtocolDocumentOperation_Component_AnnotationBoundary *annotationBoundary = [comp annotationBoundary];
+			[annotationUpdates parse:annotationBoundary];
+			[elementAnnotations merge:annotationUpdates];
 		}
 	}
 	[textStorage endEditing];
-	[paragraphStyle release];
+	[styleDictionary release];
+	[annotationUpdates release];
 	NSAssert(rpcPosition == [self positionLength], @"for each set of document operations, entire document should be went through.");
 }
 

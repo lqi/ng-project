@@ -20,7 +20,8 @@
 
 @implementation NGTextViewEditingStyle
 
-+ (NSParagraphStyle *) styleFromElementAttributes:(NGElementAttribute *)elementAttributes {
++ (NSDictionary *) styleFromElementAttributes:(NGElementAttribute *)elementAttributes andElementAnnotations:(NGElementAnnotation *)elementAnnotations {
+	NSMutableDictionary *styleDictionary = [[NSMutableDictionary dictionary] mutableCopy];
 	NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	[paragraphStyle setAlignment:NSLeftTextAlignment];
 	if ([elementAttributes hasAttribute:@"i"]) {
@@ -40,7 +41,25 @@
 			[paragraphStyle setAlignment:NSRightTextAlignment];
 		}
 	}
-	return [paragraphStyle copy];
+	[styleDictionary setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
+	
+	if ([elementAnnotations hasAnnotation:@"style/color"]) {
+		NSString *colorString = [elementAnnotations annotation:@"style/color"];
+		NSColor *foregroundColor = [self colorFromAnnotationString:colorString];
+		[styleDictionary setObject:foregroundColor forKey:NSForegroundColorAttributeName];
+	}
+	return styleDictionary;
+}
+
++ (NSColor *) colorFromAnnotationString:(NSString *)annotationString {
+	NSString *pString = [annotationString substringWithRange:NSMakeRange(4, [annotationString length] - 5)];
+	NSArray *colorArray = [pString componentsSeparatedByString:@", "];
+	return [NSColor colorWithCalibratedRed:[self floatValueFromColorString:[colorArray objectAtIndex:0]] green:[self floatValueFromColorString:[colorArray objectAtIndex:1]] blue:[self floatValueFromColorString:[colorArray objectAtIndex:2]] alpha:1.0f];
+}
+			
++ (float) floatValueFromColorString:(NSString *)colorString {
+	float value = [colorString floatValue];
+	return (value + 1.0f) / 256.0f;
 }
 
 @end

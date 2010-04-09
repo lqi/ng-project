@@ -12,6 +12,8 @@
 		29258AFF114ECC4200ED4F98 /* NGWaveUrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258AFE114ECC4200ED4F98 /* NGWaveUrl.m */; };
 		29258B00114ECC4200ED4F98 /* NGWaveUrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258AFE114ECC4200ED4F98 /* NGWaveUrl.m */; };
 		29258B03114ED59800ED4F98 /* NGWaveUrlTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258B02114ED59800ED4F98 /* NGWaveUrlTest.m */; };
+		29480032116E3C24007A5EDB /* NGElementAnnotationUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29480031116E3C23007A5EDB /* NGElementAnnotationUpdate.m */; };
+		29480033116E3C24007A5EDB /* NGElementAnnotationUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29480031116E3C23007A5EDB /* NGElementAnnotationUpdate.m */; };
 		2952649B1140F91A00CA2C90 /* NGRpcTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2952649A1140F91A00CA2C90 /* NGRpcTest.m */; };
 		2952659A1140FD1D00CA2C90 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E7B7CB1140A67A001E3644 /* libProtocolBuffers.a */; };
 		295265A51140FD6A00CA2C90 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -45,6 +47,8 @@
 		29E14CDB115D214100B76AFA /* NGTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E14CD9115D214100B76AFA /* NGTextView.m */; };
 		29E7B7D01140A692001E3644 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E7B7CB1140A67A001E3644 /* libProtocolBuffers.a */; };
 		29E7B80F1140C2FE001E3644 /* NGRpc.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E7B80E1140C2FE001E3644 /* NGRpc.m */; };
+		29ED64FF116DA38A009389CB /* NGElementAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 29ED64FE116DA38A009389CB /* NGElementAnnotation.m */; };
+		29ED6500116DA38A009389CB /* NGElementAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 29ED64FE116DA38A009389CB /* NGElementAnnotation.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -107,6 +111,8 @@
 		29258AFE114ECC4200ED4F98 /* NGWaveUrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveUrl.m; path = lib/model/NGWaveUrl.m; sourceTree = "<group>"; };
 		29258B01114ED59800ED4F98 /* NGWaveUrlTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveUrlTest.h; path = test/lib/model/NGWaveUrlTest.h; sourceTree = "<group>"; };
 		29258B02114ED59800ED4F98 /* NGWaveUrlTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveUrlTest.m; path = test/lib/model/NGWaveUrlTest.m; sourceTree = "<group>"; };
+		29480030116E3C23007A5EDB /* NGElementAnnotationUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGElementAnnotationUpdate.h; path = lib/model/NGElementAnnotationUpdate.h; sourceTree = "<group>"; };
+		29480031116E3C23007A5EDB /* NGElementAnnotationUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGElementAnnotationUpdate.m; path = lib/model/NGElementAnnotationUpdate.m; sourceTree = "<group>"; };
 		295264701140F78800CA2C90 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		295264711140F78800CA2C90 /* UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
 		295264991140F91A00CA2C90 /* NGRpcTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpcTest.h; path = test/lib/network/NGRpcTest.h; sourceTree = "<group>"; };
@@ -153,6 +159,8 @@
 		29E7B7D81140BBB9001E3644 /* ProtocolBuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtocolBuffers.h; path = "third-party/ProtocolBuffers/Classes/ProtocolBuffers.h"; sourceTree = "<group>"; };
 		29E7B80D1140C2FE001E3644 /* NGRpc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpc.h; path = lib/network/NGRpc.h; sourceTree = "<group>"; };
 		29E7B80E1140C2FE001E3644 /* NGRpc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGRpc.m; path = lib/network/NGRpc.m; sourceTree = "<group>"; };
+		29ED64FD116DA38A009389CB /* NGElementAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGElementAnnotation.h; path = lib/model/NGElementAnnotation.h; sourceTree = "<group>"; };
+		29ED64FE116DA38A009389CB /* NGElementAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGElementAnnotation.m; path = lib/model/NGElementAnnotation.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* NgProject-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NgProject-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* NgProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NgProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -328,6 +336,10 @@
 				29258AFE114ECC4200ED4F98 /* NGWaveUrl.m */,
 				29DA8A06116BADEE00D50DFC /* NGElementAttribute.h */,
 				29DA8A07116BADEE00D50DFC /* NGElementAttribute.m */,
+				29ED64FD116DA38A009389CB /* NGElementAnnotation.h */,
+				29ED64FE116DA38A009389CB /* NGElementAnnotation.m */,
+				29480030116E3C23007A5EDB /* NGElementAnnotationUpdate.h */,
+				29480031116E3C23007A5EDB /* NGElementAnnotationUpdate.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -520,6 +532,8 @@
 				29E14CDA115D214100B76AFA /* NGTextView.m in Sources */,
 				29DA8A08116BADEE00D50DFC /* NGElementAttribute.m in Sources */,
 				29DA8A0C116BB44A00D50DFC /* NGTextViewEditingStyle.m in Sources */,
+				29ED6500116DA38A009389CB /* NGElementAnnotation.m in Sources */,
+				29480032116E3C24007A5EDB /* NGElementAnnotationUpdate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +557,8 @@
 				29E14CDB115D214100B76AFA /* NGTextView.m in Sources */,
 				29DA8A09116BADEE00D50DFC /* NGElementAttribute.m in Sources */,
 				29DA8A0D116BB44A00D50DFC /* NGTextViewEditingStyle.m in Sources */,
+				29ED64FF116DA38A009389CB /* NGElementAnnotation.m in Sources */,
+				29480033116E3C24007A5EDB /* NGElementAnnotationUpdate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

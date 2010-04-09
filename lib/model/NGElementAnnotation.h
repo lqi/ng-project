@@ -15,21 +15,22 @@
  * 
  */
 
-#import "ProtocolBuffers.h"
+#import <Foundation/Foundation.h>
 
-#import "proto/Common.pb.h"
-#import "proto/WaveclientRpc.pb.h"
+#import "NGElementAnnotationUpdate.h"
 
-#import "model/NGRpcMessage.h"
-#import "model/NGWaveId.h"
-#import "model/NGWaveletId.h"
-#import "model/NGParticipantId.h"
-#import "model/NGWaveUrl.h"
-#import "model/NGElementAttribute.h"
-#import "model/NGElementAnnotation.h"
-#import "model/NGElementAnnotationUpdate.h"
+@interface NGElementAnnotation : NSObject {
+	NSMutableDictionary *_annotations;
+}
 
-#import "util/NGRandomIdGenerator.h"
++ (NGElementAnnotation *) annotations;
 
-#import "network/NGNetwork.h"
-#import "network/NGRpc.h"
+- (void) insertAnnotation:(NSString *)key value:(NSString *)value;
+- (void) replaceAnnotation:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
+- (BOOL) hasAnnotation:(NSString *)key;
+- (NSString *) annotation:(NSString *)key;
+
+- (void) updateAnnotation:(NSString *)key value:(NSString *)value;
+- (void) merge:(NGElementAnnotationUpdate *)updates;
+
+@end

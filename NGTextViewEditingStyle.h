@@ -22,6 +22,9 @@
 
 }
 
-+ (NSParagraphStyle *) styleFromElementAttributes:(NGElementAttribute *)elementAttributes; 
++ (NSDictionary *) styleFromElementAttributes:(NGElementAttribute *)elementAttributes andElementAnnotations:(NGElementAnnotation *)elementAnnotations;
+
++ (NSColor *) colorFromAnnotationString:(NSString *)annotationString;
++ (float) floatValueFromColorString:(NSString *)colorString;
 
 @end

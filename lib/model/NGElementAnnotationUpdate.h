@@ -15,21 +15,15 @@
  * 
  */
 
-#import "ProtocolBuffers.h"
+#import <Foundation/Foundation.h>
 
-#import "proto/Common.pb.h"
-#import "proto/WaveclientRpc.pb.h"
+@interface NGElementAnnotationUpdate : NSObject {
+	NSMutableDictionary *_annotationUpdates;
+	NSMutableArray *_annotationEnds;
+}
 
-#import "model/NGRpcMessage.h"
-#import "model/NGWaveId.h"
-#import "model/NGWaveletId.h"
-#import "model/NGParticipantId.h"
-#import "model/NGWaveUrl.h"
-#import "model/NGElementAttribute.h"
-#import "model/NGElementAnnotation.h"
-#import "model/NGElementAnnotationUpdate.h"
+- (void) parse:(ProtocolDocumentOperation_Component_AnnotationBoundary *)annotationBoundary;
+- (NSDictionary *)annotationUpdates;
+- (NSArray *)annotationEnds;
 
-#import "util/NGRandomIdGenerator.h"
-
-#import "network/NGNetwork.h"
-#import "network/NGRpc.h"
+@end
