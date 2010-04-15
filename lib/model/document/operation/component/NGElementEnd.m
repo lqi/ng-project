@@ -15,22 +15,18 @@
  * 
  */
 
-#import <Foundation/Foundation.h>
+#import "NGElementEnd.h"
 
-#import "../proto/Common.pb.h"
+@implementation NGElementEnd
 
-@interface NGElementAttribute : NSObject {
-	NSMutableDictionary *_attribtues;
+- (ProtocolDocumentOperation_Component *) buffer {
+	ProtocolDocumentOperation_Component_Builder *componentBuilder = [ProtocolDocumentOperation_Component builder];
+	[componentBuilder setElementEnd:YES];
+	return [componentBuilder build];
 }
 
-+ (NGElementAttribute *) attributes;
-
-- (void) insertAttribute:(NSString *)key value:(NSString *)value;
-- (void) replaceAttribute:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
-- (BOOL) hasAttribute:(NSString *)key;
-- (NSString *) attribute:(NSString *)key;
-
-- (void) parseFromKeyValuePairs:(NSArray *)keyValuePairs;
-- (void) parseFromKeyValueUpdates:(NSArray *)keyValueUpdates;
++ (NGElementEnd *) elementEnd {
+	return [[[NGElementEnd alloc] init] autorelease];
+}
 
 @end

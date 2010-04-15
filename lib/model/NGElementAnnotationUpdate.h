@@ -17,6 +17,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "../proto/Common.pb.h"
+
 @interface NGElementAnnotationUpdate : NSObject {
 	NSMutableDictionary *_annotationUpdates;
 	NSMutableArray *_annotationEnds;

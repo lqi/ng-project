@@ -15,22 +15,22 @@
  * 
  */
 
-#import <Foundation/Foundation.h>
+#import "NGRetain.h"
 
-#import "../proto/Common.pb.h"
+@implementation NGRetain
 
-@interface NGElementAttribute : NSObject {
-	NSMutableDictionary *_attribtues;
+@synthesize retainItemCount;
+
+- (ProtocolDocumentOperation_Component *) buffer {
+	ProtocolDocumentOperation_Component_Builder *componentBuilder = [ProtocolDocumentOperation_Component builder];
+	[componentBuilder setRetainItemCount:self.retainItemCount];
+	return [componentBuilder build];
 }
 
-+ (NGElementAttribute *) attributes;
-
-- (void) insertAttribute:(NSString *)key value:(NSString *)value;
-- (void) replaceAttribute:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
-- (BOOL) hasAttribute:(NSString *)key;
-- (NSString *) attribute:(NSString *)key;
-
-- (void) parseFromKeyValuePairs:(NSArray *)keyValuePairs;
-- (void) parseFromKeyValueUpdates:(NSArray *)keyValueUpdates;
++ (NGRetain *) retainWithRetainItemCount:(NSInteger)retainItemCount {
+	NGRetain *retainInstance = [[[NGRetain alloc] init] autorelease];
+	retainInstance.retainItemCount = retainItemCount;
+	return retainInstance;
+}
 
 @end

@@ -15,14 +15,22 @@
  * 
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import "NGCharacters.h"
 
-#import "NGWaveUrl.h"
-#import "NGWaveId.h"
-#import "NGWaveletId.h"
+@implementation NGCharacters
 
-@interface NGWaveUrlTest : SenTestCase {
-	NGWaveUrl *_waveUrl;
+@synthesize characters;
+
+- (ProtocolDocumentOperation_Component *) buffer {
+	ProtocolDocumentOperation_Component_Builder *componentBuilder = [ProtocolDocumentOperation_Component builder];
+	[componentBuilder setCharacters:self.characters];
+	return [componentBuilder build];
+}
+
++ (NGCharacters *) charactersWithCharacters:(NSString *)aCharacters {
+	NGCharacters *charactersInstance = [[[NGCharacters alloc] init] autorelease];
+	charactersInstance.characters = aCharacters;
+	return charactersInstance;
 }
 
 @end

@@ -15,22 +15,22 @@
  * 
  */
 
-#import <Foundation/Foundation.h>
+#import "NGDeleteCharacters.h"
 
-#import "../proto/Common.pb.h"
+@implementation NGDeleteCharacters
 
-@interface NGElementAttribute : NSObject {
-	NSMutableDictionary *_attribtues;
+@synthesize characters;
+
+- (ProtocolDocumentOperation_Component *) buffer {
+	ProtocolDocumentOperation_Component_Builder *componentBuilder = [ProtocolDocumentOperation_Component builder];
+	[componentBuilder setDeleteCharacters:self.characters];
+	return [componentBuilder build];
 }
 
-+ (NGElementAttribute *) attributes;
-
-- (void) insertAttribute:(NSString *)key value:(NSString *)value;
-- (void) replaceAttribute:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
-- (BOOL) hasAttribute:(NSString *)key;
-- (NSString *) attribute:(NSString *)key;
-
-- (void) parseFromKeyValuePairs:(NSArray *)keyValuePairs;
-- (void) parseFromKeyValueUpdates:(NSArray *)keyValueUpdates;
++ (NGDeleteCharacters *) charactersWithDeleteCharacters:(NSString *)dCharacters {
+	NGDeleteCharacters *deleteCharactersInstance = [[[NGDeleteCharacters alloc] init] autorelease];
+	deleteCharactersInstance.characters = dCharacters;
+	return deleteCharactersInstance;
+}
 
 @end

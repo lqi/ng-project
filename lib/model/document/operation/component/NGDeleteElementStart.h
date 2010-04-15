@@ -17,20 +17,16 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../proto/Common.pb.h"
+#import "../../../../proto/Common.pb.h"
 
-@interface NGElementAttribute : NSObject {
-	NSMutableDictionary *_attribtues;
+#import "NGDocOpComponent.h"
+
+@interface NGDeleteElementStart : NSObject <NGDocOpComponent> {
+	NSString *type;
 }
 
-+ (NGElementAttribute *) attributes;
+@property (retain) NSString *type;
 
-- (void) insertAttribute:(NSString *)key value:(NSString *)value;
-- (void) replaceAttribute:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
-- (BOOL) hasAttribute:(NSString *)key;
-- (NSString *) attribute:(NSString *)key;
-
-- (void) parseFromKeyValuePairs:(NSArray *)keyValuePairs;
-- (void) parseFromKeyValueUpdates:(NSArray *)keyValueUpdates;
++ (NGDeleteElementStart *) deleteElementStartWithType:(NSString *)aType;
 
 @end

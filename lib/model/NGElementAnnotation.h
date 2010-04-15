@@ -17,6 +17,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "../proto/Common.pb.h"
+
 #import "NGElementAnnotationUpdate.h"
 
 @interface NGElementAnnotation : NSObject {

@@ -19,18 +19,12 @@
 
 #import "../proto/Common.pb.h"
 
-@interface NGElementAttribute : NSObject {
-	NSMutableDictionary *_attribtues;
+#import "../model/document/operation/component/NGDocOpComponent.h"
+
+@interface NGBufferedDocOp : NSObject {
+
 }
 
-+ (NGElementAttribute *) attributes;
-
-- (void) insertAttribute:(NSString *)key value:(NSString *)value;
-- (void) replaceAttribute:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
-- (BOOL) hasAttribute:(NSString *)key;
-- (NSString *) attribute:(NSString *)key;
-
-- (void) parseFromKeyValuePairs:(NSArray *)keyValuePairs;
-- (void) parseFromKeyValueUpdates:(NSArray *)keyValueUpdates;
++ (ProtocolDocumentOperation *) create:(NSArray *)components;
 
 @end

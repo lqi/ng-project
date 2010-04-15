@@ -256,25 +256,13 @@
 
 - (void)insertCharacters:(NSString *)characters caretOffset:(int)caretOffset {
 	int retainItemCount = [self positionOffset:caretOffset];
-	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCount] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setCharacters:characters] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - retainItemCount)] build]]; 
-	
+	NGDocOpBuilder *blipDocOpBuilder = [[[[NGDocOpBuilder builder] retain:retainItemCount] characters:characters] retain:([self positionLength] - retainItemCount)];
 	[self sendDocumentOperation:[blipDocOpBuilder build]];
 }
 
 - (void)insertLineMutationDocument:(int)caretOffset {
-	ProtocolDocumentOperation_Component_ElementStart_Builder *blipLineElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
-	[blipLineElementStartBuilder setType:@"line"];
-	
 	int retainItemCount = [self positionOffset:caretOffset];
-	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCount] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipLineElementStartBuilder build]] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - retainItemCount)] build]]; 
-	
+	NGDocOpBuilder *blipDocOpBuilder = [[[[[NGDocOpBuilder builder] retain:retainItemCount] elementStart:@"line"] elementEnd] retain:([self positionLength] - retainItemCount)];
 	[self sendDocumentOperation:[blipDocOpBuilder build]];
 }
 
@@ -283,24 +271,12 @@
 	NSString *thisItem = [_waveRpcItems objectAtIndex:positionOffset];
 	if ([thisItem isEqual:@"character"]) {
 		NSString *charactersToBeDeleted = [[self string] substringWithRange:NSMakeRange(caretOffset, 1)];
-		ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
-		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:positionOffset] build]];
-		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteCharacters:charactersToBeDeleted] build]];
-		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - positionOffset - [charactersToBeDeleted length])] build]]; 
-		
-		[self sendDocumentOperation:[blipDocOpBuilder build]];
+		NGDocOpBuilder *docOpBuilder = [[[[NGDocOpBuilder builder] retain:positionOffset] deleteCharacters:charactersToBeDeleted] retain:([self positionLength] - positionOffset - [charactersToBeDeleted length])];
+		[self sendDocumentOperation:[docOpBuilder build]];
 	}
 	else if ([thisItem isEqual:@"lineStart"]) {
-		ProtocolDocumentOperation_Component_ElementStart_Builder *blipLineElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
-		[blipLineElementStartBuilder setType:@"line"];
-		
-		ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
-		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:positionOffset] build]];
-		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteElementStart:[blipLineElementStartBuilder build]] build]];
-		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteElementEnd:YES] build]];
-		[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - positionOffset - 2)] build]]; 
-		
-		[self sendDocumentOperation:[blipDocOpBuilder build]];
+		NGDocOpBuilder *docOpBuilder = [[[[[NGDocOpBuilder builder] retain:positionOffset] deleteElementStart:@"line"] deleteElementEnd] retain:([self positionLength] - positionOffset - 2)];
+		[self sendDocumentOperation:[docOpBuilder build]];
 	}
 }
 

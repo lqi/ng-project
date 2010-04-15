@@ -15,22 +15,14 @@
  * 
  */
 
-#import <Foundation/Foundation.h>
+#import <SenTestingKit/SenTestingKit.h>
 
-#import "../proto/Common.pb.h"
+#import "NGWaveName.h"
+#import "NGWaveId.h"
+#import "NGWaveletId.h"
 
-@interface NGElementAttribute : NSObject {
-	NSMutableDictionary *_attribtues;
+@interface NGWaveNameTest : SenTestCase {
+	NGWaveName *_waveName;
 }
-
-+ (NGElementAttribute *) attributes;
-
-- (void) insertAttribute:(NSString *)key value:(NSString *)value;
-- (void) replaceAttribute:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
-- (BOOL) hasAttribute:(NSString *)key;
-- (NSString *) attribute:(NSString *)key;
-
-- (void) parseFromKeyValuePairs:(NSArray *)keyValuePairs;
-- (void) parseFromKeyValueUpdates:(NSArray *)keyValueUpdates;
 
 @end

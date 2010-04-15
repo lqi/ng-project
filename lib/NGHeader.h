@@ -25,12 +25,23 @@
 #import "model/id/NGParticipantId.h"
 #import "model/id/NGWaveName.h"
 
+#import "model/document/operation/component/NGDocOpComponent.h"
+#import "model/document/operation/component/NGElementStart.h"
+#import "model/document/operation/component/NGElementEnd.h"
+#import "model/document/operation/component/NGRetain.h"
+#import "model/document/operation/component/NGCharacters.h"
+#import "model/document/operation/component/NGDeleteCharacters.h"
+#import "model/document/operation/component/NGDeleteElementStart.h"
+#import "model/document/operation/component/NGDeleteElementEnd.h"
+
 #import "model/NGRpcMessage.h"
 #import "model/NGElementAttribute.h"
 #import "model/NGElementAnnotation.h"
 #import "model/NGElementAnnotationUpdate.h"
 
 #import "util/NGRandomIdGenerator.h"
+#import "util/NGDocOpBuilder.h"
+#import "util/NGBufferedDocOp.h"
 
 #import "network/NGNetwork.h"
 #import "network/NGRpc.h"

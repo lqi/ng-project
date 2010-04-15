@@ -15,35 +15,35 @@
  * 
  */
 
-#import "NGWaveUrlTest.h"
+#import "NGWaveNameTest.h"
 
-@implementation NGWaveUrlTest
+@implementation NGWaveNameTest
 
 - (void) setUp {
-	_waveUrl = [[NGWaveUrl alloc] initWithString:@"wave://testDomain/testWaveId/testWaveletId"];
+	_waveName = [[NGWaveName alloc] initWithString:@"wave://testDomain/testWaveId/testWaveletId"];
 }
 
 - (void) tearDown {
-	[_waveUrl release];
+	[_waveName release];
 }
 
 - (void) testWaveId {
-	STAssertEqualObjects([_waveUrl waveId], [NGWaveId waveIdWithDomain:@"testDomain" waveId:@"testWaveId"], @"waveId should be 'testWaveId@testDomain'");
+	STAssertEqualObjects([_waveName waveId], [NGWaveId waveIdWithDomain:@"testDomain" waveId:@"testWaveId"], @"waveId should be 'testWaveId@testDomain'");
 }
 
 - (void) testWaveletId {
-	STAssertEqualObjects([_waveUrl waveletId], [NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"], @"waveletId should be 'testWaveletId@testDomain'");
+	STAssertEqualObjects([_waveName waveletId], [NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"], @"waveletId should be 'testWaveletId@testDomain'");
 }
 
 - (void) testDomain {
-	STAssertEqualObjects([_waveUrl domain], @"testDomain", @"domain should be 'testDomain'");
+	STAssertEqualObjects([_waveName domain], @"testDomain", @"domain should be 'testDomain'");
 }
 
 - (void) testStringValue {
-	NGWaveUrl *testUrl = [[NGWaveUrl alloc] init];
+	NGWaveName *testUrl = [[NGWaveName alloc] init];
 	[testUrl setWaveId:[NGWaveId waveIdWithDomain:@"testWaveDomain" waveId:@"testWaveId"]];
 	[testUrl setWaveletId:[NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"]];
-	STAssertEqualObjects([testUrl stringValue], @"wave://testDomain/testWaveId/testWaveletId", @"string value of this wave url should be 'wave://testDomain/testWaveId/testWaveletId'");
+	STAssertEqualObjects([testUrl url], @"wave://testDomain/testWaveId/testWaveletId", @"string value of this wave url should be 'wave://testDomain/testWaveId/testWaveletId'");
 }
 
 @end

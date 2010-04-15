@@ -15,22 +15,16 @@
  * 
  */
 
-#import <Foundation/Foundation.h>
+#import "NGBufferedDocOp.h"
 
-#import "../proto/Common.pb.h"
+@implementation NGBufferedDocOp
 
-@interface NGElementAttribute : NSObject {
-	NSMutableDictionary *_attribtues;
++ (ProtocolDocumentOperation *) create:(NSArray *)components {
+	ProtocolDocumentOperation_Builder *docOpBuilder = [ProtocolDocumentOperation builder];
+	for (id <NGDocOpComponent> component in components) {
+		[docOpBuilder addComponent:[component buffer]];
+	}
+	return [docOpBuilder build];
 }
-
-+ (NGElementAttribute *) attributes;
-
-- (void) insertAttribute:(NSString *)key value:(NSString *)value;
-- (void) replaceAttribute:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
-- (BOOL) hasAttribute:(NSString *)key;
-- (NSString *) attribute:(NSString *)key;
-
-- (void) parseFromKeyValuePairs:(NSArray *)keyValuePairs;
-- (void) parseFromKeyValueUpdates:(NSArray *)keyValueUpdates;
 
 @end
