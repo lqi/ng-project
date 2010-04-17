@@ -17,9 +17,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../proto/Common.pb.h"
+#import "../../../../proto/Common.pb.h"
 
-#import "../model/document/operation/NGDocOpComponent.h"
+#import "../NGDocOpComponent.h"
 
 @interface NGBufferedDocOp : NSObject {
 

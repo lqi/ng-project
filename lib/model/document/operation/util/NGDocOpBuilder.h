@@ -17,15 +17,15 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../proto/Common.pb.h"
+#import "../../../../proto/Common.pb.h"
 
-#import "../model/document/operation/component/NGCharacters.h"
-#import "../model/document/operation/component/NGDeleteCharacters.h"
-#import "../model/document/operation/component/NGElementStart.h"
-#import "../model/document/operation/component/NGElementEnd.h"
-#import "../model/document/operation/component/NGDeleteElementStart.h"
-#import "../model/document/operation/component/NGDeleteElementEnd.h"
-#import "../model/document/operation/component/NGRetain.h"
+#import "../component/NGCharacters.h"
+#import "../component/NGDeleteCharacters.h"
+#import "../component/NGElementStart.h"
+#import "../component/NGElementEnd.h"
+#import "../component/NGDeleteElementStart.h"
+#import "../component/NGDeleteElementEnd.h"
+#import "../component/NGRetain.h"
 
 #import "NGBufferedDocOp.h"
 

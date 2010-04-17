@@ -185,10 +185,10 @@
 		29C802001170474700F77D7F /* NGRetain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGRetain.m; path = lib/model/document/operation/component/NGRetain.m; sourceTree = "<group>"; };
 		29C802031170475B00F77D7F /* NGCharacters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGCharacters.h; path = lib/model/document/operation/component/NGCharacters.h; sourceTree = "<group>"; };
 		29C802041170475B00F77D7F /* NGCharacters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGCharacters.m; path = lib/model/document/operation/component/NGCharacters.m; sourceTree = "<group>"; };
-		29C8020F1170494400F77D7F /* NGDocOpBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocOpBuilder.h; path = lib/util/NGDocOpBuilder.h; sourceTree = "<group>"; };
-		29C802101170494400F77D7F /* NGDocOpBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocOpBuilder.m; path = lib/util/NGDocOpBuilder.m; sourceTree = "<group>"; };
-		29C8DD41117251C600B3B673 /* NGBufferedDocOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGBufferedDocOp.h; path = lib/util/NGBufferedDocOp.h; sourceTree = "<group>"; };
-		29C8DD42117251C600B3B673 /* NGBufferedDocOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGBufferedDocOp.m; path = lib/util/NGBufferedDocOp.m; sourceTree = "<group>"; };
+		29C8020F1170494400F77D7F /* NGDocOpBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocOpBuilder.h; path = lib/model/document/operation/util/NGDocOpBuilder.h; sourceTree = "<group>"; };
+		29C802101170494400F77D7F /* NGDocOpBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocOpBuilder.m; path = lib/model/document/operation/util/NGDocOpBuilder.m; sourceTree = "<group>"; };
+		29C8DD41117251C600B3B673 /* NGBufferedDocOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGBufferedDocOp.h; path = lib/model/document/operation/util/NGBufferedDocOp.h; sourceTree = "<group>"; };
+		29C8DD42117251C600B3B673 /* NGBufferedDocOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGBufferedDocOp.m; path = lib/model/document/operation/util/NGBufferedDocOp.m; sourceTree = "<group>"; };
 		29C8DEC111768AC900B3B673 /* NGBufferedDocOpTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGBufferedDocOpTest.h; path = test/lib/util/NGBufferedDocOpTest.h; sourceTree = "<group>"; };
 		29C8DEC211768AC900B3B673 /* NGBufferedDocOpTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGBufferedDocOpTest.m; path = test/lib/util/NGBufferedDocOpTest.m; sourceTree = "<group>"; };
 		29CDE9C7114C8C6100B95C82 /* NGRpcMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpcMessage.h; path = lib/model/NGRpcMessage.h; sourceTree = "<group>"; };
@@ -277,6 +277,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		291F3998117A3AC9001CAD54 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				29C8020F1170494400F77D7F /* NGDocOpBuilder.h */,
+				29C802101170494400F77D7F /* NGDocOpBuilder.m */,
+				29C8DD41117251C600B3B673 /* NGBufferedDocOp.h */,
+				29C8DD42117251C600B3B673 /* NGBufferedDocOp.m */,
+			);
+			name = util;
+			sourceTree = "<group>";
+		};
 		2952644E1140F3E200CA2C90 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -362,10 +373,6 @@
 			children = (
 				29BD94AA1142198F00AA22AE /* NGRandomIdGenerator.h */,
 				29BD94AB1142198F00AA22AE /* NGRandomIdGenerator.m */,
-				29C8020F1170494400F77D7F /* NGDocOpBuilder.h */,
-				29C802101170494400F77D7F /* NGDocOpBuilder.m */,
-				29C8DD41117251C600B3B673 /* NGBufferedDocOp.h */,
-				29C8DD42117251C600B3B673 /* NGBufferedDocOp.m */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -432,6 +439,7 @@
 			children = (
 				29C801F4117045C800F77D7F /* NGDocOpComponent.h */,
 				29C801F11170447C00F77D7F /* component */,
+				291F3998117A3AC9001CAD54 /* util */,
 			);
 			name = operation;
 			sourceTree = "<group>";
