@@ -25,7 +25,7 @@
 #import "model/id/NGParticipantId.h"
 #import "model/id/NGWaveName.h"
 
-#import "model/document/operation/component/NGDocOpComponent.h"
+#import "model/document/operation/NGDocOpComponent.h"
 #import "model/document/operation/component/NGElementStart.h"
 #import "model/document/operation/component/NGElementEnd.h"
 #import "model/document/operation/component/NGRetain.h"

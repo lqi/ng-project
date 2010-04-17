@@ -19,7 +19,7 @@
 
 #import "../proto/Common.pb.h"
 
-#import "../model/document/operation/component/NGDocOpComponent.h"
+#import "../model/document/operation/NGDocOpComponent.h"
 
 @interface NGBufferedDocOp : NSObject {
 

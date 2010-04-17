@@ -176,7 +176,7 @@
 		29C8017E116FEA6600F77D7F /* NGWaveName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveName.m; path = lib/model/id/NGWaveName.m; sourceTree = "<group>"; };
 		29C801BB116FEDE600F77D7F /* NGIdConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGIdConstant.h; path = lib/model/id/NGIdConstant.h; sourceTree = "<group>"; };
 		29C801BC116FEDE600F77D7F /* NGIdConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGIdConstant.m; path = lib/model/id/NGIdConstant.m; sourceTree = "<group>"; };
-		29C801F4117045C800F77D7F /* NGDocOpComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocOpComponent.h; path = lib/model/document/operation/component/NGDocOpComponent.h; sourceTree = "<group>"; };
+		29C801F4117045C800F77D7F /* NGDocOpComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocOpComponent.h; path = lib/model/document/operation/NGDocOpComponent.h; sourceTree = "<group>"; };
 		29C801F71170472000F77D7F /* NGElementStart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGElementStart.h; path = lib/model/document/operation/component/NGElementStart.h; sourceTree = "<group>"; };
 		29C801F81170472000F77D7F /* NGElementStart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGElementStart.m; path = lib/model/document/operation/component/NGElementStart.m; sourceTree = "<group>"; };
 		29C801FB1170473400F77D7F /* NGElementEnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGElementEnd.h; path = lib/model/document/operation/component/NGElementEnd.h; sourceTree = "<group>"; };
@@ -430,6 +430,7 @@
 		29C801F01170447200F77D7F /* operation */ = {
 			isa = PBXGroup;
 			children = (
+				29C801F4117045C800F77D7F /* NGDocOpComponent.h */,
 				29C801F11170447C00F77D7F /* component */,
 			);
 			name = operation;
@@ -438,7 +439,6 @@
 		29C801F11170447C00F77D7F /* component */ = {
 			isa = PBXGroup;
 			children = (
-				29C801F4117045C800F77D7F /* NGDocOpComponent.h */,
 				29C801F71170472000F77D7F /* NGElementStart.h */,
 				29C801F81170472000F77D7F /* NGElementStart.m */,
 				29C801FB1170473400F77D7F /* NGElementEnd.h */,

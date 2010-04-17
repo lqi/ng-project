@@ -19,7 +19,7 @@
 
 #import "../../../../proto/Common.pb.h"
 
-#import "NGDocOpComponent.h"
+#import "../NGDocOpComponent.h"
 
 @interface NGRetain : NSObject <NGDocOpComponent> {
 	NSInteger retainItemCount;
