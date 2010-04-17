@@ -24,6 +24,7 @@
 #import "model/id/NGWaveletId.h"
 #import "model/id/NGParticipantId.h"
 #import "model/id/NGWaveName.h"
+#import "model/id/util/NGRandomIdGenerator.h"
 
 #import "model/document/operation/NGDocOpComponent.h"
 #import "model/document/operation/component/NGElementStart.h"
@@ -40,8 +41,6 @@
 #import "model/NGElementAttribute.h"
 #import "model/NGElementAnnotation.h"
 #import "model/NGElementAnnotationUpdate.h"
-
-#import "util/NGRandomIdGenerator.h"
 
 #import "network/NGNetwork.h"
 #import "network/NGRpc.h"
