@@ -20,16 +20,14 @@
 #import "../../../../proto/Common.pb.h"
 
 #import "../NGDocOpComponent.h"
-#import "../NGDocAttributes.h"
+#import "../NGDocAttributesUpdate.h"
 
-@interface NGElementStart : NSObject <NGDocOpComponent> {
-	NSString *type;
-	NGDocAttributes *attributes;
+@interface NGUpdateAttributes : NSObject <NGDocOpComponent> {
+	NGDocAttributesUpdate *update;
 }
 
-@property (retain) NSString *type;
-@property (retain) NGDocAttributes *attributes;
+@property (retain) NGDocAttributesUpdate *update;
 
-+ (NGElementStart *) elementStartWithType:(NSString *)theType andAttributes:(NGDocAttributes *)theAttributes;
++ (NGUpdateAttributes *) updateAttributesWithUpdateAttributes:(NGDocAttributesUpdate *)updateAttributes;
 
 @end

@@ -262,7 +262,7 @@
 
 - (void)insertLineMutationDocument:(int)caretOffset {
 	int retainItemCount = [self positionOffset:caretOffset];
-	NGDocOpBuilder *blipDocOpBuilder = [[[[[NGDocOpBuilder builder] retain:retainItemCount] elementStart:@"line"] elementEnd] retain:([self positionLength] - retainItemCount)];
+	NGDocOpBuilder *blipDocOpBuilder = [[[[[NGDocOpBuilder builder] retain:retainItemCount] elementStart:@"line" withAttributes:[NGDocAttributes emptyAttribute]] elementEnd] retain:([self positionLength] - retainItemCount)];
 	[self sendDocumentOperation:[blipDocOpBuilder build]];
 }
 
@@ -281,36 +281,11 @@
 }
 
 - (void)updateAttributeInPosition:(int)positionOffset forKey:(NSString *)key value:(NSString *)value {
-	ProtocolDocumentOperation_Component_KeyValueUpdate_Builder *keyValueUpdateBuilder = [ProtocolDocumentOperation_Component_KeyValueUpdate builder];
-	[keyValueUpdateBuilder setKey:key];
-	[keyValueUpdateBuilder setNewValue:value];
-	
-	ProtocolDocumentOperation_Component_UpdateAttributes_Builder *updateAttributesBuilder = [ProtocolDocumentOperation_Component_UpdateAttributes builder];
-	[updateAttributesBuilder addAttributeUpdate:[keyValueUpdateBuilder build]];
-	
-	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:positionOffset] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setUpdateAttributes:[updateAttributesBuilder build]] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - positionOffset - 1)] build]]; 
-	
-	[self sendDocumentOperation:[blipDocOpBuilder build]];
+	[self sendDocumentOperation:[[[[[NGDocOpBuilder builder] retain:positionOffset] updateAttributes:[[NGDocAttributesUpdate emptyAttributesUpdate] addAttributeWithKey:key andOnlyNewValue:value]] retain:([self positionLength] - positionOffset - 1)] build]];
 }
 
 - (void)replaceAttributeInPosition:(int)positionOffset forKey:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue {
-	ProtocolDocumentOperation_Component_KeyValueUpdate_Builder *keyValueUpdateBuilder = [ProtocolDocumentOperation_Component_KeyValueUpdate builder];
-	[keyValueUpdateBuilder setKey:key];
-	[keyValueUpdateBuilder setOldValue:oldValue];
-	[keyValueUpdateBuilder setNewValue:newValue];
-	
-	ProtocolDocumentOperation_Component_UpdateAttributes_Builder *updateAttributesBuilder = [ProtocolDocumentOperation_Component_UpdateAttributes builder];
-	[updateAttributesBuilder addAttributeUpdate:[keyValueUpdateBuilder build]];
-	
-	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:positionOffset] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setUpdateAttributes:[updateAttributesBuilder build]] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:([self positionLength] - positionOffset - 1)] build]]; 
-	
-	[self sendDocumentOperation:[blipDocOpBuilder build]];
+	[self sendDocumentOperation:[[[[[NGDocOpBuilder builder] retain:positionOffset] updateAttributes:[[NGDocAttributesUpdate emptyAttributesUpdate] addAttributeWithKey:key oldValue:oldValue andNewValue:newValue]] retain:([self positionLength] - positionOffset - 1)] build]];
 }
 
 - (void)sendDocumentOperation:(ProtocolDocumentOperation *)docOp {

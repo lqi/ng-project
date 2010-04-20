@@ -19,6 +19,9 @@
 
 #import "../../../../proto/Common.pb.h"
 
+#import "../NGDocAttributes.h"
+#import "../NGDocAttributesUpdate.h"
+
 #import "../component/NGCharacters.h"
 #import "../component/NGDeleteCharacters.h"
 #import "../component/NGElementStart.h"
@@ -26,6 +29,7 @@
 #import "../component/NGDeleteElementStart.h"
 #import "../component/NGDeleteElementEnd.h"
 #import "../component/NGRetain.h"
+#import "../component/NGUpdateAttributes.h"
 
 #import "NGBufferedDocOp.h"
 
@@ -37,11 +41,12 @@
 
 - (NGDocOpBuilder *) characters:(NSString *)characters;
 - (NGDocOpBuilder *) deleteCharacters:(NSString *)characters;
-- (NGDocOpBuilder *) elementStart:(NSString *)type;
+- (NGDocOpBuilder *) elementStart:(NSString *)type withAttributes:(NGDocAttributes *)attributes;
 - (NGDocOpBuilder *) elementEnd;
 - (NGDocOpBuilder *) deleteElementStart:(NSString *)type;
 - (NGDocOpBuilder *) deleteElementEnd;
 - (NGDocOpBuilder *) retain:(NSInteger)retainItemCount;
+- (NGDocOpBuilder *) updateAttributes:(NGDocAttributesUpdate *)update;
 
 - (ProtocolDocumentOperation *) build;
 

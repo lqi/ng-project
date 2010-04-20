@@ -27,6 +27,7 @@
 #import "model/id/util/NGRandomIdGenerator.h"
 
 #import "model/document/operation/NGDocOpComponent.h"
+#import "model/document/operation/NGDocAttributes.h"
 #import "model/document/operation/component/NGElementStart.h"
 #import "model/document/operation/component/NGElementEnd.h"
 #import "model/document/operation/component/NGRetain.h"

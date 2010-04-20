@@ -20,18 +20,23 @@
 @implementation NGElementStart
 
 @synthesize type;
+@synthesize attributes;
 
 - (ProtocolDocumentOperation_Component *) buffer {
 	ProtocolDocumentOperation_Component_ElementStart_Builder *elementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
 	[elementStartBuilder setType:self.type];
+	for (NSString *key in [self.attributes keys]) {
+		[elementStartBuilder addAttribute:[[[[ProtocolDocumentOperation_Component_KeyValuePair builder] setKey:key] setValue:[self.attributes attributeForKey:key]] build]];
+	}
 	ProtocolDocumentOperation_Component_Builder *componentBuilder = [ProtocolDocumentOperation_Component builder];
 	[componentBuilder setElementStart:[elementStartBuilder build]];
 	return [componentBuilder build];
 }
 
-+ (NGElementStart *) elementStartWithType:(NSString *)aType {
++ (NGElementStart *) elementStartWithType:(NSString *)theType andAttributes:(NGDocAttributes *)theAttributes {
 	NGElementStart *elementStartInstance = [[[NGElementStart alloc] init] autorelease];
-	elementStartInstance.type = aType;
+	elementStartInstance.type = theType;
+	elementStartInstance.attributes = theAttributes;
 	return elementStartInstance;
 }
 

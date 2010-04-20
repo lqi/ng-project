@@ -40,8 +40,8 @@
 	return self;
 }
 
-- (NGDocOpBuilder *) elementStart:(NSString *)type {
-	[_docOpComponents addObject:[NGElementStart elementStartWithType:type]];
+- (NGDocOpBuilder *) elementStart:(NSString *)type withAttributes:(NGDocAttributes *)attributes {
+	[_docOpComponents addObject:[NGElementStart elementStartWithType:type andAttributes:attributes]];
 	return self;
 }
 
@@ -62,6 +62,11 @@
 
 - (NGDocOpBuilder *) retain:(NSInteger)retainItemCount {
 	[_docOpComponents addObject:[NGRetain retainWithRetainItemCount:retainItemCount]];
+	return self;
+}
+
+- (NGDocOpBuilder *) updateAttributes:(NGDocAttributesUpdate *)update {
+	[_docOpComponents addObject:[NGUpdateAttributes updateAttributesWithUpdateAttributes:update]];
 	return self;
 }
 

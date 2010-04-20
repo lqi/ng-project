@@ -16,5 +16,7 @@
  */
 
 @protocol NGDocOpComponent
+
 - (ProtocolDocumentOperation_Component *) buffer;
+
 @end

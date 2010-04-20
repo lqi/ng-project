@@ -17,19 +17,15 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../../../../proto/Common.pb.h"
-
-#import "../NGDocOpComponent.h"
-#import "../NGDocAttributes.h"
-
-@interface NGElementStart : NSObject <NGDocOpComponent> {
-	NSString *type;
-	NGDocAttributes *attributes;
+@interface NGDocAttributes : NSObject {
+	NSMutableDictionary *_attributesDictionary;
 }
 
-@property (retain) NSString *type;
-@property (retain) NGDocAttributes *attributes;
+- (NGDocAttributes *) addAttributeWithKey:(NSString *)key andValue:(NSString *)value;
 
-+ (NGElementStart *) elementStartWithType:(NSString *)theType andAttributes:(NGDocAttributes *)theAttributes;
+- (NSArray *) keys;
+- (NSString *) attributeForKey:(NSString *)key;
+
++ (NGDocAttributes *) emptyAttribute;
 
 @end
