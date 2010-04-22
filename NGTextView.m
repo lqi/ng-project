@@ -296,22 +296,13 @@
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
 	[submitRequestBuilder setWaveletName:waveName];
 	
-	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[_participantId participantIdAtDomain]];
-	
-	ProtocolWaveletOperation_MutateDocument_Builder *blipMutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
-	[blipMutateDocBuilder setDocumentId:_blipId];
-	[blipMutateDocBuilder setDocumentOperation:docOp];
-	ProtocolWaveletOperation_Builder *blipOpBuilder = [ProtocolWaveletOperation builder];
-	[blipOpBuilder setMutateDocument:[blipMutateDocBuilder build]];
-	[deltaBuilder addOperation:[blipOpBuilder build]];
-	
 	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
 	[hashedVersionBuilder setVersion:self.waveletVersion];
 	[hashedVersionBuilder setHistoryHash:self.waveletHistoryHash];
-	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
 	
-	[submitRequestBuilder setDelta:[deltaBuilder build]];
+	NGWaveletDelta *waveletDelta = [NGWaveletDelta waveletDeltaWithAuthor:_participantId];
+	[waveletDelta addOperation:[NGWaveletDocOp documentOperation:docOp andDocumentId:_blipId]];
+	[submitRequestBuilder setDelta:[waveletDelta bufferWithVersion:[hashedVersionBuilder build]]];
 	
 	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self seqNo]] viaOutputStream:[_network pbOutputStream]];
 }

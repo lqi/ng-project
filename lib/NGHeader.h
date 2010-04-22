@@ -28,6 +28,7 @@
 
 #import "model/document/operation/NGDocOpComponent.h"
 #import "model/document/operation/NGDocAttributes.h"
+#import "model/document/operation/NGDocAttributesUpdate.h"
 #import "model/document/operation/component/NGElementStart.h"
 #import "model/document/operation/component/NGElementEnd.h"
 #import "model/document/operation/component/NGRetain.h"
@@ -35,8 +36,16 @@
 #import "model/document/operation/component/NGDeleteCharacters.h"
 #import "model/document/operation/component/NGDeleteElementStart.h"
 #import "model/document/operation/component/NGDeleteElementEnd.h"
+#import "model/document/operation/component/NGUpdateAttributes.h"
 #import "model/document/operation/util/NGDocOpBuilder.h"
 #import "model/document/operation/util/NGBufferedDocOp.h"
+
+#import "model/operation/NGWaveletOperation.h"
+#import "model/operation/NGWaveletDocOp.h"
+#import "model/operation/NGAddParticipantOp.h"
+#import "model/operation/NGRemoveParticipantOp.h"
+#import "model/operation/NGNoOp.h"
+#import "model/operation/NGWaveletDelta.h"
 
 #import "model/NGRpcMessage.h"
 #import "model/NGElementAttribute.h"
