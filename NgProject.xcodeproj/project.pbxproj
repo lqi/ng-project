@@ -38,6 +38,16 @@
 		29BD94AD1142198F00AA22AE /* NGRandomIdGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD94AB1142198F00AA22AE /* NGRandomIdGenerator.m */; };
 		29BD958C1142495C00AA22AE /* NGWaveIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD958B1142495C00AA22AE /* NGWaveIdTest.m */; };
 		29BD95CD11424F3300AA22AE /* NGWaveletIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */; };
+		29C249BC117F73AC00496599 /* NGWaveletDocOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249BB117F73AC00496599 /* NGWaveletDocOp.m */; };
+		29C249BD117F73AC00496599 /* NGWaveletDocOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249BB117F73AC00496599 /* NGWaveletDocOp.m */; };
+		29C249CC117F78CF00496599 /* NGAddParticipantOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249CB117F78CF00496599 /* NGAddParticipantOp.m */; };
+		29C249CD117F78CF00496599 /* NGAddParticipantOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249CB117F78CF00496599 /* NGAddParticipantOp.m */; };
+		29C249D4117F79F200496599 /* NGRemoveParticipantOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249D3117F79F200496599 /* NGRemoveParticipantOp.m */; };
+		29C249D5117F79F200496599 /* NGRemoveParticipantOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249D3117F79F200496599 /* NGRemoveParticipantOp.m */; };
+		29C249DA117FA6CB00496599 /* NGNoOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249D9117FA6CB00496599 /* NGNoOp.m */; };
+		29C249DB117FA6CB00496599 /* NGNoOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249D9117FA6CB00496599 /* NGNoOp.m */; };
+		29C249E0117FAEC300496599 /* NGWaveletDelta.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249DF117FAEC300496599 /* NGWaveletDelta.m */; };
+		29C249E1117FAEC300496599 /* NGWaveletDelta.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249DF117FAEC300496599 /* NGWaveletDelta.m */; };
 		29C7D93E117CC37400F7959C /* NGDocAttributesUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7D93D117CC37400F7959C /* NGDocAttributesUpdate.m */; };
 		29C7D93F117CC37400F7959C /* NGDocAttributesUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7D93D117CC37400F7959C /* NGDocAttributesUpdate.m */; };
 		29C7D996117D0BF700F7959C /* NGUpdateAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7D995117D0BF700F7959C /* NGUpdateAttributes.m */; };
@@ -174,6 +184,17 @@
 		29BD958B1142495C00AA22AE /* NGWaveIdTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveIdTest.m; path = test/lib/model/NGWaveIdTest.m; sourceTree = "<group>"; };
 		29BD95CB11424F3300AA22AE /* NGWaveletIdTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletIdTest.h; path = test/lib/model/NGWaveletIdTest.h; sourceTree = "<group>"; };
 		29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletIdTest.m; path = test/lib/model/NGWaveletIdTest.m; sourceTree = "<group>"; };
+		29C249B7117F72E200496599 /* NGWaveletOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletOperation.h; path = lib/model/operation/NGWaveletOperation.h; sourceTree = "<group>"; };
+		29C249BA117F73AC00496599 /* NGWaveletDocOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletDocOp.h; path = lib/model/operation/NGWaveletDocOp.h; sourceTree = "<group>"; };
+		29C249BB117F73AC00496599 /* NGWaveletDocOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletDocOp.m; path = lib/model/operation/NGWaveletDocOp.m; sourceTree = "<group>"; };
+		29C249CA117F78CF00496599 /* NGAddParticipantOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGAddParticipantOp.h; path = lib/model/operation/NGAddParticipantOp.h; sourceTree = "<group>"; };
+		29C249CB117F78CF00496599 /* NGAddParticipantOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGAddParticipantOp.m; path = lib/model/operation/NGAddParticipantOp.m; sourceTree = "<group>"; };
+		29C249D2117F79F200496599 /* NGRemoveParticipantOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRemoveParticipantOp.h; path = lib/model/operation/NGRemoveParticipantOp.h; sourceTree = "<group>"; };
+		29C249D3117F79F200496599 /* NGRemoveParticipantOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGRemoveParticipantOp.m; path = lib/model/operation/NGRemoveParticipantOp.m; sourceTree = "<group>"; };
+		29C249D8117FA6CB00496599 /* NGNoOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGNoOp.h; path = lib/model/operation/NGNoOp.h; sourceTree = "<group>"; };
+		29C249D9117FA6CB00496599 /* NGNoOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGNoOp.m; path = lib/model/operation/NGNoOp.m; sourceTree = "<group>"; };
+		29C249DE117FAEC300496599 /* NGWaveletDelta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletDelta.h; path = lib/model/operation/NGWaveletDelta.h; sourceTree = "<group>"; };
+		29C249DF117FAEC300496599 /* NGWaveletDelta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletDelta.m; path = lib/model/operation/NGWaveletDelta.m; sourceTree = "<group>"; };
 		29C7D93C117CC37400F7959C /* NGDocAttributesUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocAttributesUpdate.h; path = lib/model/document/operation/NGDocAttributesUpdate.h; sourceTree = "<group>"; };
 		29C7D93D117CC37400F7959C /* NGDocAttributesUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocAttributesUpdate.m; path = lib/model/document/operation/NGDocAttributesUpdate.m; sourceTree = "<group>"; };
 		29C7D994117D0BF700F7959C /* NGUpdateAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGUpdateAttributes.h; path = lib/model/document/operation/component/NGUpdateAttributes.h; sourceTree = "<group>"; };
@@ -399,6 +420,7 @@
 		29BD94DF114235AE00AA22AE /* model */ = {
 			isa = PBXGroup;
 			children = (
+				29C249A9117F722200496599 /* operation */,
 				29C801EC11703E7E00F77D7F /* document */,
 				29C80155116FE7D800F77D7F /* id */,
 				29CDE9C7114C8C6100B95C82 /* NGRpcMessage.h */,
@@ -426,6 +448,24 @@
 				29258B02114ED59800ED4F98 /* NGWaveNameTest.m */,
 			);
 			name = model;
+			sourceTree = "<group>";
+		};
+		29C249A9117F722200496599 /* operation */ = {
+			isa = PBXGroup;
+			children = (
+				29C249DE117FAEC300496599 /* NGWaveletDelta.h */,
+				29C249DF117FAEC300496599 /* NGWaveletDelta.m */,
+				29C249B7117F72E200496599 /* NGWaveletOperation.h */,
+				29C249BA117F73AC00496599 /* NGWaveletDocOp.h */,
+				29C249BB117F73AC00496599 /* NGWaveletDocOp.m */,
+				29C249CA117F78CF00496599 /* NGAddParticipantOp.h */,
+				29C249CB117F78CF00496599 /* NGAddParticipantOp.m */,
+				29C249D2117F79F200496599 /* NGRemoveParticipantOp.h */,
+				29C249D3117F79F200496599 /* NGRemoveParticipantOp.m */,
+				29C249D8117FA6CB00496599 /* NGNoOp.h */,
+				29C249D9117FA6CB00496599 /* NGNoOp.m */,
+			);
+			name = operation;
 			sourceTree = "<group>";
 		};
 		29C80155116FE7D800F77D7F /* id */ = {
@@ -689,6 +729,11 @@
 				291F39C8117A46A5001CAD54 /* NGDocAttributes.m in Sources */,
 				29C7D93F117CC37400F7959C /* NGDocAttributesUpdate.m in Sources */,
 				29C7D997117D0BF700F7959C /* NGUpdateAttributes.m in Sources */,
+				29C249BC117F73AC00496599 /* NGWaveletDocOp.m in Sources */,
+				29C249CC117F78CF00496599 /* NGAddParticipantOp.m in Sources */,
+				29C249D4117F79F200496599 /* NGRemoveParticipantOp.m in Sources */,
+				29C249DA117FA6CB00496599 /* NGNoOp.m in Sources */,
+				29C249E0117FAEC300496599 /* NGWaveletDelta.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -727,6 +772,11 @@
 				291F39C7117A46A5001CAD54 /* NGDocAttributes.m in Sources */,
 				29C7D93E117CC37400F7959C /* NGDocAttributesUpdate.m in Sources */,
 				29C7D996117D0BF700F7959C /* NGUpdateAttributes.m in Sources */,
+				29C249BD117F73AC00496599 /* NGWaveletDocOp.m in Sources */,
+				29C249CD117F78CF00496599 /* NGAddParticipantOp.m in Sources */,
+				29C249D5117F79F200496599 /* NGRemoveParticipantOp.m in Sources */,
+				29C249DB117FA6CB00496599 /* NGNoOp.m in Sources */,
+				29C249E1117FAEC300496599 /* NGWaveletDelta.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
