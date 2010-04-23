@@ -70,8 +70,8 @@
 	return self;
 }
 
-- (ProtocolDocumentOperation *) build {
-	return [NGBufferedDocOp create:_docOpComponents];
+- (NGMutateDocument *) build {
+	return [NGMutateDocument mutateDocument:_docOpComponents];
 }
 
 - (void) dealloc {

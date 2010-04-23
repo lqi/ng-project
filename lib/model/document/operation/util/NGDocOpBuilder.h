@@ -17,10 +17,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../../../../proto/Common.pb.h"
-
 #import "../NGDocAttributes.h"
 #import "../NGDocAttributesUpdate.h"
+#import "../NGMutateDocument.h"
 
 #import "../component/NGCharacters.h"
 #import "../component/NGDeleteCharacters.h"
@@ -30,8 +29,6 @@
 #import "../component/NGDeleteElementEnd.h"
 #import "../component/NGRetain.h"
 #import "../component/NGUpdateAttributes.h"
-
-#import "NGBufferedDocOp.h"
 
 @interface NGDocOpBuilder : NSObject {
 	NSMutableArray *_docOpComponents;
@@ -48,6 +45,6 @@
 - (NGDocOpBuilder *) retain:(NSInteger)retainItemCount;
 - (NGDocOpBuilder *) updateAttributes:(NGDocAttributesUpdate *)update;
 
-- (ProtocolDocumentOperation *) build;
+- (NGMutateDocument *) build;
 
 @end

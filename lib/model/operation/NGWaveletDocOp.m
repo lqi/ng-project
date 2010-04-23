@@ -20,19 +20,24 @@
 @implementation NGWaveletDocOp
 
 @synthesize documentId;
-@synthesize operation;
+@synthesize mutateDocument;
 
-+ (NGWaveletDocOp *) documentOperation:(ProtocolDocumentOperation *)theOperation andDocumentId:(NSString *)theDocumentId {
++ (NGWaveletDocOp *) documentOperationWithDocumentId:(NSString *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument {
 	NGWaveletDocOp *waveletDocOpInstance = [[[NGWaveletDocOp alloc] init] autorelease];
 	waveletDocOpInstance.documentId = theDocumentId;
-	waveletDocOpInstance.operation = theOperation;
+	waveletDocOpInstance.mutateDocument = theMutateDocument;
 	return waveletDocOpInstance;
 }
 
 - (ProtocolWaveletOperation *) buffer {
+	ProtocolDocumentOperation_Builder *docOpBuilder = [ProtocolDocumentOperation builder];
+	for (id <NGDocOpComponent> component in [self.mutateDocument documentOperations]) {
+		[docOpBuilder addComponent:[component buffer]];
+	}
+	
 	ProtocolWaveletOperation_MutateDocument_Builder *mutationDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
 	[mutationDocBuilder setDocumentId:self.documentId];
-	[mutationDocBuilder setDocumentOperation:self.operation];
+	[mutationDocBuilder setDocumentOperation:[docOpBuilder build]];
 	ProtocolWaveletOperation_Builder *waveletOpBuilder = [ProtocolWaveletOperation builder];
 	[waveletOpBuilder setMutateDocument:[mutationDocBuilder build]];
 	return [waveletOpBuilder build];

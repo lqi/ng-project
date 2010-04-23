@@ -51,7 +51,7 @@
 - (void)deleteCurrentElement:(int)caretOffset;
 - (void)updateAttributeInPosition:(int)positionOffset forKey:(NSString *)key value:(NSString *)value;
 - (void)replaceAttributeInPosition:(int)positionOffset forKey:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
-- (void)sendDocumentOperation:(ProtocolDocumentOperation *)docOp;
+- (void)sendDocumentOperation:(NGMutateDocument *)docOp;
 
 - (void)openWithNetwork:(NGNetwork *)network WaveId:(NGWaveId *)waveId waveletId:(NGWaveletId *)waveletId participantId:(NGParticipantId *)participantId sequenceNo:(long)seqNo;
 - (void)close;

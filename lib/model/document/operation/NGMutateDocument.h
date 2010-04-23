@@ -15,15 +15,20 @@
  * 
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <Foundation/Foundation.h>
 
-#import "Common.pb.h"
+#import "../../../proto/Common.pb.h"
 
-#import "NGBufferedDocOp.h"
-#import "NGCharacters.h"
-#import "NGRetain.h"
+#import "NGDocOpComponent.h"
 
-@interface NGBufferedDocOpTest : SenTestCase {
+@interface NGMutateDocument : NSObject {
+	NSMutableArray *_documentOperations;
 }
+
++ (NGMutateDocument *) mutateDocument:(NSArray *)documentOperations;
+
+-(void) addOperation:(id <NGDocOpComponent>)operation;
+
+- (NSArray *) documentOperations;
 
 @end

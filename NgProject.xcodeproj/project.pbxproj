@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* NgProjectAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* NgProjectAppDelegate.m */; };
+		290696211181056D00932015 /* NGMutateDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 290696201181056D00932015 /* NGMutateDocument.m */; };
+		290696221181056D00932015 /* NGMutateDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 290696201181056D00932015 /* NGMutateDocument.m */; };
 		291F39C7117A46A5001CAD54 /* NGDocAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F39C6117A46A5001CAD54 /* NGDocAttributes.m */; };
 		291F39C8117A46A5001CAD54 /* NGDocAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F39C6117A46A5001CAD54 /* NGDocAttributes.m */; };
 		29258B03114ED59800ED4F98 /* NGWaveNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258B02114ED59800ED4F98 /* NGWaveNameTest.m */; };
@@ -72,9 +74,6 @@
 		29C802061170475B00F77D7F /* NGCharacters.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C802041170475B00F77D7F /* NGCharacters.m */; };
 		29C802111170494400F77D7F /* NGDocOpBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C802101170494400F77D7F /* NGDocOpBuilder.m */; };
 		29C802121170494400F77D7F /* NGDocOpBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C802101170494400F77D7F /* NGDocOpBuilder.m */; };
-		29C8DD43117251C600B3B673 /* NGBufferedDocOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8DD42117251C600B3B673 /* NGBufferedDocOp.m */; };
-		29C8DD44117251C600B3B673 /* NGBufferedDocOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8DD42117251C600B3B673 /* NGBufferedDocOp.m */; };
-		29C8DEC311768AC900B3B673 /* NGBufferedDocOpTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8DEC211768AC900B3B673 /* NGBufferedDocOpTest.m */; };
 		29CDE9C9114C8C6100B95C82 /* NGRpcMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */; };
 		29DA8A08116BADEE00D50DFC /* NGElementAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DA8A07116BADEE00D50DFC /* NGElementAttribute.m */; };
 		29DA8A09116BADEE00D50DFC /* NGElementAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DA8A07116BADEE00D50DFC /* NGElementAttribute.m */; };
@@ -144,6 +143,8 @@
 		256AC3D80F4B6AC300CF3369 /* NgProjectAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NgProjectAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* NgProjectAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NgProjectAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* NgProject_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NgProject_Prefix.pch; sourceTree = "<group>"; };
+		2906961F1181056D00932015 /* NGMutateDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGMutateDocument.h; path = lib/model/document/operation/NGMutateDocument.h; sourceTree = "<group>"; };
+		290696201181056D00932015 /* NGMutateDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGMutateDocument.m; path = lib/model/document/operation/NGMutateDocument.m; sourceTree = "<group>"; };
 		291F39C5117A46A5001CAD54 /* NGDocAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocAttributes.h; path = lib/model/document/operation/NGDocAttributes.h; sourceTree = "<group>"; };
 		291F39C6117A46A5001CAD54 /* NGDocAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocAttributes.m; path = lib/model/document/operation/NGDocAttributes.m; sourceTree = "<group>"; };
 		29258B01114ED59800ED4F98 /* NGWaveNameTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveNameTest.h; path = test/lib/model/NGWaveNameTest.h; sourceTree = "<group>"; };
@@ -220,10 +221,6 @@
 		29C802041170475B00F77D7F /* NGCharacters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGCharacters.m; path = lib/model/document/operation/component/NGCharacters.m; sourceTree = "<group>"; };
 		29C8020F1170494400F77D7F /* NGDocOpBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocOpBuilder.h; path = lib/model/document/operation/util/NGDocOpBuilder.h; sourceTree = "<group>"; };
 		29C802101170494400F77D7F /* NGDocOpBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocOpBuilder.m; path = lib/model/document/operation/util/NGDocOpBuilder.m; sourceTree = "<group>"; };
-		29C8DD41117251C600B3B673 /* NGBufferedDocOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGBufferedDocOp.h; path = lib/model/document/operation/util/NGBufferedDocOp.h; sourceTree = "<group>"; };
-		29C8DD42117251C600B3B673 /* NGBufferedDocOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGBufferedDocOp.m; path = lib/model/document/operation/util/NGBufferedDocOp.m; sourceTree = "<group>"; };
-		29C8DEC111768AC900B3B673 /* NGBufferedDocOpTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGBufferedDocOpTest.h; path = test/lib/util/NGBufferedDocOpTest.h; sourceTree = "<group>"; };
-		29C8DEC211768AC900B3B673 /* NGBufferedDocOpTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGBufferedDocOpTest.m; path = test/lib/util/NGBufferedDocOpTest.m; sourceTree = "<group>"; };
 		29CDE9C7114C8C6100B95C82 /* NGRpcMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpcMessage.h; path = lib/model/NGRpcMessage.h; sourceTree = "<group>"; };
 		29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGRpcMessage.m; path = lib/model/NGRpcMessage.m; sourceTree = "<group>"; };
 		29DA8A06116BADEE00D50DFC /* NGElementAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGElementAttribute.h; path = lib/model/NGElementAttribute.h; sourceTree = "<group>"; };
@@ -315,8 +312,6 @@
 			children = (
 				29C8020F1170494400F77D7F /* NGDocOpBuilder.h */,
 				29C802101170494400F77D7F /* NGDocOpBuilder.m */,
-				29C8DD41117251C600B3B673 /* NGBufferedDocOp.h */,
-				29C8DD42117251C600B3B673 /* NGBufferedDocOp.m */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -497,6 +492,8 @@
 		29C801F01170447200F77D7F /* operation */ = {
 			isa = PBXGroup;
 			children = (
+				2906961F1181056D00932015 /* NGMutateDocument.h */,
+				290696201181056D00932015 /* NGMutateDocument.m */,
 				291F39C5117A46A5001CAD54 /* NGDocAttributes.h */,
 				291F39C6117A46A5001CAD54 /* NGDocAttributes.m */,
 				29C7D93C117CC37400F7959C /* NGDocAttributesUpdate.h */,
@@ -534,8 +531,6 @@
 		29C8DEAE11768A3C00B3B673 /* util */ = {
 			isa = PBXGroup;
 			children = (
-				29C8DEC111768AC900B3B673 /* NGBufferedDocOpTest.h */,
-				29C8DEC211768AC900B3B673 /* NGBufferedDocOpTest.m */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -722,8 +717,6 @@
 				29C802011170474700F77D7F /* NGRetain.m in Sources */,
 				29C802051170475B00F77D7F /* NGCharacters.m in Sources */,
 				29C802111170494400F77D7F /* NGDocOpBuilder.m in Sources */,
-				29C8DD44117251C600B3B673 /* NGBufferedDocOp.m in Sources */,
-				29C8DEC311768AC900B3B673 /* NGBufferedDocOpTest.m in Sources */,
 				29392E761177AAE500F3C3CD /* NGDeleteElementStart.m in Sources */,
 				29392E791177AAF800F3C3CD /* NGDeleteElementEnd.m in Sources */,
 				291F39C8117A46A5001CAD54 /* NGDocAttributes.m in Sources */,
@@ -734,6 +727,7 @@
 				29C249D4117F79F200496599 /* NGRemoveParticipantOp.m in Sources */,
 				29C249DA117FA6CB00496599 /* NGNoOp.m in Sources */,
 				29C249E0117FAEC300496599 /* NGWaveletDelta.m in Sources */,
+				290696211181056D00932015 /* NGMutateDocument.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,7 +759,6 @@
 				29C802021170474700F77D7F /* NGRetain.m in Sources */,
 				29C802061170475B00F77D7F /* NGCharacters.m in Sources */,
 				29C802121170494400F77D7F /* NGDocOpBuilder.m in Sources */,
-				29C8DD43117251C600B3B673 /* NGBufferedDocOp.m in Sources */,
 				29392E681177A7D300F3C3CD /* NGDeleteCharacters.m in Sources */,
 				29392E751177AAE500F3C3CD /* NGDeleteElementStart.m in Sources */,
 				29392E7A1177AAF800F3C3CD /* NGDeleteElementEnd.m in Sources */,
@@ -777,6 +770,7 @@
 				29C249D5117F79F200496599 /* NGRemoveParticipantOp.m in Sources */,
 				29C249DB117FA6CB00496599 /* NGNoOp.m in Sources */,
 				29C249E1117FAEC300496599 /* NGWaveletDelta.m in Sources */,
+				290696221181056D00932015 /* NGMutateDocument.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -26,6 +26,7 @@
 #import "model/id/NGWaveName.h"
 #import "model/id/util/NGRandomIdGenerator.h"
 
+#import "model/document/operation/NGMutateDocument.h"
 #import "model/document/operation/NGDocOpComponent.h"
 #import "model/document/operation/NGDocAttributes.h"
 #import "model/document/operation/NGDocAttributesUpdate.h"
@@ -38,7 +39,6 @@
 #import "model/document/operation/component/NGDeleteElementEnd.h"
 #import "model/document/operation/component/NGUpdateAttributes.h"
 #import "model/document/operation/util/NGDocOpBuilder.h"
-#import "model/document/operation/util/NGBufferedDocOp.h"
 
 #import "model/operation/NGWaveletOperation.h"
 #import "model/operation/NGWaveletDocOp.h"

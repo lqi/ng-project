@@ -288,7 +288,7 @@
 	[self sendDocumentOperation:[[[[[NGDocOpBuilder builder] retain:positionOffset] updateAttributes:[[NGDocAttributesUpdate emptyAttributesUpdate] addAttributeWithKey:key oldValue:oldValue andNewValue:newValue]] retain:([self positionLength] - positionOffset - 1)] build]];
 }
 
-- (void)sendDocumentOperation:(ProtocolDocumentOperation *)docOp {
+- (void)sendDocumentOperation:(NGMutateDocument *)docOp {
 	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:_waveId WaveletId:_waveletId];
 	NSString *waveName = [waveUrl url];
 	[waveUrl release];
@@ -301,7 +301,7 @@
 	[hashedVersionBuilder setHistoryHash:self.waveletHistoryHash];
 	
 	NGWaveletDelta *waveletDelta = [NGWaveletDelta waveletDeltaWithAuthor:_participantId];
-	[waveletDelta addOperation:[NGWaveletDocOp documentOperation:docOp andDocumentId:_blipId]];
+	[waveletDelta addOperation:[NGWaveletDocOp documentOperationWithDocumentId:_blipId andMutateDocument:docOp]];
 	[submitRequestBuilder setDelta:[waveletDelta bufferWithVersion:[hashedVersionBuilder build]]];
 	
 	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self seqNo]] viaOutputStream:[_network pbOutputStream]];

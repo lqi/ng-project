@@ -19,16 +19,18 @@
 
 #import "../../proto/Common.pb.h"
 
+#import "../document/operation/NGMutateDocument.h"
+
 #import "NGWaveletOperation.h"
 
 @interface NGWaveletDocOp : NSObject <NGWaveletOperation> {
 	NSString *documentId;
-	ProtocolDocumentOperation *operation;
+	NGMutateDocument *mutateDocument;
 }
 
 @property (retain) NSString *documentId;
-@property (retain) ProtocolDocumentOperation *operation;
+@property (retain) NGMutateDocument *mutateDocument;
 
-+ (NGWaveletDocOp *) documentOperation:(ProtocolDocumentOperation *)theOperation andDocumentId:(NSString *)theDocumentId;
++ (NGWaveletDocOp *) documentOperationWithDocumentId:(NSString *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument;
 
 @end
