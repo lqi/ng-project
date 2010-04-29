@@ -289,19 +289,11 @@
 }
 
 - (void)sendDocumentOperation:(NGMutateDocument *)docOp {
-	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:_waveId WaveletId:_waveletId];
-	NSString *waveName = [waveUrl url];
-	[waveUrl release];
-	
-	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
-	[submitRequestBuilder setWaveletName:waveName];
-	
+	NGWaveName *waveName = [[NGWaveName alloc] initWithWaveId:_waveId WaveletId:_waveletId];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:_participantId] docOp:_blipId andMutateDocument:docOp] build];
 	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveletVersion withHistoryHash:self.waveletHistoryHash];
-	
-	[submitRequestBuilder setDelta:[NGWaveletDeltaSerializer bufferedWaveletDelta:waveletDelta withVersion:hashedVersion]];
-	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self seqNo]] viaOutputStream:[_network pbOutputStream]];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self seqNo]];
+	[NGRpc send:message viaOutputStream:[_network pbOutputStream]];
 }
 
 - (void) apply:(ProtocolWaveletOperation_MutateDocument *)mutateDocument {

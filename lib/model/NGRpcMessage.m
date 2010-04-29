@@ -29,4 +29,11 @@
 	return returnMessage;
 }
 
++ (NGRpcMessage *)submitRequest:(NGWaveName *)waveName waveletDelta:(NGWaveletDelta *)delta hashedVersion:(NGHashedVersion *)version seqNo:(long)sequence {
+	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
+	[submitRequestBuilder setWaveletName:[waveName url]];
+	[submitRequestBuilder setDelta:[NGWaveletDeltaSerializer bufferedWaveletDelta:delta withVersion:version]];
+	return [NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:sequence];
+}
+
 @end
