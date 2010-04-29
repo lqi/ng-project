@@ -39,6 +39,10 @@
 	return _waveId;
 }
 
+- (NSString *) waveIdFollowedByDomain {
+	return [NSString stringWithFormat:@"%@!%@", _domain, _waveId];
+}
+
 - (BOOL) isEqual:(id)object {
 	if (![[[self class] description] isEqual:[[object class] description]]) {
 		return NO;

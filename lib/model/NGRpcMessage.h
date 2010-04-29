@@ -28,6 +28,7 @@
 @property (retain) PBGeneratedMessage *message;
 
 + (NGRpcMessage *)rpcMessage:(PBGeneratedMessage *)pbMessage sequenceNo:(long)sequence;
++ (NGRpcMessage *)openRequest:(NGWaveId *)waveId participantId:(NGParticipantId *)participantId seqNo:(long)sequence;
 + (NGRpcMessage *)submitRequest:(NGWaveName *)waveName waveletDelta:(NGWaveletDelta *)delta hashedVersion:(NGHashedVersion *)version seqNo:(long)sequence;
 
 @end

@@ -29,4 +29,6 @@
 - (NSString *) domain;
 - (NSString *) waveId;
 
+- (NSString *) waveIdFollowedByDomain;
+
 @end

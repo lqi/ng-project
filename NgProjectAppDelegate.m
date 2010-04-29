@@ -148,12 +148,8 @@
 	[self.waveTextView openWithNetwork:network WaveId:[NGWaveId waveIdWithDomain:[waveId domain] waveId:[waveId waveId]] waveletId:[NGWaveletId waveletIdWithDomain:[waveId domain] waveletId:@"conv+root"] participantId:participantId sequenceNo:_seqNo];
 	[self.currentWave setStringValue:[self.waveTextView openWaveId]];
 	
-	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
-	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
-	[openRequestBuilder setWaveId:[NSString stringWithFormat:@"%@!%@", [waveId domain], [waveId waveId]]];
-	[NGRpc send:[NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];	
-	
-	[waveId release];
+	NGRpcMessage *message = [NGRpcMessage openRequest:waveId participantId:participantId seqNo:[self getSequenceNo]];
+	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 }
 
 - (IBAction) closeWave:(id)sender {
@@ -193,11 +189,9 @@
 	if (![network isConnected]) {
 		return;
 	}
-	
-	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
-	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
-	[openRequestBuilder setWaveId:@"indexwave!indexwave"];
-	[NGRpc send:[NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];	
+	NGWaveId *waveId = [NGWaveId waveIdWithDomain:@"indexwave" waveId:@"indexwave"];
+	NGRpcMessage *message = [NGRpcMessage openRequest:waveId participantId:participantId seqNo:[self getSequenceNo]];
+	[NGRpc send:message viaOutputStream:[network pbOutputStream]];	
 }
 
 - (IBAction) newWave:(id)sender {
