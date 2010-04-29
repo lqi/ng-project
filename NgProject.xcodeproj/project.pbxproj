@@ -75,6 +75,12 @@
 		29C802111170494400F77D7F /* NGDocOpBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C802101170494400F77D7F /* NGDocOpBuilder.m */; };
 		29C802121170494400F77D7F /* NGDocOpBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C802101170494400F77D7F /* NGDocOpBuilder.m */; };
 		29CDE9C9114C8C6100B95C82 /* NGRpcMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */; };
+		29D7A4BA118A1DA100CAF51F /* NGWaveletDeltaBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D7A4B9118A1DA100CAF51F /* NGWaveletDeltaBuilder.m */; };
+		29D7A4BB118A1DA100CAF51F /* NGWaveletDeltaBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D7A4B9118A1DA100CAF51F /* NGWaveletDeltaBuilder.m */; };
+		29D7A4C4118A23B000CAF51F /* NGWaveletDeltaSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D7A4C3118A23B000CAF51F /* NGWaveletDeltaSerializer.m */; };
+		29D7A4C5118A23B000CAF51F /* NGWaveletDeltaSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D7A4C3118A23B000CAF51F /* NGWaveletDeltaSerializer.m */; };
+		29D7A4C8118A23CD00CAF51F /* NGHashedVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D7A4C7118A23CD00CAF51F /* NGHashedVersion.m */; };
+		29D7A4C9118A23CD00CAF51F /* NGHashedVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D7A4C7118A23CD00CAF51F /* NGHashedVersion.m */; };
 		29DA8A08116BADEE00D50DFC /* NGElementAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DA8A07116BADEE00D50DFC /* NGElementAttribute.m */; };
 		29DA8A09116BADEE00D50DFC /* NGElementAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DA8A07116BADEE00D50DFC /* NGElementAttribute.m */; };
 		29DA8A0C116BB44A00D50DFC /* NGTextViewEditingStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DA8A0B116BB44A00D50DFC /* NGTextViewEditingStyle.m */; };
@@ -223,6 +229,12 @@
 		29C802101170494400F77D7F /* NGDocOpBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocOpBuilder.m; path = lib/model/document/operation/util/NGDocOpBuilder.m; sourceTree = "<group>"; };
 		29CDE9C7114C8C6100B95C82 /* NGRpcMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpcMessage.h; path = lib/model/NGRpcMessage.h; sourceTree = "<group>"; };
 		29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGRpcMessage.m; path = lib/model/NGRpcMessage.m; sourceTree = "<group>"; };
+		29D7A4B8118A1DA100CAF51F /* NGWaveletDeltaBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletDeltaBuilder.h; path = lib/model/operation/util/NGWaveletDeltaBuilder.h; sourceTree = "<group>"; };
+		29D7A4B9118A1DA100CAF51F /* NGWaveletDeltaBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletDeltaBuilder.m; path = lib/model/operation/util/NGWaveletDeltaBuilder.m; sourceTree = "<group>"; };
+		29D7A4C2118A23B000CAF51F /* NGWaveletDeltaSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletDeltaSerializer.h; path = lib/model/operation/util/NGWaveletDeltaSerializer.h; sourceTree = "<group>"; };
+		29D7A4C3118A23B000CAF51F /* NGWaveletDeltaSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletDeltaSerializer.m; path = lib/model/operation/util/NGWaveletDeltaSerializer.m; sourceTree = "<group>"; };
+		29D7A4C6118A23CD00CAF51F /* NGHashedVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGHashedVersion.h; path = lib/model/operation/NGHashedVersion.h; sourceTree = "<group>"; };
+		29D7A4C7118A23CD00CAF51F /* NGHashedVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGHashedVersion.m; path = lib/model/operation/NGHashedVersion.m; sourceTree = "<group>"; };
 		29DA8A06116BADEE00D50DFC /* NGElementAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGElementAttribute.h; path = lib/model/NGElementAttribute.h; sourceTree = "<group>"; };
 		29DA8A07116BADEE00D50DFC /* NGElementAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGElementAttribute.m; path = lib/model/NGElementAttribute.m; sourceTree = "<group>"; };
 		29DA8A0A116BB44A00D50DFC /* NGTextViewEditingStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGTextViewEditingStyle.h; sourceTree = "<group>"; };
@@ -459,6 +471,9 @@
 				29C249D3117F79F200496599 /* NGRemoveParticipantOp.m */,
 				29C249D8117FA6CB00496599 /* NGNoOp.h */,
 				29C249D9117FA6CB00496599 /* NGNoOp.m */,
+				29D7A4C6118A23CD00CAF51F /* NGHashedVersion.h */,
+				29D7A4C7118A23CD00CAF51F /* NGHashedVersion.m */,
+				29D7A4B3118A1D1100CAF51F /* util */,
 			);
 			name = operation;
 			sourceTree = "<group>";
@@ -531,6 +546,17 @@
 		29C8DEAE11768A3C00B3B673 /* util */ = {
 			isa = PBXGroup;
 			children = (
+			);
+			name = util;
+			sourceTree = "<group>";
+		};
+		29D7A4B3118A1D1100CAF51F /* util */ = {
+			isa = PBXGroup;
+			children = (
+				29D7A4B8118A1DA100CAF51F /* NGWaveletDeltaBuilder.h */,
+				29D7A4B9118A1DA100CAF51F /* NGWaveletDeltaBuilder.m */,
+				29D7A4C2118A23B000CAF51F /* NGWaveletDeltaSerializer.h */,
+				29D7A4C3118A23B000CAF51F /* NGWaveletDeltaSerializer.m */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -728,6 +754,9 @@
 				29C249DA117FA6CB00496599 /* NGNoOp.m in Sources */,
 				29C249E0117FAEC300496599 /* NGWaveletDelta.m in Sources */,
 				290696211181056D00932015 /* NGMutateDocument.m in Sources */,
+				29D7A4BA118A1DA100CAF51F /* NGWaveletDeltaBuilder.m in Sources */,
+				29D7A4C4118A23B000CAF51F /* NGWaveletDeltaSerializer.m in Sources */,
+				29D7A4C8118A23CD00CAF51F /* NGHashedVersion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -771,6 +800,9 @@
 				29C249DB117FA6CB00496599 /* NGNoOp.m in Sources */,
 				29C249E1117FAEC300496599 /* NGWaveletDelta.m in Sources */,
 				290696221181056D00932015 /* NGMutateDocument.m in Sources */,
+				29D7A4BB118A1DA100CAF51F /* NGWaveletDeltaBuilder.m in Sources */,
+				29D7A4C5118A23B000CAF51F /* NGWaveletDeltaSerializer.m in Sources */,
+				29D7A4C9118A23CD00CAF51F /* NGHashedVersion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

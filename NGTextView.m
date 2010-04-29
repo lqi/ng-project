@@ -296,13 +296,10 @@
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
 	[submitRequestBuilder setWaveletName:waveName];
 	
-	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:self.waveletVersion];
-	[hashedVersionBuilder setHistoryHash:self.waveletHistoryHash];
+	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:_participantId] docOp:_blipId andMutateDocument:docOp] build];
+	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveletVersion withHistoryHash:self.waveletHistoryHash];
 	
-	NGWaveletDelta *waveletDelta = [NGWaveletDelta waveletDeltaWithAuthor:_participantId];
-	[waveletDelta addOperation:[NGWaveletDocOp documentOperationWithDocumentId:_blipId andMutateDocument:docOp]];
-	[submitRequestBuilder setDelta:[waveletDelta bufferWithVersion:[hashedVersionBuilder build]]];
+	[submitRequestBuilder setDelta:[NGWaveletDeltaSerializer bufferedWaveletDelta:waveletDelta withVersion:hashedVersion]];
 	
 	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self seqNo]] viaOutputStream:[_network pbOutputStream]];
 }

@@ -46,6 +46,9 @@
 #import "model/operation/NGRemoveParticipantOp.h"
 #import "model/operation/NGNoOp.h"
 #import "model/operation/NGWaveletDelta.h"
+#import "model/operation/NGHashedVersion.h"
+#import "model/operation/util/NGWaveletDeltaBuilder.h"
+#import "model/operation/util/NGWaveletDeltaSerializer.h"
 
 #import "model/NGRpcMessage.h"
 #import "model/NGElementAttribute.h"

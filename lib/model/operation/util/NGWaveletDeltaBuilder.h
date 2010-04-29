@@ -17,26 +17,20 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../../proto/Common.pb.h"
-
-#import "../id/NGParticipantId.h"
-
-#import "NGWaveletOperation.h"
-
-@interface NGWaveletDelta : NSObject {
-	NGParticipantId *author;
+@interface NGWaveletDeltaBuilder : NSObject {
+	NGParticipantId *_author;
 	NSMutableArray *_operations;
 }
 
-@property (retain) NGParticipantId *author;
+- (void) setAuthor:(NGParticipantId *)author;
 
-+ (NGWaveletDelta *) waveletDelta;
-+ (NGWaveletDelta *) waveletDeltaWithAuthor:(NGParticipantId *)theAuthor;
-+ (NGWaveletDelta *) waveletDeltaWithAuthor:(NGParticipantId *)theAuthor andOperations:(NSArray *)theOperations;
++ (NGWaveletDeltaBuilder *) builder:(NGParticipantId *)author;
 
-- (void) addOperation:(id <NGWaveletOperation>)operation;
-- (void) setOperations:(NSArray *)theOperations;
+- (NGWaveletDeltaBuilder *) docOp:(NSString *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument;
+- (NGWaveletDeltaBuilder *) addParticipantOp:(NGParticipantId *)theParticipant;
+- (NGWaveletDeltaBuilder *) removeParticipantOp:(NGParticipantId *)theParticipant;
+- (NGWaveletDeltaBuilder *) noOp;
 
-- (NSArray *) operations;
+- (NGWaveletDelta *) build;
 
 @end

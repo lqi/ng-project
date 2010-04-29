@@ -55,14 +55,8 @@
 	}
 }
 
-- (ProtocolWaveletDelta *) bufferWithVersion:(ProtocolHashedVersion *)version {
-	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[self.author participantIdAtDomain]];
-	for (id <NGWaveletOperation> operation in _operations) {
-		[deltaBuilder addOperation:[operation buffer]];
-	}
-	[deltaBuilder setHashedVersion:version];
-	return [deltaBuilder build];
+- (NSArray *) operations {
+	return _operations;
 }
 
 - (void) dealloc {

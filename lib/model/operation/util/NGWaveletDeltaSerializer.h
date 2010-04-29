@@ -17,26 +17,14 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../../proto/Common.pb.h"
+#import "../../../proto/Common.pb.h"
 
-#import "../id/NGParticipantId.h"
+#import "../NGHashedVersion.h"
 
-#import "NGWaveletOperation.h"
+@interface NGWaveletDeltaSerializer : NSObject {
 
-@interface NGWaveletDelta : NSObject {
-	NGParticipantId *author;
-	NSMutableArray *_operations;
 }
 
-@property (retain) NGParticipantId *author;
-
-+ (NGWaveletDelta *) waveletDelta;
-+ (NGWaveletDelta *) waveletDeltaWithAuthor:(NGParticipantId *)theAuthor;
-+ (NGWaveletDelta *) waveletDeltaWithAuthor:(NGParticipantId *)theAuthor andOperations:(NSArray *)theOperations;
-
-- (void) addOperation:(id <NGWaveletOperation>)operation;
-- (void) setOperations:(NSArray *)theOperations;
-
-- (NSArray *) operations;
++ (ProtocolWaveletDelta *) bufferedWaveletDelta:(NGWaveletDelta *)waveletDelta withVersion:(NGHashedVersion *)version;
 
 @end
