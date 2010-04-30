@@ -46,4 +46,9 @@
 	STAssertEqualObjects([testUrl url], @"wave://testDomain/testWaveId/testWaveletId", @"string value of this wave url should be 'wave://testDomain/testWaveId/testWaveletId'");
 }
 
+- (void) testStringValueWithGlobalInitializeMethod {
+	NGWaveName *testUrl = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:@"testWaveDomain" waveId:@"testWaveId"] andWaveletId:[NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"]];
+	STAssertEqualObjects([testUrl url], @"wave://testDomain/testWaveId/testWaveletId", @"string value of this wave url should be 'wave://testDomain/testWaveId/testWaveletId'");
+}
+
 @end

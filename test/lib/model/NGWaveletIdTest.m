@@ -36,9 +36,8 @@
 }
 
 - (void) testEquals {
-	NGWaveletId *compareWaveletId = [[NGWaveletId alloc] initWithDomain:@"testDomain" waveletId:@"testId"];
+	NGWaveletId *compareWaveletId = [NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testId"];
 	STAssertEqualObjects(_waveletId, compareWaveletId, @"WaveId with same domain and id should be equal");
-	[compareWaveletId release];
 }
 
 @end

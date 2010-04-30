@@ -35,10 +35,13 @@
 	STAssertEqualObjects([_waveId waveId], @"testId", @"waveId should be 'waveId'");
 }
 
+- (void) testWaveIdFollowedByDomain {
+	STAssertEqualObjects([_waveId waveIdFollowedByDomain], @"testDomain!testId", @"waveIdFollowedByDomain should be 'testDomain!testId");
+}
+
 - (void) testEquals {
-	NGWaveId *compareWaveId = [[NGWaveId alloc] initWithDomain:@"testDomain" waveId:@"testId"];
+	NGWaveId *compareWaveId = [NGWaveId waveIdWithDomain:@"testDomain" waveId:@"testId"];
 	STAssertEqualObjects(_waveId, compareWaveId, @"WaveId with same domain and id should be equal");
-	[compareWaveId release];
 }
 
 @end
