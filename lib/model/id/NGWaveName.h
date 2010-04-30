@@ -28,6 +28,8 @@
 @property (retain) NGWaveId *waveId;
 @property (retain) NGWaveletId *waveletId;
 
++ (NGWaveName *) waveNameWithWaveId:(NGWaveId *)aWaveId andWaveletId:(NGWaveletId *)aWaveletId;
+
 - (NSString *)domain;
 
 - (id) initWithWaveId:(NGWaveId *)aWaveId WaveletId:(NGWaveletId *)aWaveletId;

@@ -289,7 +289,7 @@
 }
 
 - (void)sendDocumentOperation:(NGMutateDocument *)docOp {
-	NGWaveName *waveName = [[NGWaveName alloc] initWithWaveId:_waveId WaveletId:_waveletId];
+	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:_waveId andWaveletId:_waveletId];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:_participantId] docOp:_blipId andMutateDocument:docOp] build];
 	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveletVersion withHistoryHash:self.waveletHistoryHash];
 	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self seqNo]];

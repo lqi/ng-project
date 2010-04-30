@@ -22,14 +22,18 @@
 @synthesize waveId;
 @synthesize waveletId;
 
++ (NGWaveName *) waveNameWithWaveId:(NGWaveId *)aWaveId andWaveletId:(NGWaveletId *)aWaveletId {
+	return [[[NGWaveName alloc] initWithWaveId:aWaveId WaveletId:aWaveletId] autorelease];
+}
+
 - (NSString *)domain {
 	return [[self waveletId] domain];
 }
 
 - (id) initWithWaveId:(NGWaveId *)aWaveId WaveletId:(NGWaveletId *)aWaveletId {
 	if (self = [super init]) {
-		[self setWaveId:aWaveId];
-		[self setWaveletId:aWaveletId];
+		self.waveId = aWaveId;
+		self.waveletId = aWaveletId;
 	}
 	return self;
 }
