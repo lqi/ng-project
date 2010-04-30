@@ -17,6 +17,15 @@
 
 #import <Foundation/Foundation.h>
 
+#import "../../id/NGParticipantId.h"
+#import "../../document/operation/NGMutateDocument.h"
+#import "../NGWaveletDelta.h"
+
+#import "../NGWaveletDocOp.h"
+#import "../NGAddParticipantOp.h"
+#import "../NGRemoveParticipantOp.h"
+#import "../NGNoOp.h"
+
 @interface NGWaveletDeltaBuilder : NSObject {
 	NGParticipantId *_author;
 	NSMutableArray *_operations;

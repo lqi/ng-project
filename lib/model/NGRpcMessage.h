@@ -19,6 +19,15 @@
 
 #import "ProtocolBuffers.h"
 
+#import "../proto/WaveclientRpc.pb.h"
+
+#import "id/NGWaveId.h"
+#import "id/NGWaveName.h"
+#import "id/NGParticipantId.h"
+#import "operation/NGWaveletDelta.h"
+#import "operation/NGHashedVersion.h"
+#import "operation/util/NGWaveletDeltaSerializer.h"
+
 @interface NGRpcMessage : NSObject {
 	long sequenceNo;
 	PBGeneratedMessage *message;

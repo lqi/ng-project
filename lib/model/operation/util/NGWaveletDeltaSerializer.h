@@ -19,6 +19,7 @@
 
 #import "../../../proto/Common.pb.h"
 
+#import "../NGWaveletDelta.h"
 #import "../NGHashedVersion.h"
 
 @interface NGWaveletDeltaSerializer : NSObject {

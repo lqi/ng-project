@@ -24,6 +24,7 @@
 #import "model/id/NGWaveletId.h"
 #import "model/id/NGParticipantId.h"
 #import "model/id/NGWaveName.h"
+#import "model/id/NGIdConstant.h"
 #import "model/id/util/NGRandomIdGenerator.h"
 
 #import "model/document/operation/NGMutateDocument.h"
