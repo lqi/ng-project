@@ -199,76 +199,30 @@
 		return;
 	}
 	
-	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[idGenerator newWaveId] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl url];
-	[waveUrl release];
-	NSString *blipName = [idGenerator newDocumentId];
+	NGWaveName *newWaveName = [NGWaveName waveNameWithWaveId:[idGenerator newWaveId] andWaveletId:[idGenerator newConversationRootWaveletId]];
+	NSString *newBlipName = [idGenerator newDocumentId];
 	
-	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
-	[submitRequestBuilder setWaveletName:waveName];
+	NGMutateDocument *newConversation = [[[[[[NGDocOpBuilder builder]
+										 elementStart:@"conversation" withAttributes:[NGDocAttributes emptyAttribute]]
+										 elementStart:@"blip" withAttributes:[[NGDocAttributes emptyAttribute] addAttributeWithKey:@"id" andValue:newBlipName]]
+										 elementEnd]
+										 elementEnd]
+										 build];
 	
-	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
+	NGMutateDocument *newBlipOp = [[[[[[[[NGDocOpBuilder builder]
+								   elementStart:@"contributor" withAttributes:[[NGDocAttributes emptyAttribute] addAttributeWithKey:@"name" andValue:[participantId participantIdAtDomain]]]
+								   elementEnd]
+								   elementStart:@"body" withAttributes:[NGDocAttributes emptyAttribute]]
+								   elementStart:@"line" withAttributes:[NGDocAttributes emptyAttribute]]
+								   elementEnd]
+								   elementEnd]
+								   build];
 	
-	// First Operation to add current user as the participant
-	ProtocolWaveletOperation_Builder *opAddParticipantBuilder = [ProtocolWaveletOperation builder];
-	[opAddParticipantBuilder setAddParticipant:[participantId participantIdAtDomain]];
-	[deltaBuilder addOperation:[opAddParticipantBuilder build]];
+	NGWaveletDelta *newWaveletDelta = [[[[[NGWaveletDeltaBuilder builder:participantId] addParticipantOp:participantId] docOp:@"conversation" andMutateDocument:newConversation] docOp:newBlipName andMutateDocument:newBlipOp] build];
 	
-	// Second Operation to create the conversation
-	ProtocolDocumentOperation_Component_ElementStart_Builder *conversationElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
-	[conversationElementStartBuilder setType:@"conversation"];
-	ProtocolDocumentOperation_Component_ElementStart_Builder *newBlipElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
-	[newBlipElementStartBuilder setType:@"blip"];
-	ProtocolDocumentOperation_Component_KeyValuePair_Builder *newBlipAttributeBuilder = [ProtocolDocumentOperation_Component_KeyValuePair builder];
-	[newBlipAttributeBuilder setKey:@"id"];
-	[newBlipAttributeBuilder setValue:blipName];
-	[newBlipElementStartBuilder addAttribute:[newBlipAttributeBuilder build]];
-	ProtocolDocumentOperation_Builder *docOpBuilder = [ProtocolDocumentOperation builder];
-	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[conversationElementStartBuilder build]] build]];
-	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[newBlipElementStartBuilder build]] build]];
-	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
-	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
-	ProtocolWaveletOperation_MutateDocument_Builder *mutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
-	[mutateDocBuilder setDocumentId:@"conversation"];
-	[mutateDocBuilder setDocumentOperation:[docOpBuilder build]];
-	ProtocolWaveletOperation_Builder *opCreateConversationBuilder = [ProtocolWaveletOperation builder];
-	[opCreateConversationBuilder setMutateDocument:[mutateDocBuilder build]];
-	[deltaBuilder addOperation:[opCreateConversationBuilder build]];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:newWaveName waveletDelta:newWaveletDelta hashedVersion:[NGHashedVersion hashedVersion:0 withHistoryHash:[[newWaveName url] dataUsingEncoding:NSUTF8StringEncoding]] seqNo:[self getSequenceNo]];
 	
-	// Third Operation to add a new document in the conversation
-	ProtocolDocumentOperation_Component_ElementStart_Builder *blipContributorElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
-	[blipContributorElementStartBuilder setType:@"contributor"];
-	ProtocolDocumentOperation_Component_KeyValuePair_Builder *contributorAttributeBuilder = [ProtocolDocumentOperation_Component_KeyValuePair builder];
-	[contributorAttributeBuilder setKey:@"name"];
-	[contributorAttributeBuilder setValue:[participantId participantIdAtDomain]];
-	[blipContributorElementStartBuilder addAttribute:[contributorAttributeBuilder build]];
-	ProtocolDocumentOperation_Component_ElementStart_Builder *blipBodyElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
-	[blipBodyElementStartBuilder setType:@"body"];
-	ProtocolDocumentOperation_Component_ElementStart_Builder *blipLineElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
-	[blipLineElementStartBuilder setType:@"line"];
-	ProtocolDocumentOperation_Builder *blipDocOpBuilder = [ProtocolDocumentOperation builder];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipContributorElementStartBuilder build]] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipBodyElementStartBuilder build]] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[blipLineElementStartBuilder build]] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
-	[blipDocOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
-	ProtocolWaveletOperation_MutateDocument_Builder *blipMutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
-	[blipMutateDocBuilder setDocumentId:blipName];
-	[blipMutateDocBuilder setDocumentOperation:[blipDocOpBuilder build]];
-	ProtocolWaveletOperation_Builder *blipOpCreateConversationBuilder = [ProtocolWaveletOperation builder];
-	[blipOpCreateConversationBuilder setMutateDocument:[blipMutateDocBuilder build]];
-	[deltaBuilder addOperation:[blipOpCreateConversationBuilder build]];
-	
-	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:0];
-	[hashedVersionBuilder setHistoryHash:[waveName dataUsingEncoding:NSUTF8StringEncoding]];
-	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
-	
-	[submitRequestBuilder setDelta:[deltaBuilder build]];
-	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];	
+	[NGRpc send:message viaOutputStream:[network pbOutputStream]];	
 }
 
 - (IBAction) addParticipant:(id)sender {
@@ -276,29 +230,12 @@
 		return;
 	}
 	
-	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl url];
-	[waveUrl release];
-	
-	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
-	[submitRequestBuilder setWaveletName:waveName];
-	
-	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
-	
-	ProtocolWaveletOperation_Builder *opAddParticipantBuilder = [ProtocolWaveletOperation builder];
 	NGParticipantId *addParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[self.participantAdd stringValue]];
-	[opAddParticipantBuilder setAddParticipant:[addParticipantId participantIdAtDomain]];
-	[deltaBuilder addOperation:[opAddParticipantBuilder build]];
-	
-	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:self.waveTextView.waveletVersion];
-	[hashedVersionBuilder setHistoryHash:self.waveTextView.waveletHistoryHash];
-	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
-	
-	[submitRequestBuilder setDelta:[deltaBuilder build]];
-	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
+	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[idGenerator newConversationRootWaveletId]];
+	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] addParticipantOp:addParticipantId] build];
+	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveTextView.waveletVersion withHistoryHash:self.waveTextView.waveletHistoryHash];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self getSequenceNo]];
+	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 	
 	[self.participantAdd setStringValue:@""];
 }
@@ -308,29 +245,12 @@
 		return;
 	}
 	
-	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl url];
-	[waveUrl release];
-	
-	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
-	[submitRequestBuilder setWaveletName:waveName];
-	
-	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
-	
-	ProtocolWaveletOperation_Builder *opRemoveParticipantBuilder = [ProtocolWaveletOperation builder];
 	NGParticipantId *rmParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[self.participantList stringValue]];
-	[opRemoveParticipantBuilder setRemoveParticipant:[rmParticipantId participantIdAtDomain]];
-	[deltaBuilder addOperation:[opRemoveParticipantBuilder build]];
-	
-	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:self.waveTextView.waveletVersion];
-	[hashedVersionBuilder setHistoryHash:self.waveTextView.waveletHistoryHash];
-	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
-	
-	[submitRequestBuilder setDelta:[deltaBuilder build]];
-	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
+	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[idGenerator newConversationRootWaveletId]];
+	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] removeParticipantOp:rmParticipantId] build];
+	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveTextView.waveletVersion withHistoryHash:self.waveTextView.waveletHistoryHash];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self getSequenceNo]];
+	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 	
 	[self.participantList setStringValue:@""];
 }
@@ -340,28 +260,11 @@
 		return;
 	}
 	
-	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl url];
-	[waveUrl release];
-	
-	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
-	[submitRequestBuilder setWaveletName:waveName];
-	
-	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
-	
-	ProtocolWaveletOperation_Builder *opRemoveParticipantBuilder = [ProtocolWaveletOperation builder];
-	[opRemoveParticipantBuilder setRemoveParticipant:[participantId participantIdAtDomain]];
-	[deltaBuilder addOperation:[opRemoveParticipantBuilder build]];
-	
-	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:self.waveTextView.waveletVersion];
-	[hashedVersionBuilder setHistoryHash:self.waveTextView.waveletHistoryHash];
-	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
-	
-	[submitRequestBuilder setDelta:[deltaBuilder build]];
-	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
+	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[idGenerator newConversationRootWaveletId]];
+	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] removeParticipantOp:participantId] build];
+	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveTextView.waveletVersion withHistoryHash:self.waveTextView.waveletHistoryHash];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self getSequenceNo]];
+	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 	
 	[self closeWave:nil];
 }
@@ -371,47 +274,21 @@
 		return;
 	}
 	
-	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl url];
-	[waveUrl release];
+	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[idGenerator newConversationRootWaveletId]];
 	
-	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
-	[submitRequestBuilder setWaveletName:waveName];
-	
-	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
-	
-	ProtocolDocumentOperation_Component_ElementStart_Builder *tagElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
-	[tagElementStartBuilder setType:@"tag"];
-	
-	ProtocolDocumentOperation_Builder *docOpBuilder = [ProtocolDocumentOperation builder];
+	NGDocOpBuilder *docOpBuilder = [NGDocOpBuilder builder];
 	if ([self.tagList numberOfItems] != 0) {
 		int retainItemCount = 0;
 		for (NSString *thisTag in [self.tagList objectValues]) {
 			retainItemCount += 2 + [thisTag length];
 		}
-		[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCount] build]];
+		docOpBuilder = [docOpBuilder retain:retainItemCount];
 	}
-	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementStart:[tagElementStartBuilder build]] build]];
-	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setCharacters:[self.tagAdd stringValue]] build]];
-	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setElementEnd:YES] build]];
-	
-	ProtocolWaveletOperation_MutateDocument_Builder *mutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
-	[mutateDocBuilder setDocumentId:@"tags"];
-	[mutateDocBuilder setDocumentOperation:[docOpBuilder build]];
-	
-	ProtocolWaveletOperation_Builder *opAddTagBuilder = [ProtocolWaveletOperation builder];
-	[opAddTagBuilder setMutateDocument:[mutateDocBuilder build]];
-	[deltaBuilder addOperation:[opAddTagBuilder build]];
-	
-	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:self.waveTextView.waveletVersion];
-	[hashedVersionBuilder setHistoryHash:self.waveTextView.waveletHistoryHash];
-	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
-	
-	[submitRequestBuilder setDelta:[deltaBuilder build]];
-	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
+	NGMutateDocument *addTagDoc = [[[[docOpBuilder elementStart:@"tag" withAttributes:[NGDocAttributes emptyAttribute]] characters:[self.tagAdd stringValue]] elementEnd] build];
+	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] docOp:@"tags" andMutateDocument:addTagDoc] build];
+	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveTextView.waveletVersion withHistoryHash:self.waveTextView.waveletHistoryHash];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self getSequenceNo]];
+	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 	
 	[self.tagAdd setStringValue:@""];
 }
@@ -439,46 +316,21 @@
 		}
 	}
 	
-	NGWaveName *waveUrl = [[NGWaveName alloc] initWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] WaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *waveName = [waveUrl url];
-	[waveUrl release];
+	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[idGenerator newConversationRootWaveletId]];
 	
-	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
-	[submitRequestBuilder setWaveletName:waveName];
-	
-	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[participantId participantIdAtDomain]];
-	
-	ProtocolDocumentOperation_Component_ElementStart_Builder *tagElementStartBuilder = [ProtocolDocumentOperation_Component_ElementStart builder];
-	[tagElementStartBuilder setType:@"tag"];
-	
-	ProtocolDocumentOperation_Builder *docOpBuilder = [ProtocolDocumentOperation builder];
+	NGDocOpBuilder *docOpBuilder = [NGDocOpBuilder builder];
 	if (retainItemCountBackward != 0) {
-		[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCountBackward] build]];
+		docOpBuilder = [docOpBuilder retain:retainItemCountBackward];
 	}
-	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteElementStart:[tagElementStartBuilder build]] build]];
-	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteCharacters:tagToBeDeleted] build]];
-	[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setDeleteElementEnd:YES] build]];
+	docOpBuilder = [[[docOpBuilder deleteElementStart:@"tag"] deleteCharacters:tagToBeDeleted] deleteElementEnd];
 	if (retainItemCountForward != 0) {
-		[docOpBuilder addComponent:[[[ProtocolDocumentOperation_Component builder] setRetainItemCount:retainItemCountForward] build]];
+		docOpBuilder = [docOpBuilder retain:retainItemCountForward];
 	}
-	
-	ProtocolWaveletOperation_MutateDocument_Builder *mutateDocBuilder = [ProtocolWaveletOperation_MutateDocument builder];
-	[mutateDocBuilder setDocumentId:@"tags"];
-	[mutateDocBuilder setDocumentOperation:[docOpBuilder build]];
-	
-	ProtocolWaveletOperation_Builder *opRmTagBuilder = [ProtocolWaveletOperation builder];
-	[opRmTagBuilder setMutateDocument:[mutateDocBuilder build]];
-	[deltaBuilder addOperation:[opRmTagBuilder build]];
-	
-	ProtocolHashedVersion_Builder *hashedVersionBuilder = [ProtocolHashedVersion builder];
-	[hashedVersionBuilder setVersion:self.waveTextView.waveletVersion];
-	[hashedVersionBuilder setHistoryHash:self.waveTextView.waveletHistoryHash];
-	[deltaBuilder setHashedVersion:[hashedVersionBuilder build]];
-	
-	[submitRequestBuilder setDelta:[deltaBuilder build]];
-	
-	[NGRpc send:[NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:[self getSequenceNo]] viaOutputStream:[network pbOutputStream]];
+	NGMutateDocument *rmTagDoc = [docOpBuilder build];
+	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] docOp:@"tags" andMutateDocument:rmTagDoc] build];
+	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveTextView.waveletVersion withHistoryHash:self.waveTextView.waveletHistoryHash];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self getSequenceNo]];
+	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 	
 	[self.tagList setStringValue:@""];
 }
