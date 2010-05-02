@@ -16,6 +16,8 @@
 		29258B03114ED59800ED4F98 /* NGWaveNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258B02114ED59800ED4F98 /* NGWaveNameTest.m */; };
 		29364C5D118DF69900FF40B5 /* NGMutateDocumentTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29364C5C118DF69900FF40B5 /* NGMutateDocumentTest.m */; };
 		29364C6E118E1BD500FF40B5 /* NGDocOpBuilderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29364C6D118E1BD500FF40B5 /* NGDocOpBuilderTest.m */; };
+		29364CAC118E214300FF40B5 /* NGWaveletDeltaTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29364CAB118E214300FF40B5 /* NGWaveletDeltaTest.m */; };
+		29364CCB118E23C800FF40B5 /* NGWaveletDeltaBuilderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29364CCA118E23C800FF40B5 /* NGWaveletDeltaBuilderTest.m */; };
 		29392E681177A7D300F3C3CD /* NGDeleteCharacters.m in Sources */ = {isa = PBXBuildFile; fileRef = 29392E671177A7D300F3C3CD /* NGDeleteCharacters.m */; };
 		29392E721177AA8000F3C3CD /* NGDeleteCharacters.m in Sources */ = {isa = PBXBuildFile; fileRef = 29392E671177A7D300F3C3CD /* NGDeleteCharacters.m */; };
 		29392E751177AAE500F3C3CD /* NGDeleteElementStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 29392E741177AAE500F3C3CD /* NGDeleteElementStart.m */; };
@@ -164,6 +166,10 @@
 		29364C5C118DF69900FF40B5 /* NGMutateDocumentTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGMutateDocumentTest.m; path = test/lib/model/NGMutateDocumentTest.m; sourceTree = "<group>"; };
 		29364C6C118E1BD500FF40B5 /* NGDocOpBuilderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocOpBuilderTest.h; path = test/lib/util/NGDocOpBuilderTest.h; sourceTree = "<group>"; };
 		29364C6D118E1BD500FF40B5 /* NGDocOpBuilderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocOpBuilderTest.m; path = test/lib/util/NGDocOpBuilderTest.m; sourceTree = "<group>"; };
+		29364CAA118E214300FF40B5 /* NGWaveletDeltaTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletDeltaTest.h; path = test/lib/model/NGWaveletDeltaTest.h; sourceTree = "<group>"; };
+		29364CAB118E214300FF40B5 /* NGWaveletDeltaTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletDeltaTest.m; path = test/lib/model/NGWaveletDeltaTest.m; sourceTree = "<group>"; };
+		29364CC9118E23C800FF40B5 /* NGWaveletDeltaBuilderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletDeltaBuilderTest.h; path = test/lib/util/NGWaveletDeltaBuilderTest.h; sourceTree = "<group>"; };
+		29364CCA118E23C800FF40B5 /* NGWaveletDeltaBuilderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletDeltaBuilderTest.m; path = test/lib/util/NGWaveletDeltaBuilderTest.m; sourceTree = "<group>"; };
 		29392E661177A7D300F3C3CD /* NGDeleteCharacters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDeleteCharacters.h; path = lib/model/document/operation/component/NGDeleteCharacters.h; sourceTree = "<group>"; };
 		29392E671177A7D300F3C3CD /* NGDeleteCharacters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDeleteCharacters.m; path = lib/model/document/operation/component/NGDeleteCharacters.m; sourceTree = "<group>"; };
 		29392E731177AAE500F3C3CD /* NGDeleteElementStart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDeleteElementStart.h; path = lib/model/document/operation/component/NGDeleteElementStart.h; sourceTree = "<group>"; };
@@ -474,6 +480,8 @@
 				29770411118D384F00B0729A /* NGDocAttributesUpdateTest.m */,
 				29364C5B118DF69900FF40B5 /* NGMutateDocumentTest.h */,
 				29364C5C118DF69900FF40B5 /* NGMutateDocumentTest.m */,
+				29364CAA118E214300FF40B5 /* NGWaveletDeltaTest.h */,
+				29364CAB118E214300FF40B5 /* NGWaveletDeltaTest.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -571,6 +579,8 @@
 				2F13B615118B79D4003F0EB4 /* NGRandomIdGeneratorTest.m */,
 				29364C6C118E1BD500FF40B5 /* NGDocOpBuilderTest.h */,
 				29364C6D118E1BD500FF40B5 /* NGDocOpBuilderTest.m */,
+				29364CC9118E23C800FF40B5 /* NGWaveletDeltaBuilderTest.h */,
+				29364CCA118E23C800FF40B5 /* NGWaveletDeltaBuilderTest.m */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -787,6 +797,8 @@
 				29770412118D384F00B0729A /* NGDocAttributesUpdateTest.m in Sources */,
 				29364C5D118DF69900FF40B5 /* NGMutateDocumentTest.m in Sources */,
 				29364C6E118E1BD500FF40B5 /* NGDocOpBuilderTest.m in Sources */,
+				29364CAC118E214300FF40B5 /* NGWaveletDeltaTest.m in Sources */,
+				29364CCB118E23C800FF40B5 /* NGWaveletDeltaBuilderTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,7 +20,7 @@
 #import "../../id/NGParticipantId.h"
 #import "../../document/operation/NGMutateDocument.h"
 #import "../NGWaveletDelta.h"
-
+#import "../NGWaveletOperation.h"
 #import "../NGWaveletDocOp.h"
 #import "../NGAddParticipantOp.h"
 #import "../NGRemoveParticipantOp.h"
@@ -40,6 +40,7 @@
 - (NGWaveletDeltaBuilder *) removeParticipantOp:(NGParticipantId *)theParticipant;
 - (NGWaveletDeltaBuilder *) noOp;
 
+- (void) addOperation:(id <NGWaveletOperation>)operation;
 - (NGWaveletDelta *) build;
 
 @end

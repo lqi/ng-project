@@ -37,23 +37,27 @@
 }
 
 - (NGWaveletDeltaBuilder *) docOp:(NSString *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument {
-	[_operations addObject:[NGWaveletDocOp documentOperationWithDocumentId:theDocumentId andMutateDocument:theMutateDocument]];
+	[self addOperation:[NGWaveletDocOp documentOperationWithDocumentId:theDocumentId andMutateDocument:theMutateDocument]];
 	return self;
 }
 
 - (NGWaveletDeltaBuilder *) addParticipantOp:(NGParticipantId *)theParticipant {
-	[_operations addObject:[NGAddParticipantOp addParticipant:theParticipant]];
+	[self addOperation:[NGAddParticipantOp addParticipant:theParticipant]];
 	return self;
 }
 
 - (NGWaveletDeltaBuilder *) removeParticipantOp:(NGParticipantId *)theParticipant {
-	[_operations addObject:[NGRemoveParticipantOp removeParticipant:theParticipant]];
+	[self addOperation:[NGRemoveParticipantOp removeParticipant:theParticipant]];
 	return self;
 }
 
 - (NGWaveletDeltaBuilder *) noOp {
-	[_operations addObject:[NGNoOp noOp]];
+	[self addOperation:[NGNoOp noOp]];
 	return self;
+}
+
+- (void) addOperation:(id <NGWaveletOperation>)operation {
+	[_operations addObject:operation];
 }
 
 - (NGWaveletDelta *) build {
