@@ -31,43 +31,47 @@
 }
 
 - (NGDocOpBuilder *) characters:(NSString *)characters {
-	[_docOpComponents addObject:[NGCharacters charactersWithCharacters:characters]];
+	[self addComponent:[NGCharacters charactersWithCharacters:characters]];
 	return self;
 }
 
 - (NGDocOpBuilder *) deleteCharacters:(NSString *)characters {
-	[_docOpComponents addObject:[NGDeleteCharacters charactersWithDeleteCharacters:characters]];
+	[self addComponent:[NGDeleteCharacters charactersWithDeleteCharacters:characters]];
 	return self;
 }
 
 - (NGDocOpBuilder *) elementStart:(NSString *)type withAttributes:(NGDocAttributes *)attributes {
-	[_docOpComponents addObject:[NGElementStart elementStartWithType:type andAttributes:attributes]];
+	[self addComponent:[NGElementStart elementStartWithType:type andAttributes:attributes]];
 	return self;
 }
 
 - (NGDocOpBuilder *) elementEnd {
-	[_docOpComponents addObject:[NGElementEnd elementEnd]];
+	[self addComponent:[NGElementEnd elementEnd]];
 	return self;
 }
 
 - (NGDocOpBuilder *) deleteElementStart:(NSString *)type {
-	[_docOpComponents addObject:[NGDeleteElementStart deleteElementStartWithType:type]];
+	[self addComponent:[NGDeleteElementStart deleteElementStartWithType:type]];
 	return self;
 }
 
 - (NGDocOpBuilder *) deleteElementEnd {
-	[_docOpComponents addObject:[NGDeleteElementEnd deleteElementEnd]];
+	[self addComponent:[NGDeleteElementEnd deleteElementEnd]];
 	return self;
 }
 
 - (NGDocOpBuilder *) retain:(NSInteger)retainItemCount {
-	[_docOpComponents addObject:[NGRetain retainWithRetainItemCount:retainItemCount]];
+	[self addComponent:[NGRetain retainWithRetainItemCount:retainItemCount]];
 	return self;
 }
 
 - (NGDocOpBuilder *) updateAttributes:(NGDocAttributesUpdate *)update {
-	[_docOpComponents addObject:[NGUpdateAttributes updateAttributesWithUpdateAttributes:update]];
+	[self addComponent:[NGUpdateAttributes updateAttributesWithUpdateAttributes:update]];
 	return self;
+}
+
+- (void) addComponent:(id <NGDocOpComponent>)component {
+	[_docOpComponents addObject:component];
 }
 
 - (NGMutateDocument *) build {

@@ -20,6 +20,7 @@
 #import "../NGDocAttributes.h"
 #import "../NGDocAttributesUpdate.h"
 #import "../NGMutateDocument.h"
+#import "../NGDocOpComponent.h"
 
 #import "../component/NGCharacters.h"
 #import "../component/NGDeleteCharacters.h"
@@ -45,6 +46,7 @@
 - (NGDocOpBuilder *) retain:(NSInteger)retainItemCount;
 - (NGDocOpBuilder *) updateAttributes:(NGDocAttributesUpdate *)update;
 
+- (void) addComponent:(id <NGDocOpComponent>)component;
 - (NGMutateDocument *) build;
 
 @end
