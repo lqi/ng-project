@@ -51,10 +51,14 @@
 }
 
 - (BOOL) hasOldValue:(NSString *)key {
-	return ![[self oldValueForKey:key] isEqual:[NSNull null]];
+	NSInteger indexOfKey = [_attributesUpdateArray indexOfObject:key];
+	return ![[_attributesUpdateArray objectAtIndex:(indexOfKey + 1)] isEqual:[NSNull null]];
 }
 
 - (NSString *) oldValueForKey:(NSString *)key {
+	if (![self hasOldValue:key]) {
+		[NSException raise:@"Invalid key when getting old value in NGDocAttributeUpdate" format:@"Key %@ has no old value", key];
+	}
 	NSInteger indexOfKey = [_attributesUpdateArray indexOfObject:key];
 	return [_attributesUpdateArray objectAtIndex:(indexOfKey + 1)];
 }

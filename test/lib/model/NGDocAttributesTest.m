@@ -42,4 +42,6 @@
 	STAssertEqualObjects([_docAttributes attributeForKey:@"key2"], @"value2", @"value for 'key2' should be 'value2'");
 }
 
+// TODO: more test cases can be written, like add an attribute with an existing key
+
 @end
