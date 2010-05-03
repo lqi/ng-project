@@ -66,6 +66,10 @@ static NSString *const WEB64_ALPHABET = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl
 	return [NGWaveId waveIdWithDomain:_domain waveId:[self generateId:[NGIdConstant WAVE_PREFIX] length:72]];
 }
 
+- (NGWaveId *) indexWaveId {
+	return [NGWaveId waveIdWithDomain:@"indexwave" waveId:@"indexwave"];
+}
+
 - (NGWaveletId *) newConversationWaveletId {
 	return [NGWaveletId waveletIdWithDomain:_domain waveletId:[self generateId:[NGIdConstant CONVERSATION_WAVELET_PREFIX] length:48]];
 }

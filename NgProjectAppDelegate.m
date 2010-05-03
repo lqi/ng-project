@@ -36,7 +36,7 @@
 		domain = @"192.168.131.5";
 		participantId = [[NGParticipantId alloc] initWithDomain:domain participantId:@"test"];
 		_seqNo = 0;
-		idGenerator = [[NGIdGenerator alloc] initWithDomain:domain];
+		_idGenerator = [[NGIdGenerator alloc] initWithDomain:domain];
 		inboxViewDelegate = [[NGInboxViewDelegate alloc] init];
 		inboxViewDelegate.currentUser = participantId;
 		hasWaveOpened = NO;
@@ -190,7 +190,7 @@
 		return;
 	}
 	NGWaveId *waveId = [NGWaveId waveIdWithDomain:@"indexwave" waveId:@"indexwave"];
-	NGRpcMessage *message = [NGRpcMessage openRequest:waveId participantId:participantId seqNo:[self getSequenceNo]];
+	NGRpcMessage *message = [NGRpcMessage openRequest:[_idGenerator indexWaveId] participantId:participantId seqNo:[self getSequenceNo]];
 	[NGRpc send:message viaOutputStream:[network pbOutputStream]];	
 }
 
@@ -199,8 +199,8 @@
 		return;
 	}
 	
-	NGWaveName *newWaveName = [NGWaveName waveNameWithWaveId:[idGenerator newWaveId] andWaveletId:[idGenerator newConversationRootWaveletId]];
-	NGDocumentId *newBlipName = [idGenerator newDocumentId];
+	NGWaveName *newWaveName = [NGWaveName waveNameWithWaveId:[_idGenerator newWaveId] andWaveletId:[_idGenerator newConversationRootWaveletId]];
+	NGDocumentId *newBlipName = [_idGenerator newDocumentId];
 	
 	NGMutateDocument *newConversation = [[[[[[NGDocOpBuilder builder]
 										 elementStart:@"conversation" withAttributes:[NGDocAttributes emptyAttribute]]
@@ -300,7 +300,7 @@
 		return;
 	}
 	
-	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[idGenerator newConversationRootWaveletId]];
+	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[_idGenerator newConversationRootWaveletId]];
 	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:delta hashedVersion:[self getHashedVersion] seqNo:[self getSequenceNo]];
 	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 }
@@ -322,7 +322,7 @@
 - (void) dealloc {
 	[inboxViewDelegate release];
 	[participantId release];
-	[idGenerator release];
+	[_idGenerator release];
 	[network release];
 	[super dealloc];
 }

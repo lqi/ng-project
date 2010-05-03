@@ -30,6 +30,7 @@
 
 - (id) initWithDomain:(NSString *)domain;
 - (NGWaveId *) newWaveId;
+- (NGWaveId *) indexWaveId;
 - (NGWaveletId *) newConversationWaveletId;
 - (NGWaveletId *) newConversationRootWaveletId;
 - (NGDocumentId *) newDocumentId;

@@ -39,7 +39,7 @@
 	NGParticipantId *participantId;
 	long _seqNo;
 	NGNetwork *network;
-	NGIdGenerator *idGenerator;
+	NGIdGenerator *_idGenerator;
 	NGInboxViewDelegate *inboxViewDelegate;
 	
 	BOOL hasWaveOpened;
