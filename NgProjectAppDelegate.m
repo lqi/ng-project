@@ -84,9 +84,11 @@
 						[inboxViewDelegate passSignal:waveletUpdate];
 					}
 					else if (hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
-						self.waveTextView.waveletVersion = [[waveletUpdate resultingVersion] version];
-						self.waveTextView.waveletHistoryHash = [[waveletUpdate resultingVersion] historyHash];
-						[versionInfo setStringValue:[NSString stringWithFormat:@"%d, %@", self.waveTextView.waveletVersion, [self.waveTextView.waveletHistoryHash description]]];
+						//self.waveTextView.waveletVersion = [[waveletUpdate resultingVersion] version];
+						//self.waveTextView.waveletHistoryHash = [[waveletUpdate resultingVersion] historyHash];
+						[self.waveTextView setHashedVersion:[[waveletUpdate resultingVersion] version] withHistoryHash:[[waveletUpdate resultingVersion] historyHash]];
+						
+						[versionInfo setStringValue:[[self.waveTextView hashedVersion] stringValue]];
 						// mutation document for open wave
 						
 						for (ProtocolWaveletDelta *wd in [waveletUpdate appliedDeltaList]) {
@@ -220,7 +222,7 @@
 	
 	NGWaveletDelta *newWaveletDelta = [[[[[NGWaveletDeltaBuilder builder:participantId] addParticipantOp:participantId] docOp:@"conversation" andMutateDocument:newConversation] docOp:newBlipName andMutateDocument:newBlipOp] build];
 	
-	NGRpcMessage *message = [NGRpcMessage submitRequest:newWaveName waveletDelta:newWaveletDelta hashedVersion:[NGHashedVersion hashedVersion:0 withHistoryHash:[[newWaveName url] dataUsingEncoding:NSUTF8StringEncoding]] seqNo:[self getSequenceNo]];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:newWaveName waveletDelta:newWaveletDelta hashedVersion:[NGHashedVersion hashedVersion:newWaveName] seqNo:[self getSequenceNo]];
 	
 	[NGRpc send:message viaOutputStream:[network pbOutputStream]];	
 }
@@ -233,7 +235,7 @@
 	NGParticipantId *addParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[self.participantAdd stringValue]];
 	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[idGenerator newConversationRootWaveletId]];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] addParticipantOp:addParticipantId] build];
-	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveTextView.waveletVersion withHistoryHash:self.waveTextView.waveletHistoryHash];
+	NGHashedVersion *hashedVersion = [self getHashedVersion];
 	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self getSequenceNo]];
 	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 	
@@ -248,7 +250,7 @@
 	NGParticipantId *rmParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[self.participantList stringValue]];
 	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[idGenerator newConversationRootWaveletId]];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] removeParticipantOp:rmParticipantId] build];
-	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveTextView.waveletVersion withHistoryHash:self.waveTextView.waveletHistoryHash];
+	NGHashedVersion *hashedVersion = [self getHashedVersion];
 	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self getSequenceNo]];
 	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 	
@@ -262,7 +264,7 @@
 	
 	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[idGenerator newConversationRootWaveletId]];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] removeParticipantOp:participantId] build];
-	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveTextView.waveletVersion withHistoryHash:self.waveTextView.waveletHistoryHash];
+	NGHashedVersion *hashedVersion = [self getHashedVersion];
 	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self getSequenceNo]];
 	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 	
@@ -286,7 +288,7 @@
 	}
 	NGMutateDocument *addTagDoc = [[[[docOpBuilder elementStart:@"tag" withAttributes:[NGDocAttributes emptyAttribute]] characters:[self.tagAdd stringValue]] elementEnd] build];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] docOp:@"tags" andMutateDocument:addTagDoc] build];
-	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveTextView.waveletVersion withHistoryHash:self.waveTextView.waveletHistoryHash];
+	NGHashedVersion *hashedVersion = [self getHashedVersion];
 	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self getSequenceNo]];
 	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 	
@@ -328,7 +330,7 @@
 	}
 	NGMutateDocument *rmTagDoc = [docOpBuilder build];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] docOp:@"tags" andMutateDocument:rmTagDoc] build];
-	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveTextView.waveletVersion withHistoryHash:self.waveTextView.waveletHistoryHash];
+	NGHashedVersion *hashedVersion = [self getHashedVersion];
 	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self getSequenceNo]];
 	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
 	
@@ -343,6 +345,10 @@
 		return _seqNo++;
 	}
 
+}
+
+- (NGHashedVersion *) getHashedVersion {
+	return [self.waveTextView hashedVersion];
 }
 
 - (void) dealloc {

@@ -72,5 +72,6 @@
 - (IBAction) rmTag:(id)sender;
 
 - (int) getSequenceNo;
+- (NGHashedVersion *) getHashedVersion;
 
 @end

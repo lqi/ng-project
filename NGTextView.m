@@ -19,9 +19,6 @@
 
 @implementation NGTextView
 
-@synthesize waveletVersion;
-@synthesize waveletHistoryHash;
-
 - (void)openWithNetwork:(NGNetwork *)network WaveId:(NGWaveId *)waveId waveletId:(NGWaveletId *)waveletId participantId:(NGParticipantId *)participantId sequenceNo:(long)seqNo {
 	_waveId = [waveId retain];
 	_waveletId = [waveletId retain];
@@ -42,8 +39,7 @@
 	[_participantId release];
 	[_network release];
 	_seqNo = 0;
-	self.waveletVersion = 0;
-	self.waveletHistoryHash = [NSData data];
+	_hashedVersion = [NGHashedVersion hashedVersion];
 	[self setString:@""];
 }
 
@@ -291,8 +287,7 @@
 - (void)sendDocumentOperation:(NGMutateDocument *)docOp {
 	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:_waveId andWaveletId:_waveletId];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:_participantId] docOp:_blipId andMutateDocument:docOp] build];
-	NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:self.waveletVersion withHistoryHash:self.waveletHistoryHash];
-	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:hashedVersion seqNo:[self seqNo]];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:[self hashedVersion] seqNo:[self seqNo]];
 	[NGRpc send:message viaOutputStream:[_network pbOutputStream]];
 }
 
@@ -515,6 +510,14 @@
 	[styleDictionary release];
 	[annotationUpdates release];
 	NSAssert(rpcPosition == [self positionLength], @"for each set of document operations, entire document should be went through.");
+}
+
+- (void) setHashedVersion:(int64_t)theVersion withHistoryHash:(NSData *)theHistoryHash {
+	_hashedVersion = [NGHashedVersion hashedVersion:theVersion withHistoryHash:theHistoryHash];
+}
+
+- (NGHashedVersion *) hashedVersion {
+	return _hashedVersion;
 }
 
 @end

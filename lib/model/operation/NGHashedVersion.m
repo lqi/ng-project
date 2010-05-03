@@ -22,11 +22,35 @@
 @synthesize version;
 @synthesize historyHash;
 
+- (id) init {
+	if (self = [super init]) {
+		self.version = 0;
+		self.historyHash = [NSData data];
+	}
+	return self;
+}
+
++ (NGHashedVersion *) hashedVersion {
+	return [[[NGHashedVersion alloc] init] autorelease];
+}
+
++ (NGHashedVersion *) hashedVersion:(NGWaveName *)newWaveName {
+	NGHashedVersion *hashedVersionInstance = [[[NGHashedVersion alloc] init] autorelease];
+	hashedVersionInstance.historyHash = [[newWaveName url] dataUsingEncoding:NSUTF8StringEncoding];
+	return hashedVersionInstance;
+}
+
 + (NGHashedVersion *) hashedVersion:(int64_t)theVersion withHistoryHash:(NSData *)theHistoryHash {
 	NGHashedVersion *hashedVersionInstance = [[[NGHashedVersion alloc] init] autorelease];
 	hashedVersionInstance.version = theVersion;
 	hashedVersionInstance.historyHash = theHistoryHash;
 	return hashedVersionInstance;
+}
+
+- (NSString *) stringValue {
+	NSMutableString *returnStringValue = [NSMutableString stringWithFormat:@"%d, ", self.version];
+	[returnStringValue appendString:[self.historyHash description]];
+	return returnStringValue;
 }
 
 @end

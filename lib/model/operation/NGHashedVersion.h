@@ -17,6 +17,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "../id/NGWaveName.h"
+
 @interface NGHashedVersion : NSObject {
 	int64_t version;
 	NSData *historyHash;
@@ -25,6 +27,10 @@
 @property (assign) int64_t version;
 @property (retain) NSData *historyHash;
 
++ (NGHashedVersion *) hashedVersion;
++ (NGHashedVersion *) hashedVersion:(NGWaveName *)newWaveName;
 + (NGHashedVersion *) hashedVersion:(int64_t)theVersion withHistoryHash:(NSData *)theHistoryHash;
+
+- (NSString *) stringValue;
 
 @end

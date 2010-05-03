@@ -26,17 +26,12 @@
 	NGDocumentId *_blipId;
 	long _seqNo;
 	NGNetwork *_network;
-	
-	NSInteger waveletVersion;
-	NSData *waveletHistoryHash;
+	NGHashedVersion *_hashedVersion;
 	
 	NSMutableArray *_waveRpcItems;
 	NSMutableArray *_ngElementAttributes;
 	NSMutableArray *_ngElementAnnotations;
 }
-
-@property (assign) NSInteger waveletVersion;
-@property (assign) NSData *waveletHistoryHash;
 
 - (NSInteger)caretOffset;
 - (NSInteger)caretOffsetOfPositionOffset:(int)positionOffset;
@@ -61,5 +56,8 @@
 - (void)apply:(ProtocolWaveletOperation_MutateDocument *)mutateDocument;
 
 - (long)seqNo;
+
+- (void) setHashedVersion:(int64_t)theVersion withHistoryHash:(NSData *)theHistoryHash;
+- (NGHashedVersion *) hashedVersion;
 
 @end
