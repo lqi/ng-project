@@ -19,13 +19,14 @@
 
 #import "proto/Common.pb.h"
 #import "proto/WaveclientRpc.pb.h"
+ 
+#import "model/common/NGIdConstant.h"
 
 #import "model/id/NGWaveId.h"
 #import "model/id/NGWaveletId.h"
 #import "model/id/NGDocumentId.h"
 #import "model/id/NGParticipantId.h"
 #import "model/id/NGWaveName.h"
-#import "model/id/NGIdConstant.h"
 #import "model/id/util/NGRandomIdGenerator.h"
 
 #import "model/document/operation/NGMutateDocument.h"

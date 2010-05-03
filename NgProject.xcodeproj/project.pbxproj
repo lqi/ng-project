@@ -46,6 +46,8 @@
 		29BD94AD1142198F00AA22AE /* NGRandomIdGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD94AB1142198F00AA22AE /* NGRandomIdGenerator.m */; };
 		29BD958C1142495C00AA22AE /* NGWaveIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD958B1142495C00AA22AE /* NGWaveIdTest.m */; };
 		29BD95CD11424F3300AA22AE /* NGWaveletIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */; };
+		29BFEBB7118F784E00899593 /* NGIdConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BFEBB6118F784E00899593 /* NGIdConstant.m */; };
+		29BFEBB8118F784E00899593 /* NGIdConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BFEBB6118F784E00899593 /* NGIdConstant.m */; };
 		29C249BC117F73AC00496599 /* NGWaveletDocOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249BB117F73AC00496599 /* NGWaveletDocOp.m */; };
 		29C249BD117F73AC00496599 /* NGWaveletDocOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249BB117F73AC00496599 /* NGWaveletDocOp.m */; };
 		29C249CC117F78CF00496599 /* NGAddParticipantOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249CB117F78CF00496599 /* NGAddParticipantOp.m */; };
@@ -68,8 +70,6 @@
 		29C80165116FE86C00F77D7F /* NGWaveletId.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8015F116FE86C00F77D7F /* NGWaveletId.m */; };
 		29C8017F116FEA6600F77D7F /* NGWaveName.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8017E116FEA6600F77D7F /* NGWaveName.m */; };
 		29C80180116FEA6600F77D7F /* NGWaveName.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C8017E116FEA6600F77D7F /* NGWaveName.m */; };
-		29C801BD116FEDE600F77D7F /* NGIdConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C801BC116FEDE600F77D7F /* NGIdConstant.m */; };
-		29C801BE116FEDE600F77D7F /* NGIdConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C801BC116FEDE600F77D7F /* NGIdConstant.m */; };
 		29C801F91170472000F77D7F /* NGElementStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C801F81170472000F77D7F /* NGElementStart.m */; };
 		29C801FA1170472000F77D7F /* NGElementStart.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C801F81170472000F77D7F /* NGElementStart.m */; };
 		29C801FD1170473400F77D7F /* NGElementEnd.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C801FC1170473400F77D7F /* NGElementEnd.m */; };
@@ -211,6 +211,8 @@
 		29BD958B1142495C00AA22AE /* NGWaveIdTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveIdTest.m; path = test/lib/model/NGWaveIdTest.m; sourceTree = "<group>"; };
 		29BD95CB11424F3300AA22AE /* NGWaveletIdTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletIdTest.h; path = test/lib/model/NGWaveletIdTest.h; sourceTree = "<group>"; };
 		29BD95CC11424F3300AA22AE /* NGWaveletIdTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletIdTest.m; path = test/lib/model/NGWaveletIdTest.m; sourceTree = "<group>"; };
+		29BFEBB5118F784E00899593 /* NGIdConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGIdConstant.h; path = lib/model/common/NGIdConstant.h; sourceTree = "<group>"; };
+		29BFEBB6118F784E00899593 /* NGIdConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGIdConstant.m; path = lib/model/common/NGIdConstant.m; sourceTree = "<group>"; };
 		29C249B7117F72E200496599 /* NGWaveletOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletOperation.h; path = lib/model/operation/NGWaveletOperation.h; sourceTree = "<group>"; };
 		29C249BA117F73AC00496599 /* NGWaveletDocOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletDocOp.h; path = lib/model/operation/NGWaveletDocOp.h; sourceTree = "<group>"; };
 		29C249BB117F73AC00496599 /* NGWaveletDocOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletDocOp.m; path = lib/model/operation/NGWaveletDocOp.m; sourceTree = "<group>"; };
@@ -234,8 +236,6 @@
 		29C8015F116FE86C00F77D7F /* NGWaveletId.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletId.m; path = lib/model/id/NGWaveletId.m; sourceTree = "<group>"; };
 		29C8017D116FEA6600F77D7F /* NGWaveName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveName.h; path = lib/model/id/NGWaveName.h; sourceTree = "<group>"; };
 		29C8017E116FEA6600F77D7F /* NGWaveName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveName.m; path = lib/model/id/NGWaveName.m; sourceTree = "<group>"; };
-		29C801BB116FEDE600F77D7F /* NGIdConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGIdConstant.h; path = lib/model/id/NGIdConstant.h; sourceTree = "<group>"; };
-		29C801BC116FEDE600F77D7F /* NGIdConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGIdConstant.m; path = lib/model/id/NGIdConstant.m; sourceTree = "<group>"; };
 		29C801F4117045C800F77D7F /* NGDocOpComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocOpComponent.h; path = lib/model/document/operation/NGDocOpComponent.h; sourceTree = "<group>"; };
 		29C801F71170472000F77D7F /* NGElementStart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGElementStart.h; path = lib/model/document/operation/component/NGElementStart.h; sourceTree = "<group>"; };
 		29C801F81170472000F77D7F /* NGElementStart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGElementStart.m; path = lib/model/document/operation/component/NGElementStart.m; sourceTree = "<group>"; };
@@ -449,6 +449,7 @@
 		29BD94DF114235AE00AA22AE /* model */ = {
 			isa = PBXGroup;
 			children = (
+				29BFEBA5118F76FB00899593 /* common */,
 				29C249A9117F722200496599 /* operation */,
 				29C801EC11703E7E00F77D7F /* document */,
 				29C80155116FE7D800F77D7F /* id */,
@@ -487,6 +488,15 @@
 			name = model;
 			sourceTree = "<group>";
 		};
+		29BFEBA5118F76FB00899593 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				29BFEBB5118F784E00899593 /* NGIdConstant.h */,
+				29BFEBB6118F784E00899593 /* NGIdConstant.m */,
+			);
+			name = common;
+			sourceTree = "<group>";
+		};
 		29C249A9117F722200496599 /* operation */ = {
 			isa = PBXGroup;
 			children = (
@@ -520,8 +530,6 @@
 				29C8015E116FE86C00F77D7F /* NGWaveletId.h */,
 				29C8015F116FE86C00F77D7F /* NGWaveletId.m */,
 				29364D1A118E495C00FF40B5 /* NGDocumentId.h */,
-				29C801BB116FEDE600F77D7F /* NGIdConstant.h */,
-				29C801BC116FEDE600F77D7F /* NGIdConstant.m */,
 				291F39B6117A3D57001CAD54 /* util */,
 			);
 			name = id;
@@ -774,7 +782,6 @@
 				29C80161116FE86C00F77D7F /* NGWaveId.m in Sources */,
 				29C80162116FE86C00F77D7F /* NGWaveletId.m in Sources */,
 				29C8017F116FEA6600F77D7F /* NGWaveName.m in Sources */,
-				29C801BD116FEDE600F77D7F /* NGIdConstant.m in Sources */,
 				29C801F91170472000F77D7F /* NGElementStart.m in Sources */,
 				29C801FD1170473400F77D7F /* NGElementEnd.m in Sources */,
 				29C802011170474700F77D7F /* NGRetain.m in Sources */,
@@ -801,6 +808,7 @@
 				29364C6E118E1BD500FF40B5 /* NGDocOpBuilderTest.m in Sources */,
 				29364CAC118E214300FF40B5 /* NGWaveletDeltaTest.m in Sources */,
 				29364CCB118E23C800FF40B5 /* NGWaveletDeltaBuilderTest.m in Sources */,
+				29BFEBB8118F784E00899593 /* NGIdConstant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -826,7 +834,6 @@
 				29C80164116FE86C00F77D7F /* NGWaveId.m in Sources */,
 				29C80165116FE86C00F77D7F /* NGWaveletId.m in Sources */,
 				29C80180116FEA6600F77D7F /* NGWaveName.m in Sources */,
-				29C801BE116FEDE600F77D7F /* NGIdConstant.m in Sources */,
 				29C801FA1170472000F77D7F /* NGElementStart.m in Sources */,
 				29C801FE1170473400F77D7F /* NGElementEnd.m in Sources */,
 				29C802021170474700F77D7F /* NGRetain.m in Sources */,
@@ -847,6 +854,7 @@
 				29D7A4BB118A1DA100CAF51F /* NGWaveletDeltaBuilder.m in Sources */,
 				29D7A4C5118A23B000CAF51F /* NGWaveletDeltaSerializer.m in Sources */,
 				29D7A4C9118A23CD00CAF51F /* NGHashedVersion.m in Sources */,
+				29BFEBB7118F784E00899593 /* NGIdConstant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

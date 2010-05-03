@@ -22,7 +22,7 @@
 #import "../NGWaveId.h"
 #import "../NGWaveletId.h"
 #import "../NGDocumentId.h"
-#import "../NGIdConstant.h"
+#import "../../common/NGIdConstant.h"
 
 @interface NGRandomIdGenerator : NSObject {
 	NSString *_domain;
