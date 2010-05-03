@@ -50,7 +50,7 @@
 }
 
 - (void) testNewDocumentId {
-	NSString *testDocumentId = [_idGenerator newDocumentId];
+	NGDocumentId *testDocumentId = [_idGenerator newDocumentId];
 	STAssertEqualObjects([testDocumentId substringToIndex:2], @"b+", @"documentId should start with 'b+'");
 	STAssertTrue([testDocumentId length] == 8, @"Length of testDocumentId should be 8");
 }

@@ -36,7 +36,7 @@
 	return waveletDeltaBuilderInstance;
 }
 
-- (NGWaveletDeltaBuilder *) docOp:(NSString *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument {
+- (NGWaveletDeltaBuilder *) docOp:(NGDocumentId *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument {
 	[self addOperation:[NGWaveletDocOp documentOperationWithDocumentId:theDocumentId andMutateDocument:theMutateDocument]];
 	return self;
 }

@@ -23,7 +23,7 @@
 	NGWaveId *_waveId;
 	NGWaveletId *_waveletId;
 	NGParticipantId *_participantId;
-	NSString *_blipId;
+	NGDocumentId *_blipId;
 	long _seqNo;
 	NGNetwork *_network;
 	

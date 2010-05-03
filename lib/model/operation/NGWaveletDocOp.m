@@ -22,7 +22,7 @@
 @synthesize documentId;
 @synthesize mutateDocument;
 
-+ (NGWaveletDocOp *) documentOperationWithDocumentId:(NSString *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument {
++ (NGWaveletDocOp *) documentOperationWithDocumentId:(NGDocumentId *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument {
 	NGWaveletDocOp *waveletDocOpInstance = [[[NGWaveletDocOp alloc] init] autorelease];
 	waveletDocOpInstance.documentId = theDocumentId;
 	waveletDocOpInstance.mutateDocument = theMutateDocument;

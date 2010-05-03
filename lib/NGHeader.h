@@ -22,6 +22,7 @@
 
 #import "model/id/NGWaveId.h"
 #import "model/id/NGWaveletId.h"
+#import "model/id/NGDocumentId.h"
 #import "model/id/NGParticipantId.h"
 #import "model/id/NGWaveName.h"
 #import "model/id/NGIdConstant.h"

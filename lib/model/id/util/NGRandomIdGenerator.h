@@ -21,6 +21,7 @@
 
 #import "../NGWaveId.h"
 #import "../NGWaveletId.h"
+#import "../NGDocumentId.h"
 #import "../NGIdConstant.h"
 
 @interface NGRandomIdGenerator : NSObject {
@@ -31,6 +32,6 @@
 - (NGWaveId *) newWaveId;
 - (NGWaveletId *) newConversationWaveletId;
 - (NGWaveletId *) newConversationRootWaveletId;
-- (NSString *) newDocumentId;
+- (NGDocumentId *) newDocumentId;
 
 @end

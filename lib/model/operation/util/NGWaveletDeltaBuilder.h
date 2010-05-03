@@ -18,6 +18,7 @@
 #import <Foundation/Foundation.h>
 
 #import "../../id/NGParticipantId.h"
+#import "../../id/NGDocumentId.h"
 #import "../../document/operation/NGMutateDocument.h"
 #import "../NGWaveletDelta.h"
 #import "../NGWaveletOperation.h"
@@ -35,7 +36,7 @@
 
 + (NGWaveletDeltaBuilder *) builder:(NGParticipantId *)author;
 
-- (NGWaveletDeltaBuilder *) docOp:(NSString *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument;
+- (NGWaveletDeltaBuilder *) docOp:(NGDocumentId *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument;
 - (NGWaveletDeltaBuilder *) addParticipantOp:(NGParticipantId *)theParticipant;
 - (NGWaveletDeltaBuilder *) removeParticipantOp:(NGParticipantId *)theParticipant;
 - (NGWaveletDeltaBuilder *) noOp;

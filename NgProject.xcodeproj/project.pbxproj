@@ -170,6 +170,7 @@
 		29364CAB118E214300FF40B5 /* NGWaveletDeltaTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletDeltaTest.m; path = test/lib/model/NGWaveletDeltaTest.m; sourceTree = "<group>"; };
 		29364CC9118E23C800FF40B5 /* NGWaveletDeltaBuilderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletDeltaBuilderTest.h; path = test/lib/util/NGWaveletDeltaBuilderTest.h; sourceTree = "<group>"; };
 		29364CCA118E23C800FF40B5 /* NGWaveletDeltaBuilderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletDeltaBuilderTest.m; path = test/lib/util/NGWaveletDeltaBuilderTest.m; sourceTree = "<group>"; };
+		29364D1A118E495C00FF40B5 /* NGDocumentId.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocumentId.h; path = lib/model/id/NGDocumentId.h; sourceTree = "<group>"; };
 		29392E661177A7D300F3C3CD /* NGDeleteCharacters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDeleteCharacters.h; path = lib/model/document/operation/component/NGDeleteCharacters.h; sourceTree = "<group>"; };
 		29392E671177A7D300F3C3CD /* NGDeleteCharacters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDeleteCharacters.m; path = lib/model/document/operation/component/NGDeleteCharacters.m; sourceTree = "<group>"; };
 		29392E731177AAE500F3C3CD /* NGDeleteElementStart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDeleteElementStart.h; path = lib/model/document/operation/component/NGDeleteElementStart.h; sourceTree = "<group>"; };
@@ -518,6 +519,7 @@
 				29C8015D116FE86C00F77D7F /* NGWaveId.m */,
 				29C8015E116FE86C00F77D7F /* NGWaveletId.h */,
 				29C8015F116FE86C00F77D7F /* NGWaveletId.m */,
+				29364D1A118E495C00FF40B5 /* NGDocumentId.h */,
 				29C801BB116FEDE600F77D7F /* NGIdConstant.h */,
 				29C801BC116FEDE600F77D7F /* NGIdConstant.m */,
 				291F39B6117A3D57001CAD54 /* util */,

@@ -15,15 +15,6 @@
  * 
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <Foundation/Foundation.h>
 
-#import "NGRandomIdGenerator.h"
-#import "NGWaveId.h"
-#import "NGWaveletId.h"
-#import "NGDocumentId.h"
-
-@interface NGRandomIdGeneratorTest : SenTestCase {
-	NGRandomIdGenerator *_idGenerator;
-}
-
-@end
+typedef NSString NGDocumentId;

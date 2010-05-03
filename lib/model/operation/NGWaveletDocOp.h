@@ -19,6 +19,7 @@
 
 #import "../../proto/Common.pb.h"
 
+#import "../id/NGDocumentId.h"
 #import "../document/operation/NGMutateDocument.h"
 
 #import "NGWaveletOperation.h"
@@ -31,6 +32,6 @@
 @property (retain) NSString *documentId;
 @property (retain) NGMutateDocument *mutateDocument;
 
-+ (NGWaveletDocOp *) documentOperationWithDocumentId:(NSString *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument;
++ (NGWaveletDocOp *) documentOperationWithDocumentId:(NGDocumentId *)theDocumentId andMutateDocument:(NGMutateDocument *)theMutateDocument;
 
 @end

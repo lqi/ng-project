@@ -200,7 +200,7 @@
 	}
 	
 	NGWaveName *newWaveName = [NGWaveName waveNameWithWaveId:[idGenerator newWaveId] andWaveletId:[idGenerator newConversationRootWaveletId]];
-	NSString *newBlipName = [idGenerator newDocumentId];
+	NGDocumentId *newBlipName = [idGenerator newDocumentId];
 	
 	NGMutateDocument *newConversation = [[[[[[NGDocOpBuilder builder]
 										 elementStart:@"conversation" withAttributes:[NGDocAttributes emptyAttribute]]
