@@ -21,6 +21,7 @@
 #import "proto/WaveclientRpc.pb.h"
  
 #import "model/common/NGIdConstant.h"
+#import "model/common/NGDocumentConstant.h"
 
 #import "model/id/NGWaveId.h"
 #import "model/id/NGWaveletId.h"

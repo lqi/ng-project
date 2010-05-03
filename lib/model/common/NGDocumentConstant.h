@@ -17,18 +17,17 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NGIdConstant : NSObject {
+@interface NGDocumentConstant : NSObject {
 
 }
 
-+ (NSString *) TOKEN_SEPARATOR;
-+ (NSString *) WAVE_URI_SCHEME;
-+ (NSString *) WAVE_PREFIX;
-+ (NSString *) CONVERSATION_WAVELET_PREFIX;
-+ (NSString *) USER_DATA_WAVELET_PREFIX;
-+ (NSString *) BLIP_PREFIX;
-+ (NSString *) TAGS_DOC_ID;
-+ (NSString *) MANIFEST_DOC_ID;
-+ (NSString *) CONVERSATION_ROOT_WAVELET;
++ (NSString *) BLIP;
++ (NSString *) BLIP_ID;
++ (NSString *) BODY;
++ (NSString *) CONTRIBUTOR;
++ (NSString *) CONTRIBUTOR_NAME;
++ (NSString *) CONVERSATION;
++ (NSString *) LINE;
++ (NSString *) TAG;
 
 @end

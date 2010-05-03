@@ -15,44 +15,40 @@
  * 
  */
 
-#import "NGIdConstant.h"
+#import "NGDocumentConstant.h"
 
-@implementation NGIdConstant
+@implementation NGDocumentConstant
 
-+ (NSString *) TOKEN_SEPARATOR {
-	return @"+";
++ (NSString *) BLIP {
+	return @"blip";
 }
 
-+ (NSString *) WAVE_URI_SCHEME; {
-	return @"wave";
++ (NSString *) BLIP_ID {
+	return @"id";
 }
 
-+ (NSString *) WAVE_PREFIX {
-	return @"w";
++ (NSString *) BODY {
+	return @"body";
 }
 
-+ (NSString *) CONVERSATION_WAVELET_PREFIX {
-	return @"conv";
++ (NSString *) CONTRIBUTOR {
+	return @"contributor";
 }
 
-+ (NSString *) USER_DATA_WAVELET_PREFIX {
-	return @"user";
++ (NSString *) CONTRIBUTOR_NAME {
+	return @"name";
 }
 
-+ (NSString *) BLIP_PREFIX {
-	return @"b";
-}
-
-+ (NSString *) TAGS_DOC_ID {
-	return @"tags";
-}
-
-+ (NSString *) MANIFEST_DOC_ID {
++ (NSString *) CONVERSATION {
 	return @"conversation";
 }
 
-+ (NSString *) CONVERSATION_ROOT_WAVELET {
-	return [NSString stringWithFormat:@"%@%@root", [NGIdConstant CONVERSATION_WAVELET_PREFIX], [NGIdConstant TOKEN_SEPARATOR]];
++ (NSString *) LINE {
+	return @"line";
+}
+
++ (NSString *) TAG {
+	return @"tag";
 }
 
 @end

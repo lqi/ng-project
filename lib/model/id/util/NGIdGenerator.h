@@ -34,5 +34,7 @@
 - (NGWaveletId *) newConversationWaveletId;
 - (NGWaveletId *) newConversationRootWaveletId;
 - (NGDocumentId *) newDocumentId;
+- (NGDocumentId *) manifestDocumentId;
+- (NGDocumentId *) tagDocumentId;
 
 @end

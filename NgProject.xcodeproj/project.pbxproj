@@ -49,6 +49,8 @@
 		29BFEBCD118F88A300899593 /* NGIdGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BFEBCC118F88A300899593 /* NGIdGenerator.m */; };
 		29BFEBCE118F88A300899593 /* NGIdGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BFEBCC118F88A300899593 /* NGIdGenerator.m */; };
 		29BFEBE2118F8A0A00899593 /* NGIdGeneratorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BFEBE1118F8A0A00899593 /* NGIdGeneratorTest.m */; };
+		29BFEC18118F8E7D00899593 /* NGDocumentConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BFEC17118F8E7D00899593 /* NGDocumentConstant.m */; };
+		29BFEC19118F8E7D00899593 /* NGDocumentConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BFEC17118F8E7D00899593 /* NGDocumentConstant.m */; };
 		29C249BC117F73AC00496599 /* NGWaveletDocOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249BB117F73AC00496599 /* NGWaveletDocOp.m */; };
 		29C249BD117F73AC00496599 /* NGWaveletDocOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249BB117F73AC00496599 /* NGWaveletDocOp.m */; };
 		29C249CC117F78CF00496599 /* NGAddParticipantOp.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C249CB117F78CF00496599 /* NGAddParticipantOp.m */; };
@@ -215,6 +217,8 @@
 		29BFEBCC118F88A300899593 /* NGIdGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGIdGenerator.m; path = lib/model/id/util/NGIdGenerator.m; sourceTree = "<group>"; };
 		29BFEBE0118F8A0A00899593 /* NGIdGeneratorTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGIdGeneratorTest.h; path = test/lib/util/NGIdGeneratorTest.h; sourceTree = "<group>"; };
 		29BFEBE1118F8A0A00899593 /* NGIdGeneratorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGIdGeneratorTest.m; path = test/lib/util/NGIdGeneratorTest.m; sourceTree = "<group>"; };
+		29BFEC16118F8E7D00899593 /* NGDocumentConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocumentConstant.h; path = lib/model/common/NGDocumentConstant.h; sourceTree = "<group>"; };
+		29BFEC17118F8E7D00899593 /* NGDocumentConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocumentConstant.m; path = lib/model/common/NGDocumentConstant.m; sourceTree = "<group>"; };
 		29C249B7117F72E200496599 /* NGWaveletOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletOperation.h; path = lib/model/operation/NGWaveletOperation.h; sourceTree = "<group>"; };
 		29C249BA117F73AC00496599 /* NGWaveletDocOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveletDocOp.h; path = lib/model/operation/NGWaveletDocOp.h; sourceTree = "<group>"; };
 		29C249BB117F73AC00496599 /* NGWaveletDocOp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGWaveletDocOp.m; path = lib/model/operation/NGWaveletDocOp.m; sourceTree = "<group>"; };
@@ -493,6 +497,8 @@
 			children = (
 				29BFEBB5118F784E00899593 /* NGIdConstant.h */,
 				29BFEBB6118F784E00899593 /* NGIdConstant.m */,
+				29BFEC16118F8E7D00899593 /* NGDocumentConstant.h */,
+				29BFEC17118F8E7D00899593 /* NGDocumentConstant.m */,
 			);
 			name = common;
 			sourceTree = "<group>";
@@ -809,6 +815,7 @@
 				29BFEBB8118F784E00899593 /* NGIdConstant.m in Sources */,
 				29BFEBCE118F88A300899593 /* NGIdGenerator.m in Sources */,
 				29BFEBE2118F8A0A00899593 /* NGIdGeneratorTest.m in Sources */,
+				29BFEC18118F8E7D00899593 /* NGDocumentConstant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -855,6 +862,7 @@
 				29D7A4C9118A23CD00CAF51F /* NGHashedVersion.m in Sources */,
 				29BFEBB7118F784E00899593 /* NGIdConstant.m in Sources */,
 				29BFEBCD118F88A300899593 /* NGIdGenerator.m in Sources */,
+				29BFEC19118F8E7D00899593 /* NGDocumentConstant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

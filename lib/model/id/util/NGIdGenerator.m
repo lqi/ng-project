@@ -82,4 +82,12 @@ static NSString *const WEB64_ALPHABET = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl
 	return [self generateId:[NGIdConstant BLIP_PREFIX] length:36];
 }
 
+- (NGDocumentId *) manifestDocumentId {
+	return [NGIdConstant MANIFEST_DOC_ID];
+}
+
+- (NGDocumentId *) tagDocumentId {
+	return [NGIdConstant TAGS_DOC_ID];
+}
+
 @end

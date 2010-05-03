@@ -189,7 +189,6 @@
 	if (![network isConnected]) {
 		return;
 	}
-	NGWaveId *waveId = [NGWaveId waveIdWithDomain:@"indexwave" waveId:@"indexwave"];
 	NGRpcMessage *message = [NGRpcMessage openRequest:[_idGenerator indexWaveId] participantId:participantId seqNo:[self getSequenceNo]];
 	[NGRpc send:message viaOutputStream:[network pbOutputStream]];	
 }
@@ -203,22 +202,22 @@
 	NGDocumentId *newBlipName = [_idGenerator newDocumentId];
 	
 	NGMutateDocument *newConversation = [[[[[[NGDocOpBuilder builder]
-										 elementStart:@"conversation" withAttributes:[NGDocAttributes emptyAttribute]]
-										 elementStart:@"blip" withAttributes:[[NGDocAttributes emptyAttribute] addAttributeWithKey:@"id" andValue:newBlipName]]
+										 elementStart:[NGDocumentConstant CONVERSATION] withAttributes:[NGDocAttributes emptyAttribute]]
+										 elementStart:[NGDocumentConstant BLIP] withAttributes:[[NGDocAttributes emptyAttribute] addAttributeWithKey:[NGDocumentConstant BLIP_ID] andValue:newBlipName]]
 										 elementEnd]
 										 elementEnd]
 										 build];
 	
 	NGMutateDocument *newBlipOp = [[[[[[[[NGDocOpBuilder builder]
-								   elementStart:@"contributor" withAttributes:[[NGDocAttributes emptyAttribute] addAttributeWithKey:@"name" andValue:[participantId participantIdAtDomain]]]
+								   elementStart:[NGDocumentConstant CONTRIBUTOR] withAttributes:[[NGDocAttributes emptyAttribute] addAttributeWithKey:[NGDocumentConstant CONTRIBUTOR_NAME] andValue:[participantId participantIdAtDomain]]]
 								   elementEnd]
-								   elementStart:@"body" withAttributes:[NGDocAttributes emptyAttribute]]
-								   elementStart:@"line" withAttributes:[NGDocAttributes emptyAttribute]]
+								   elementStart:[NGDocumentConstant BODY] withAttributes:[NGDocAttributes emptyAttribute]]
+								   elementStart:[NGDocumentConstant LINE] withAttributes:[NGDocAttributes emptyAttribute]]
 								   elementEnd]
 								   elementEnd]
 								   build];
 	
-	NGWaveletDelta *newWaveletDelta = [[[[[NGWaveletDeltaBuilder builder:participantId] addParticipantOp:participantId] docOp:@"conversation" andMutateDocument:newConversation] docOp:newBlipName andMutateDocument:newBlipOp] build];
+	NGWaveletDelta *newWaveletDelta = [[[[[NGWaveletDeltaBuilder builder:participantId] addParticipantOp:participantId] docOp:[_idGenerator manifestDocumentId] andMutateDocument:newConversation] docOp:newBlipName andMutateDocument:newBlipOp] build];
 	
 	NGRpcMessage *message = [NGRpcMessage submitRequest:newWaveName waveletDelta:newWaveletDelta hashedVersion:[NGHashedVersion hashedVersion:newWaveName] seqNo:[self getSequenceNo]];
 	
@@ -254,8 +253,8 @@
 		}
 		docOpBuilder = [docOpBuilder retain:retainItemCount];
 	}
-	NGMutateDocument *addTagDoc = [[[[docOpBuilder elementStart:@"tag" withAttributes:[NGDocAttributes emptyAttribute]] characters:[self.tagAdd stringValue]] elementEnd] build];
-	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] docOp:@"tags" andMutateDocument:addTagDoc] build];
+	NGMutateDocument *addTagDoc = [[[[docOpBuilder elementStart:[NGDocumentConstant TAG] withAttributes:[NGDocAttributes emptyAttribute]] characters:[self.tagAdd stringValue]] elementEnd] build];
+	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] docOp:[_idGenerator tagDocumentId] andMutateDocument:addTagDoc] build];
 	[self sendWaveletDelta:waveletDelta];
 	
 	[self.tagAdd setStringValue:@""];
@@ -284,12 +283,12 @@
 	if (retainItemCountBackward != 0) {
 		docOpBuilder = [docOpBuilder retain:retainItemCountBackward];
 	}
-	docOpBuilder = [[[docOpBuilder deleteElementStart:@"tag"] deleteCharacters:tagToBeDeleted] deleteElementEnd];
+	docOpBuilder = [[[docOpBuilder deleteElementStart:[NGDocumentConstant TAG]] deleteCharacters:tagToBeDeleted] deleteElementEnd];
 	if (retainItemCountForward != 0) {
 		docOpBuilder = [docOpBuilder retain:retainItemCountForward];
 	}
 	NGMutateDocument *rmTagDoc = [docOpBuilder build];
-	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] docOp:@"tags" andMutateDocument:rmTagDoc] build];
+	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] docOp:[_idGenerator tagDocumentId] andMutateDocument:rmTagDoc] build];
 	[self sendWaveletDelta:waveletDelta];
 	
 	[self.tagList setStringValue:@""];
