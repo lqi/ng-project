@@ -15,11 +15,11 @@
  * 
  */
 
-#import "NGRandomIdGenerator.h"
+#import "NGIdGenerator.h"
 
 static NSString *const WEB64_ALPHABET = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
-@interface NGRandomIdGenerator()
+@interface NGIdGenerator()
 
 - (NSString *) next:(int)length;
 - (NSString *) generateId:(NSString *)namespace length:(int)bits;
@@ -27,7 +27,7 @@ static NSString *const WEB64_ALPHABET = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl
 
 @end
 
-@implementation NGRandomIdGenerator
+@implementation NGIdGenerator
 
 - (id) initWithDomain:(NSString *)domain {
 	if (self = [super init]) {

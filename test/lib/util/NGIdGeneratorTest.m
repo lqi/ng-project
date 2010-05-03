@@ -15,12 +15,12 @@
  * 
  */
 
-#import "NGRandomIdGeneratorTest.h"
+#import "NGIdGeneratorTest.h"
 
-@implementation NGRandomIdGeneratorTest
+@implementation NGIdGeneratorTest
 
 - (void) setUp {
-	_idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:@"testDomain"];
+	_idGenerator = [[NGIdGenerator alloc] initWithDomain:@"testDomain"];
 }
 
 - (void) tearDown {

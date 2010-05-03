@@ -24,7 +24,7 @@
 #import "../NGDocumentId.h"
 #import "../../common/NGIdConstant.h"
 
-@interface NGRandomIdGenerator : NSObject {
+@interface NGIdGenerator : NSObject {
 	NSString *_domain;
 }
 

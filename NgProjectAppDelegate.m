@@ -36,7 +36,7 @@
 		domain = @"192.168.131.5";
 		participantId = [[NGParticipantId alloc] initWithDomain:domain participantId:@"test"];
 		_seqNo = 0;
-		idGenerator = [[NGRandomIdGenerator alloc] initWithDomain:domain];
+		idGenerator = [[NGIdGenerator alloc] initWithDomain:domain];
 		inboxViewDelegate = [[NGInboxViewDelegate alloc] init];
 		inboxViewDelegate.currentUser = participantId;
 		hasWaveOpened = NO;

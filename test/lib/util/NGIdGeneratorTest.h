@@ -17,13 +17,13 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-#import "NGRandomIdGenerator.h"
+#import "NGIdGenerator.h"
 #import "NGWaveId.h"
 #import "NGWaveletId.h"
 #import "NGDocumentId.h"
 
-@interface NGRandomIdGeneratorTest : SenTestCase {
-	NGRandomIdGenerator *_idGenerator;
+@interface NGIdGeneratorTest : SenTestCase {
+	NGIdGenerator *_idGenerator;
 }
 
 @end

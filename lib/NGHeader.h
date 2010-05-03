@@ -27,7 +27,7 @@
 #import "model/id/NGDocumentId.h"
 #import "model/id/NGParticipantId.h"
 #import "model/id/NGWaveName.h"
-#import "model/id/util/NGRandomIdGenerator.h"
+#import "model/id/util/NGIdGenerator.h"
 
 #import "model/document/operation/NGMutateDocument.h"
 #import "model/document/operation/NGDocOpComponent.h"
