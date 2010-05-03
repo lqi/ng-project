@@ -71,6 +71,7 @@
 - (IBAction) addTag:(id)sender;
 - (IBAction) rmTag:(id)sender;
 
+- (void)sendWaveletDelta:(NGWaveletDelta *)delta;
 - (int) getSequenceNo;
 - (NGHashedVersion *) getHashedVersion;
 
