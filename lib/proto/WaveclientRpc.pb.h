@@ -2,8 +2,41 @@
 
 #import "ProtocolBuffers.h"
 
-#import "Common.pb.h"
+#import "Rpc.pb.h"
+#import "Federation.pb.h"
 
+@class CancelRpc;
+@class CancelRpc_Builder;
+@class DescriptorProto;
+@class DescriptorProto_Builder;
+@class DescriptorProto_ExtensionRange;
+@class DescriptorProto_ExtensionRange_Builder;
+@class EnumDescriptorProto;
+@class EnumDescriptorProto_Builder;
+@class EnumOptions;
+@class EnumOptions_Builder;
+@class EnumValueDescriptorProto;
+@class EnumValueDescriptorProto_Builder;
+@class EnumValueOptions;
+@class EnumValueOptions_Builder;
+@class FieldDescriptorProto;
+@class FieldDescriptorProto_Builder;
+@class FieldOptions;
+@class FieldOptions_Builder;
+@class FileDescriptorProto;
+@class FileDescriptorProto_Builder;
+@class FileDescriptorSet;
+@class FileDescriptorSet_Builder;
+@class FileOptions;
+@class FileOptions_Builder;
+@class MessageOptions;
+@class MessageOptions_Builder;
+@class MethodDescriptorProto;
+@class MethodDescriptorProto_Builder;
+@class MethodOptions;
+@class MethodOptions_Builder;
+@class ObjectiveCFileOptions;
+@class ObjectiveCFileOptions_Builder;
 @class ProtocolAppliedWaveletDelta;
 @class ProtocolAppliedWaveletDelta_Builder;
 @class ProtocolDocumentOperation;
@@ -44,6 +77,16 @@
 @class ProtocolWaveletOperation_MutateDocument_Builder;
 @class ProtocolWaveletUpdate;
 @class ProtocolWaveletUpdate_Builder;
+@class RpcFinished;
+@class RpcFinished_Builder;
+@class ServiceDescriptorProto;
+@class ServiceDescriptorProto_Builder;
+@class ServiceOptions;
+@class ServiceOptions_Builder;
+@class UninterpretedOption;
+@class UninterpretedOption_Builder;
+@class UninterpretedOption_NamePart;
+@class UninterpretedOption_NamePart_Builder;
 
 @interface WaveclientRpcRoot : NSObject {
 }

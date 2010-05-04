@@ -48,7 +48,7 @@ typedef enum {
 BOOL ProtocolSignerInfo_HashAlgorithmIsValidValue(ProtocolSignerInfo_HashAlgorithm value);
 
 
-@interface CommonRoot : NSObject {
+@interface FederationRoot : NSObject {
 }
 + (PBExtensionRegistry*) extensionRegistry;
 + (void) registerAllExtensions:(PBMutableExtensionRegistry*) registry;

@@ -12,7 +12,8 @@ static PBExtensionRegistry* extensionRegistry = nil;
   if (self == [WaveclientRpcRoot class]) {
     PBMutableExtensionRegistry* registry = [PBMutableExtensionRegistry registry];
     [self registerAllExtensions:registry];
-    [CommonRoot registerAllExtensions:registry];
+    [RpcRoot registerAllExtensions:registry];
+    [FederationRoot registerAllExtensions:registry];
     extensionRegistry = [registry retain];
   }
 }

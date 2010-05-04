@@ -17,7 +17,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../../../../proto/Common.pb.h"
+#import "../../../../proto/Federation.pb.h"
 
 #import "../NGDocOpComponent.h"
 #import "../NGDocAttributesUpdate.h"

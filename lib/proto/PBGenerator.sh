@@ -1,0 +1,1 @@
+/Users/lqi/Course/SoftwareDevelopmentPractice/third-party/ProtocolBuffers-2.2.0-Source/src/protoc --proto_path=. --objc_out=. descriptor.proto objectivec-descriptor.proto federation.protodevel federation_error.protodevel rpc.proto waveclient-rpc.proto 

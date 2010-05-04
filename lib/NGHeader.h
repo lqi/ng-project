@@ -17,7 +17,7 @@
 
 #import "ProtocolBuffers.h"
 
-#import "proto/Common.pb.h"
+#import "proto/Federation.pb.h"
 #import "proto/WaveclientRpc.pb.h"
  
 #import "model/common/NGIdConstant.h"

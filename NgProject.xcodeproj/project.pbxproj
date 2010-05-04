@@ -11,6 +11,26 @@
 		256AC3DA0F4B6AC300CF3369 /* NgProjectAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* NgProjectAppDelegate.m */; };
 		290696211181056D00932015 /* NGMutateDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 290696201181056D00932015 /* NGMutateDocument.m */; };
 		290696221181056D00932015 /* NGMutateDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 290696201181056D00932015 /* NGMutateDocument.m */; };
+		291C683B1190C2FC0012E370 /* Descriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C682D1190C2FC0012E370 /* Descriptor.pb.m */; };
+		291C683C1190C2FC0012E370 /* descriptor.proto in Resources */ = {isa = PBXBuildFile; fileRef = 291C682E1190C2FC0012E370 /* descriptor.proto */; };
+		291C683D1190C2FC0012E370 /* federation_error.protodevel in Resources */ = {isa = PBXBuildFile; fileRef = 291C682F1190C2FC0012E370 /* federation_error.protodevel */; };
+		291C683E1190C2FC0012E370 /* Federation.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68311190C2FC0012E370 /* Federation.pb.m */; };
+		291C683F1190C2FC0012E370 /* federation.protodevel in Resources */ = {isa = PBXBuildFile; fileRef = 291C68321190C2FC0012E370 /* federation.protodevel */; };
+		291C68401190C2FC0012E370 /* FederationError.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68341190C2FC0012E370 /* FederationError.pb.m */; };
+		291C68411190C2FC0012E370 /* objectivec-descriptor.proto in Resources */ = {isa = PBXBuildFile; fileRef = 291C68351190C2FC0012E370 /* objectivec-descriptor.proto */; };
+		291C68421190C2FC0012E370 /* ObjectivecDescriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68371190C2FC0012E370 /* ObjectivecDescriptor.pb.m */; };
+		291C68431190C2FC0012E370 /* Rpc.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68391190C2FC0012E370 /* Rpc.pb.m */; };
+		291C68441190C2FC0012E370 /* rpc.proto in Resources */ = {isa = PBXBuildFile; fileRef = 291C683A1190C2FC0012E370 /* rpc.proto */; };
+		291C68451190C2FC0012E370 /* Descriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C682D1190C2FC0012E370 /* Descriptor.pb.m */; };
+		291C68461190C2FC0012E370 /* descriptor.proto in Resources */ = {isa = PBXBuildFile; fileRef = 291C682E1190C2FC0012E370 /* descriptor.proto */; };
+		291C68471190C2FC0012E370 /* federation_error.protodevel in Resources */ = {isa = PBXBuildFile; fileRef = 291C682F1190C2FC0012E370 /* federation_error.protodevel */; };
+		291C68481190C2FC0012E370 /* Federation.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68311190C2FC0012E370 /* Federation.pb.m */; };
+		291C68491190C2FC0012E370 /* federation.protodevel in Resources */ = {isa = PBXBuildFile; fileRef = 291C68321190C2FC0012E370 /* federation.protodevel */; };
+		291C684A1190C2FC0012E370 /* FederationError.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68341190C2FC0012E370 /* FederationError.pb.m */; };
+		291C684B1190C2FC0012E370 /* objectivec-descriptor.proto in Resources */ = {isa = PBXBuildFile; fileRef = 291C68351190C2FC0012E370 /* objectivec-descriptor.proto */; };
+		291C684C1190C2FC0012E370 /* ObjectivecDescriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68371190C2FC0012E370 /* ObjectivecDescriptor.pb.m */; };
+		291C684D1190C2FC0012E370 /* Rpc.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68391190C2FC0012E370 /* Rpc.pb.m */; };
+		291C684E1190C2FC0012E370 /* rpc.proto in Resources */ = {isa = PBXBuildFile; fileRef = 291C683A1190C2FC0012E370 /* rpc.proto */; };
 		291F39C7117A46A5001CAD54 /* NGDocAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F39C6117A46A5001CAD54 /* NGDocAttributes.m */; };
 		291F39C8117A46A5001CAD54 /* NGDocAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F39C6117A46A5001CAD54 /* NGDocAttributes.m */; };
 		29258B03114ED59800ED4F98 /* NGWaveNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258B02114ED59800ED4F98 /* NGWaveNameTest.m */; };
@@ -35,9 +55,7 @@
 		29A7E792114DB34E006D61A8 /* NGParticipantIdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A7E791114DB34E006D61A8 /* NGParticipantIdTest.m */; };
 		29A7E7A8114DB6A2006D61A8 /* NGRpcMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CDE9C8114C8C6100B95C82 /* NGRpcMessage.m */; };
 		29A7E7F2114DEF02006D61A8 /* NGInboxViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A7E7F1114DEF02006D61A8 /* NGInboxViewDelegate.m */; };
-		29B46CDD114AD91C00AC74D7 /* Common.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B46CD8114AD91C00AC74D7 /* Common.pb.m */; };
 		29B46CE0114AD91C00AC74D7 /* WaveclientRpc.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B46CDC114AD91C00AC74D7 /* WaveclientRpc.pb.m */; };
-		29B46CE1114AD91C00AC74D7 /* Common.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B46CD8114AD91C00AC74D7 /* Common.pb.m */; };
 		29B46CE4114AD91C00AC74D7 /* WaveclientRpc.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B46CDC114AD91C00AC74D7 /* WaveclientRpc.pb.m */; };
 		29BD933011417C2100AA22AE /* NGNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD932F11417C2100AA22AE /* NGNetwork.m */; };
 		29BD937D1141950700AA22AE /* NGNetworkTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BD937C1141950700AA22AE /* NGNetworkTest.m */; };
@@ -160,6 +178,21 @@
 		256AC3F00F4B6AF500CF3369 /* NgProject_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NgProject_Prefix.pch; sourceTree = "<group>"; };
 		2906961F1181056D00932015 /* NGMutateDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGMutateDocument.h; path = lib/model/document/operation/NGMutateDocument.h; sourceTree = "<group>"; };
 		290696201181056D00932015 /* NGMutateDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGMutateDocument.m; path = lib/model/document/operation/NGMutateDocument.m; sourceTree = "<group>"; };
+		291C682C1190C2FC0012E370 /* Descriptor.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Descriptor.pb.h; sourceTree = "<group>"; };
+		291C682D1190C2FC0012E370 /* Descriptor.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Descriptor.pb.m; sourceTree = "<group>"; };
+		291C682E1190C2FC0012E370 /* descriptor.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = descriptor.proto; sourceTree = "<group>"; };
+		291C682F1190C2FC0012E370 /* federation_error.protodevel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = federation_error.protodevel; sourceTree = "<group>"; };
+		291C68301190C2FC0012E370 /* Federation.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Federation.pb.h; sourceTree = "<group>"; };
+		291C68311190C2FC0012E370 /* Federation.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Federation.pb.m; sourceTree = "<group>"; };
+		291C68321190C2FC0012E370 /* federation.protodevel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = federation.protodevel; sourceTree = "<group>"; };
+		291C68331190C2FC0012E370 /* FederationError.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FederationError.pb.h; sourceTree = "<group>"; };
+		291C68341190C2FC0012E370 /* FederationError.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FederationError.pb.m; sourceTree = "<group>"; };
+		291C68351190C2FC0012E370 /* objectivec-descriptor.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "objectivec-descriptor.proto"; sourceTree = "<group>"; };
+		291C68361190C2FC0012E370 /* ObjectivecDescriptor.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectivecDescriptor.pb.h; sourceTree = "<group>"; };
+		291C68371190C2FC0012E370 /* ObjectivecDescriptor.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectivecDescriptor.pb.m; sourceTree = "<group>"; };
+		291C68381190C2FC0012E370 /* Rpc.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rpc.pb.h; sourceTree = "<group>"; };
+		291C68391190C2FC0012E370 /* Rpc.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rpc.pb.m; sourceTree = "<group>"; };
+		291C683A1190C2FC0012E370 /* rpc.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rpc.proto; sourceTree = "<group>"; };
 		291F39C5117A46A5001CAD54 /* NGDocAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocAttributes.h; path = lib/model/document/operation/NGDocAttributes.h; sourceTree = "<group>"; };
 		291F39C6117A46A5001CAD54 /* NGDocAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocAttributes.m; path = lib/model/document/operation/NGDocAttributes.m; sourceTree = "<group>"; };
 		29258B01114ED59800ED4F98 /* NGWaveNameTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveNameTest.h; path = test/lib/model/NGWaveNameTest.h; sourceTree = "<group>"; };
@@ -193,9 +226,6 @@
 		29A7E791114DB34E006D61A8 /* NGParticipantIdTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGParticipantIdTest.m; path = test/lib/model/NGParticipantIdTest.m; sourceTree = "<group>"; };
 		29A7E7F0114DEF02006D61A8 /* NGInboxViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGInboxViewDelegate.h; sourceTree = "<group>"; };
 		29A7E7F1114DEF02006D61A8 /* NGInboxViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGInboxViewDelegate.m; sourceTree = "<group>"; };
-		29B46CD7114AD91C00AC74D7 /* Common.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.pb.h; sourceTree = "<group>"; };
-		29B46CD8114AD91C00AC74D7 /* Common.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.pb.m; sourceTree = "<group>"; };
-		29B46CD9114AD91C00AC74D7 /* common.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = common.proto; sourceTree = "<group>"; };
 		29B46CDA114AD91C00AC74D7 /* waveclient-rpc.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "waveclient-rpc.proto"; sourceTree = "<group>"; };
 		29B46CDB114AD91C00AC74D7 /* WaveclientRpc.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveclientRpc.pb.h; sourceTree = "<group>"; };
 		29B46CDC114AD91C00AC74D7 /* WaveclientRpc.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveclientRpc.pb.m; sourceTree = "<group>"; };
@@ -387,9 +417,21 @@
 		29B46CD6114AD91C00AC74D7 /* proto */ = {
 			isa = PBXGroup;
 			children = (
-				29B46CD7114AD91C00AC74D7 /* Common.pb.h */,
-				29B46CD8114AD91C00AC74D7 /* Common.pb.m */,
-				29B46CD9114AD91C00AC74D7 /* common.proto */,
+				291C682C1190C2FC0012E370 /* Descriptor.pb.h */,
+				291C682D1190C2FC0012E370 /* Descriptor.pb.m */,
+				291C682E1190C2FC0012E370 /* descriptor.proto */,
+				291C682F1190C2FC0012E370 /* federation_error.protodevel */,
+				291C68301190C2FC0012E370 /* Federation.pb.h */,
+				291C68311190C2FC0012E370 /* Federation.pb.m */,
+				291C68321190C2FC0012E370 /* federation.protodevel */,
+				291C68331190C2FC0012E370 /* FederationError.pb.h */,
+				291C68341190C2FC0012E370 /* FederationError.pb.m */,
+				291C68351190C2FC0012E370 /* objectivec-descriptor.proto */,
+				291C68361190C2FC0012E370 /* ObjectivecDescriptor.pb.h */,
+				291C68371190C2FC0012E370 /* ObjectivecDescriptor.pb.m */,
+				291C68381190C2FC0012E370 /* Rpc.pb.h */,
+				291C68391190C2FC0012E370 /* Rpc.pb.m */,
+				291C683A1190C2FC0012E370 /* rpc.proto */,
 				29B46CDA114AD91C00AC74D7 /* waveclient-rpc.proto */,
 				29B46CDB114AD91C00AC74D7 /* WaveclientRpc.pb.h */,
 				29B46CDC114AD91C00AC74D7 /* WaveclientRpc.pb.m */,
@@ -731,6 +773,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				291C683C1190C2FC0012E370 /* descriptor.proto in Resources */,
+				291C683D1190C2FC0012E370 /* federation_error.protodevel in Resources */,
+				291C683F1190C2FC0012E370 /* federation.protodevel in Resources */,
+				291C68411190C2FC0012E370 /* objectivec-descriptor.proto in Resources */,
+				291C68441190C2FC0012E370 /* rpc.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -740,6 +787,11 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+				291C68461190C2FC0012E370 /* descriptor.proto in Resources */,
+				291C68471190C2FC0012E370 /* federation_error.protodevel in Resources */,
+				291C68491190C2FC0012E370 /* federation.protodevel in Resources */,
+				291C684B1190C2FC0012E370 /* objectivec-descriptor.proto in Resources */,
+				291C684E1190C2FC0012E370 /* rpc.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -774,7 +826,6 @@
 				29BD937D1141950700AA22AE /* NGNetworkTest.m in Sources */,
 				29BD958C1142495C00AA22AE /* NGWaveIdTest.m in Sources */,
 				29BD95CD11424F3300AA22AE /* NGWaveletIdTest.m in Sources */,
-				29B46CDD114AD91C00AC74D7 /* Common.pb.m in Sources */,
 				29B46CE0114AD91C00AC74D7 /* WaveclientRpc.pb.m in Sources */,
 				29A7E792114DB34E006D61A8 /* NGParticipantIdTest.m in Sources */,
 				29258B03114ED59800ED4F98 /* NGWaveNameTest.m in Sources */,
@@ -816,6 +867,11 @@
 				29BFEBCE118F88A300899593 /* NGIdGenerator.m in Sources */,
 				29BFEBE2118F8A0A00899593 /* NGIdGeneratorTest.m in Sources */,
 				29BFEC18118F8E7D00899593 /* NGDocumentConstant.m in Sources */,
+				291C683B1190C2FC0012E370 /* Descriptor.pb.m in Sources */,
+				291C683E1190C2FC0012E370 /* Federation.pb.m in Sources */,
+				291C68401190C2FC0012E370 /* FederationError.pb.m in Sources */,
+				291C68421190C2FC0012E370 /* ObjectivecDescriptor.pb.m in Sources */,
+				291C68431190C2FC0012E370 /* Rpc.pb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -827,7 +883,6 @@
 				256AC3DA0F4B6AC300CF3369 /* NgProjectAppDelegate.m in Sources */,
 				29E7B80F1140C2FE001E3644 /* NGRpc.m in Sources */,
 				29BD933011417C2100AA22AE /* NGNetwork.m in Sources */,
-				29B46CE1114AD91C00AC74D7 /* Common.pb.m in Sources */,
 				29B46CE4114AD91C00AC74D7 /* WaveclientRpc.pb.m in Sources */,
 				29CDE9C9114C8C6100B95C82 /* NGRpcMessage.m in Sources */,
 				29A7E7F2114DEF02006D61A8 /* NGInboxViewDelegate.m in Sources */,
@@ -863,6 +918,11 @@
 				29BFEBB7118F784E00899593 /* NGIdConstant.m in Sources */,
 				29BFEBCD118F88A300899593 /* NGIdGenerator.m in Sources */,
 				29BFEC19118F8E7D00899593 /* NGDocumentConstant.m in Sources */,
+				291C68451190C2FC0012E370 /* Descriptor.pb.m in Sources */,
+				291C68481190C2FC0012E370 /* Federation.pb.m in Sources */,
+				291C684A1190C2FC0012E370 /* FederationError.pb.m in Sources */,
+				291C684C1190C2FC0012E370 /* ObjectivecDescriptor.pb.m in Sources */,
+				291C684D1190C2FC0012E370 /* Rpc.pb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
