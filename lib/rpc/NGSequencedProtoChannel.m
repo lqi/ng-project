@@ -54,8 +54,6 @@
 	[self getStreamsToHostName:domain port:port inputStream:&_inputStream outputStream:&_outputStream];
 	[_inputStream retain];
 	[_outputStream retain];
-	//[_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	//[_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 	
 	_pbOutputStream = [PBCodedOutputStream streamWithOutputStream:_outputStream];
 	[_pbOutputStream retain];
@@ -113,14 +111,12 @@
 			if (prototype == nil) {
 				int length = [_pbInputStream readRawVarint32];
 				/* int oldLimit = */[_pbInputStream pushLimit:length];
-				//PBUnknownFieldSet unknownFieldSet = [PBUnknownFieldSet parseFromData:_pbInputStream];
 				[_pbInputStream popLimit:length];
 				[self.callback unknown:sequenceNo messageType:messageType];
 			}
 			else {
 				PBGeneratedMessage_Builder *messageBuilder = [prototype builder];
 				[_pbInputStream readMessage:messageBuilder extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-				NSLog(@"%d - %@", sequenceNo, messageType);
 				[self.callback message:sequenceNo message:[messageBuilder build]];
 			}
 		}
@@ -128,7 +124,6 @@
 }
 
 - (void) startAsyncRead {
-	NSLog(@"start async read!");
 	[NSThread detachNewThreadSelector:@selector(receiveMessage) toTarget:self withObject:nil];
 }
 

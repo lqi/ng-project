@@ -73,5 +73,3 @@
 #import "rpc/NGClientRpc.h"
 
 #import "network/NGHost.h"
-#import "network/NGNetwork.h"
-#import "network/NGRpc.h"
