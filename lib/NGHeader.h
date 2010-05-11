@@ -19,6 +19,10 @@
 
 #import "proto/Federation.pb.h"
 #import "proto/WaveclientRpc.pb.h"
+#import "proto/Descriptor.pb.h"
+#import "proto/FederationError.pb.h"
+#import "proto/ObjectivecDescriptor.pb.h"
+#import "proto/Rpc.pb.h"
  
 #import "model/common/NGIdConstant.h"
 #import "model/common/NGDocumentConstant.h"
@@ -54,10 +58,20 @@
 #import "model/operation/util/NGWaveletDeltaBuilder.h"
 #import "model/operation/util/NGWaveletDeltaSerializer.h"
 
-#import "model/NGRpcMessage.h"
 #import "model/NGElementAttribute.h"
 #import "model/NGElementAnnotation.h"
 #import "model/NGElementAnnotationUpdate.h"
 
+#import "rpc/NGRpcMessage.h"
+#import "rpc/NGProtoCallback.h"
+#import "rpc/NGSequencedProtoChannel.h"
+#import "rpc/NGCancelRpc.h"
+#import "rpc/NGRpcState.h"
+#import "rpc/NGClientRpcChannel.h"
+#import "rpc/NGClientRpcCallback.h"
+#import "rpc/NGClientRpcController.h"
+#import "rpc/NGClientRpc.h"
+
+#import "network/NGHost.h"
 #import "network/NGNetwork.h"
 #import "network/NGRpc.h"

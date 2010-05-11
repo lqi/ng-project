@@ -17,14 +17,14 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ProtocolBuffers.h"
-
-#import "../rpc/NGRpcMessage.h"
-
-@interface NGRpc : NSObject {
+@interface NGHost : NSObject {
+	NSString *domain;
+	NSInteger port;
 }
 
-+ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
-+ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
+@property (retain) NSString *domain;
+@property NSInteger port;
+
++ (NGHost *) hostWithDomain:(NSString *)aDomain andPort:(NSInteger)aPort;
 
 @end

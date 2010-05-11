@@ -33,26 +33,29 @@
 
 - (id)init {
 	if (self = [super init]) {
-		domain = @"192.168.131.5";
-		participantId = [[NGParticipantId alloc] initWithDomain:domain participantId:@"test"];
-		_seqNo = 0;
-		_idGenerator = [[NGIdGenerator alloc] initWithDomain:domain];
+		_domain = [NSString stringWithString:@"192.168.131.5"];
+		_participantId = [[NGParticipantId alloc] initWithDomain:_domain participantId:@"test"];
+		_idGenerator = [[NGIdGenerator alloc] initWithDomain:_domain];
 		inboxViewDelegate = [[NGInboxViewDelegate alloc] init];
-		inboxViewDelegate.currentUser = participantId;
-		hasWaveOpened = NO;
+		inboxViewDelegate.currentUser = _participantId;
+		_hasWaveOpened = NO;
+		
+		_host = [[NGHost alloc] init];
+		_host.domain = _domain;
+		_host.port = 9876;
+		
+		_channel = [[NGClientRpcChannel alloc] initWithHost:_host];
+		
+		_rpc = [[NGClientRpc alloc] init];
+		[_rpc setChannel:_channel];
 	}
 	return self;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	network = [[NGNetwork alloc] initWithHostDomain:domain port:9876];
-	
-	[self.currentUser setStringValue:[participantId participantIdAtDomain]];
+	[self.currentUser setStringValue:[_participantId participantIdAtDomain]];
 	
 	[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(openInbox) userInfo:nil repeats:NO];
-	
-	[NSThread detachNewThreadSelector:@selector(connectionStatueControllerThread) toTarget:self withObject:nil];
-	[NSThread detachNewThreadSelector:@selector(newReceiveThread) toTarget:self withObject:nil];
 	
 	[inboxTableView setDataSource:inboxViewDelegate];
 	[inboxTableView setDoubleAction:@selector(openWave:)];
@@ -60,143 +63,73 @@
 	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
 }
 
-- (void) newReceiveThread {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	while (YES) {
-		[NSThread sleepForTimeInterval:0.5];
-		[self newReceive];
-	}
-	
-	[pool release];
-}
-
-- (void) newReceive {
-	if ([network isConnected]) {
-		if ([network callbackAvailable]) {
-			while (![[network pbInputStream] isAtEnd]) {
-				NGRpcMessage *msg = [NGRpc receive:[network pbInputStream]];
-				if ([[[[msg message] class] description] isEqual:@"ProtocolWaveletUpdate"]) {
-					ProtocolWaveletUpdate *waveletUpdate = (ProtocolWaveletUpdate *)[msg message];
-					NGWaveName *waveUrl = [[NGWaveName alloc] initWithString:[waveletUpdate waveletName]];
-					NSString *updateWaveId = [[waveUrl waveId] waveId];
-					if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
-						[inboxViewDelegate passSignal:waveletUpdate];
+- (void) receiveMessage:(PBGeneratedMessage *)message {
+	if ([[[message class] description] isEqual:@"ProtocolWaveletUpdate"]) {
+		ProtocolWaveletUpdate *waveletUpdate = (ProtocolWaveletUpdate *)message;
+		NGWaveName *waveUrl = [[NGWaveName alloc] initWithString:[waveletUpdate waveletName]];
+		NSString *updateWaveId = [[waveUrl waveId] waveId];
+		if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
+			[inboxViewDelegate passSignal:waveletUpdate];
+		}
+		else if (_hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
+			[self.waveTextView setHashedVersion:[[waveletUpdate resultingVersion] version] withHistoryHash:[[waveletUpdate resultingVersion] historyHash]];
+			
+			[versionInfo setStringValue:[[self.waveTextView hashedVersion] stringValue]];
+			// mutation document for open wave
+			
+			for (ProtocolWaveletDelta *wd in [waveletUpdate appliedDeltaList]) {
+				for (ProtocolWaveletOperation *op in [wd operationList]) {
+					if ([op hasAddParticipant]) {
+						[participantList addItemWithObjectValue:[[NGParticipantId participantIdWithParticipantIdAtDomain:[op addParticipant]] participantIdAtDomain]];
 					}
-					else if (hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
-						[self.waveTextView setHashedVersion:[[waveletUpdate resultingVersion] version] withHistoryHash:[[waveletUpdate resultingVersion] historyHash]];
-						
-						[versionInfo setStringValue:[[self.waveTextView hashedVersion] stringValue]];
-						// mutation document for open wave
-						
-						for (ProtocolWaveletDelta *wd in [waveletUpdate appliedDeltaList]) {
-							for (ProtocolWaveletOperation *op in [wd operationList]) {
-								if ([op hasAddParticipant]) {
-									[participantList addItemWithObjectValue:[[NGParticipantId participantIdWithParticipantIdAtDomain:[op addParticipant]] participantIdAtDomain]];
+					if ([op hasRemoveParticipant]) {
+						[participantList removeItemWithObjectValue:[[NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]] participantIdAtDomain]];
+					}
+					if ([op hasMutateDocument]) {
+						ProtocolWaveletOperation_MutateDocument *md = [op mutateDocument];
+						if ([[md documentId] isEqual:@"tags"]) {
+							for (ProtocolDocumentOperation_Component *comp in [[md documentOperation] componentList]) {
+								if ([comp hasCharacters]) {
+									[tagList addItemWithObjectValue:[comp characters]];
 								}
-								if ([op hasRemoveParticipant]) {
-									[participantList removeItemWithObjectValue:[[NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]] participantIdAtDomain]];
-								}
-								if ([op hasMutateDocument]) {
-									ProtocolWaveletOperation_MutateDocument *md = [op mutateDocument];
-									if ([[md documentId] isEqual:@"tags"]) {
-										for (ProtocolDocumentOperation_Component *comp in [[md documentOperation] componentList]) {
-											if ([comp hasCharacters]) {
-												[tagList addItemWithObjectValue:[comp characters]];
-											}
-											if ([comp hasDeleteCharacters]) {
-												[tagList removeItemWithObjectValue:[comp deleteCharacters]];
-											}
-										}
-									}
-									else {
-										[self.waveTextView apply:[op mutateDocument]];
-									}
-								}
-								if ([op hasNoOp]) {
-									NSLog(@"TODO: No operation!");
+								if ([comp hasDeleteCharacters]) {
+									[tagList removeItemWithObjectValue:[comp deleteCharacters]];
 								}
 							}
 						}
-						
-						// end mutation document for open wave
+						else {
+							[self.waveTextView apply:[op mutateDocument]];
+						}
 					}
-					[waveUrl release];
-					[inboxTableView reloadData];
-				}
-				else if ([[[[msg message] class] description] isEqual:@"ProtocolSubmitResponse"]) {
-					NSLog(@"%d: Submit", [msg sequenceNo]);
+					if ([op hasNoOp]) {
+						NSLog(@"TODO: No operation!");
+					}
 				}
 			}
+			
+			// end mutation document for open wave
 		}
+		[waveUrl release];
+		[inboxTableView reloadData];
 	}
-}
-
-- (IBAction) openWave:(id)sender {
-	if (![network isConnected]) {
-		return;
+	else if ([[[message class] description] isEqual:@"ProtocolSubmitResponse"]) {
+		//NSLog(@"%d: Submit", [msg sequenceNo]);
 	}
-	
-	if (hasWaveOpened) {
-		[self closeWave:nil];
-	}
-	
-	NSInteger rowIndex = [inboxTableView clickedRow];
-	NGWaveId *waveId = [[inboxViewDelegate getWaveIdByRowIndex:rowIndex] retain];
-	hasWaveOpened = YES;
-	
-	[self.waveTextView openWithNetwork:network WaveId:[NGWaveId waveIdWithDomain:[waveId domain] waveId:[waveId waveId]] waveletId:[NGWaveletId waveletIdWithDomain:[waveId domain] waveletId:@"conv+root"] participantId:participantId sequenceNo:_seqNo];
-	[self.currentWave setStringValue:[self.waveTextView openWaveId]];
-	
-	NGRpcMessage *message = [NGRpcMessage openRequest:waveId participantId:participantId seqNo:[self getSequenceNo]];
-	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
-}
-
-- (IBAction) closeWave:(id)sender {
-	if (!hasWaveOpened) {
-		return;
-	}
-	
-	_seqNo = [self.waveTextView seqNo];
-	hasWaveOpened = NO;
-	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
-	[self.versionInfo setStringValue:@""];
-	[self.participantAdd setStringValue:@""];
-	[self.participantList removeAllItems];
-	[self.participantList setStringValue:@""];
-	[self.tagAdd setStringValue:@""];
-	[self.tagList removeAllItems];
-	[self.tagList setStringValue:@""];
-	[self.waveTextView close];
-}
-
-- (void) connectionStatueControllerThread {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	while (YES) {
-		[NSThread sleepForTimeInterval:0.5];
-		[self connectionStatueController];
-	}
-	
-	[pool release];
-}
-
-- (void) connectionStatueController {
-	[self.statusLabel setStringValue:([network isConnected] ? @"Online": @"Offline")];
 }
 
 - (void) openInbox {
-	if (![network isConnected]) {
-		return;
-	}
-	NGRpcMessage *message = [NGRpcMessage openRequest:[_idGenerator indexWaveId] participantId:participantId seqNo:[self getSequenceNo]];
-	[NGRpc send:message viaOutputStream:[network pbOutputStream]];	
+	NGClientRpcController *openInboxController = [[NGClientRpcController alloc] init];
+	
+	ProtocolOpenRequest_Builder *openInboxRequestBuilder = [ProtocolOpenRequest builder];
+	[openInboxRequestBuilder setParticipantId:[_participantId participantIdAtDomain]];
+	[openInboxRequestBuilder setWaveId:[[_idGenerator indexWaveId] waveIdFollowedByDomain]];
+	
+	NGClientRpcCallback *openInboxCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
+	
+	[_rpc open:openInboxController request:[openInboxRequestBuilder build] callback:openInboxCallback];
 }
 
 - (IBAction) newWave:(id)sender {
-	if (![network isConnected]) {
-		return;
-	}
 	
 	NGWaveName *newWaveName = [NGWaveName waveNameWithWaveId:[_idGenerator newWaveId] andWaveletId:[_idGenerator newConversationRootWaveletId]];
 	NGDocumentId *newBlipName = [_idGenerator newDocumentId];
@@ -209,7 +142,7 @@
 										 build];
 	
 	NGMutateDocument *newBlipOp = [[[[[[[[NGDocOpBuilder builder]
-								   elementStart:[NGDocumentConstant CONTRIBUTOR] withAttributes:[[NGDocAttributes emptyAttribute] addAttributeWithKey:[NGDocumentConstant CONTRIBUTOR_NAME] andValue:[participantId participantIdAtDomain]]]
+								   elementStart:[NGDocumentConstant CONTRIBUTOR] withAttributes:[[NGDocAttributes emptyAttribute] addAttributeWithKey:[NGDocumentConstant CONTRIBUTOR_NAME] andValue:[_participantId participantIdAtDomain]]]
 								   elementEnd]
 								   elementStart:[NGDocumentConstant BODY] withAttributes:[NGDocAttributes emptyAttribute]]
 								   elementStart:[NGDocumentConstant LINE] withAttributes:[NGDocAttributes emptyAttribute]]
@@ -217,29 +150,67 @@
 								   elementEnd]
 								   build];
 	
-	NGWaveletDelta *newWaveletDelta = [[[[[NGWaveletDeltaBuilder builder:participantId] addParticipantOp:participantId] docOp:[_idGenerator manifestDocumentId] andMutateDocument:newConversation] docOp:newBlipName andMutateDocument:newBlipOp] build];
+	NGWaveletDelta *newWaveletDelta = [[[[[NGWaveletDeltaBuilder builder:_participantId] addParticipantOp:_participantId] docOp:[_idGenerator manifestDocumentId] andMutateDocument:newConversation] docOp:newBlipName andMutateDocument:newBlipOp] build];
 	
-	NGRpcMessage *message = [NGRpcMessage submitRequest:newWaveName waveletDelta:newWaveletDelta hashedVersion:[NGHashedVersion hashedVersion:newWaveName] seqNo:[self getSequenceNo]];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:newWaveName waveletDelta:newWaveletDelta hashedVersion:[NGHashedVersion hashedVersion:newWaveName] seqNo:0];
+	ProtocolSubmitRequest *request = (ProtocolSubmitRequest *)[message message];
+	NGClientRpcController *openInboxController = [[NGClientRpcController alloc] init];
+	NGClientRpcCallback *openInboxCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
+	[_rpc submit:openInboxController request:request callback:openInboxCallback];
+}
+
+- (IBAction) openWave:(id)sender {
+	if (_hasWaveOpened) {
+		[self closeWave:nil];
+	}
 	
-	[NGRpc send:message viaOutputStream:[network pbOutputStream]];	
+	NSInteger rowIndex = [inboxTableView clickedRow];
+	NGWaveId *waveId = [[inboxViewDelegate getWaveIdByRowIndex:rowIndex] retain];
+	_hasWaveOpened = YES;
+	
+	[self.waveTextView openWithNetwork:_rpc WaveId:[NGWaveId waveIdWithDomain:[waveId domain] waveId:[waveId waveId]] waveletId:[NGWaveletId waveletIdWithDomain:[waveId domain] waveletId:@"conv+root"] participantId:_participantId sequenceNo:0];
+	[self.currentWave setStringValue:[self.waveTextView openWaveId]];
+	
+	NGRpcMessage *message = [NGRpcMessage openRequest:waveId participantId:_participantId seqNo:0];
+	ProtocolOpenRequest *request = (ProtocolOpenRequest *)[message message];
+	NGClientRpcController *openInboxController = [[NGClientRpcController alloc] init];
+	NGClientRpcCallback *openInboxCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
+	[_rpc open:openInboxController request:request callback:openInboxCallback];
+}
+
+- (IBAction) closeWave:(id)sender {
+	if (!_hasWaveOpened) {
+		return;
+	}
+	
+	_hasWaveOpened = NO;
+	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
+	[self.versionInfo setStringValue:@""];
+	[self.participantAdd setStringValue:@""];
+	[self.participantList removeAllItems];
+	[self.participantList setStringValue:@""];
+	[self.tagAdd setStringValue:@""];
+	[self.tagList removeAllItems];
+	[self.tagList setStringValue:@""];
+	[self.waveTextView close];
 }
 
 - (IBAction) addParticipant:(id)sender {
 	NGParticipantId *addParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[self.participantAdd stringValue]];
-	[self sendWaveletDelta:[[[NGWaveletDeltaBuilder builder:participantId] addParticipantOp:addParticipantId] build]];
+	[self sendWaveletDelta:[[[NGWaveletDeltaBuilder builder:_participantId] addParticipantOp:addParticipantId] build]];
 	
 	[self.participantAdd setStringValue:@""];
 }
 
 - (IBAction) rmParticipant:(id)sender {
 	NGParticipantId *rmParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[self.participantList stringValue]];
-	[self sendWaveletDelta:[[[NGWaveletDeltaBuilder builder:participantId] removeParticipantOp:rmParticipantId] build]];
+	[self sendWaveletDelta:[[[NGWaveletDeltaBuilder builder:_participantId] removeParticipantOp:rmParticipantId] build]];
 	
 	[self.participantList setStringValue:@""];
 }
 
 - (IBAction) rmSelf:(id)sender {
-	[self sendWaveletDelta:[[[NGWaveletDeltaBuilder builder:participantId] removeParticipantOp:participantId] build]];
+	[self sendWaveletDelta:[[[NGWaveletDeltaBuilder builder:_participantId] removeParticipantOp:_participantId] build]];
 	
 	[self closeWave:nil];
 }
@@ -254,7 +225,7 @@
 		docOpBuilder = [docOpBuilder retain:retainItemCount];
 	}
 	NGMutateDocument *addTagDoc = [[[[docOpBuilder elementStart:[NGDocumentConstant TAG] withAttributes:[NGDocAttributes emptyAttribute]] characters:[self.tagAdd stringValue]] elementEnd] build];
-	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] docOp:[_idGenerator tagDocumentId] andMutateDocument:addTagDoc] build];
+	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:_participantId] docOp:[_idGenerator tagDocumentId] andMutateDocument:addTagDoc] build];
 	[self sendWaveletDelta:waveletDelta];
 	
 	[self.tagAdd setStringValue:@""];
@@ -288,30 +259,23 @@
 		docOpBuilder = [docOpBuilder retain:retainItemCountForward];
 	}
 	NGMutateDocument *rmTagDoc = [docOpBuilder build];
-	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:participantId] docOp:[_idGenerator tagDocumentId] andMutateDocument:rmTagDoc] build];
+	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:_participantId] docOp:[_idGenerator tagDocumentId] andMutateDocument:rmTagDoc] build];
 	[self sendWaveletDelta:waveletDelta];
 	
 	[self.tagList setStringValue:@""];
 }
 
 - (void)sendWaveletDelta:(NGWaveletDelta *)delta {
-	if (![network isConnected] || !hasWaveOpened) {
+	if (!_hasWaveOpened) {
 		return;
 	}
 	
-	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:domain waveId:[self.waveTextView openWaveId]] andWaveletId:[_idGenerator newConversationRootWaveletId]];
-	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:delta hashedVersion:[self getHashedVersion] seqNo:[self getSequenceNo]];
-	[NGRpc send:message viaOutputStream:[network pbOutputStream]];
-}
-
-- (int) getSequenceNo {
-	if (hasWaveOpened) {
-		return [self.waveTextView seqNo];
-	}
-	else {
-		return _seqNo++;
-	}
-
+	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:_domain waveId:[self.waveTextView openWaveId]] andWaveletId:[_idGenerator newConversationRootWaveletId]];
+	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:delta hashedVersion:[self getHashedVersion] seqNo:0];
+	ProtocolSubmitRequest *request = (ProtocolSubmitRequest *)[message message];
+	NGClientRpcController *openInboxController = [[NGClientRpcController alloc] init];
+	NGClientRpcCallback *openInboxCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
+	[_rpc submit:openInboxController request:request callback:openInboxCallback];
 }
 
 - (NGHashedVersion *) getHashedVersion {
@@ -320,9 +284,8 @@
 
 - (void) dealloc {
 	[inboxViewDelegate release];
-	[participantId release];
+	[_participantId release];
 	[_idGenerator release];
-	[network release];
 	[super dealloc];
 }
 

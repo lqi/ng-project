@@ -15,16 +15,30 @@
  * 
  */
 
-#import <Foundation/Foundation.h>
+#import "NGCancelRpc.h"
 
-#import "ProtocolBuffers.h"
+@interface NGCancelRpc()
 
-#import "../rpc/NGRpcMessage.h"
+- (void) setSequenceNo:(long)sequenceNo channel:(NGClientRpcChannel *)channel;
 
-@interface NGRpc : NSObject {
+@end
+
+@implementation NGCancelRpc
+
+- (void) setSequenceNo:(long)sequenceNo channel:(NGClientRpcChannel *)channel {
+	_sequenceNo = sequenceNo;
+	_channel = channel;
 }
 
-+ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
-+ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
+- (id) initWithSequenceNo:(long)sequenceNo channel:(NGClientRpcChannel *)channel {
+	if (self = [super init]) {
+		[self setSequenceNo:sequenceNo channel:channel];
+	}
+	return self;
+}
+
+- (void) startCancel {
+	[_channel sendMessage:[NGRpcMessage rpcMessage:[CancelRpc defaultInstance] sequenceNo:_sequenceNo]];
+}
 
 @end

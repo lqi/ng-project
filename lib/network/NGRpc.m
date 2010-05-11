@@ -20,10 +20,10 @@
 @implementation NGRpc
 
 + (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream {
+	NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
+	[messageType appendString:[[[rpcMessage message] class] description]];
+	int32_t size = computeInt32SizeNoTag([rpcMessage sequenceNo]) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag([rpcMessage message]);
 	@synchronized (stream) {
-		NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
-		[messageType appendString:[[[rpcMessage message] class] description]];
-		int32_t size = computeInt32SizeNoTag([rpcMessage sequenceNo]) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag([rpcMessage message]);
 		[stream writeRawLittleEndian32:size];
 		[stream writeInt64NoTag:[rpcMessage sequenceNo]];
 		[stream writeStringNoTag:messageType];

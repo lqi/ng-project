@@ -15,16 +15,24 @@
  * 
  */
 
-#import <Foundation/Foundation.h>
+#import "NGClientRpcCallback.h"
 
-#import "ProtocolBuffers.h"
+@implementation NGClientRpcCallback
 
-#import "../rpc/NGRpcMessage.h"
-
-@interface NGRpc : NSObject {
+- (id) initWithApplication:(id <NGClientApplicationDelegate>)application {
+	if (self = [super init]) {
+		_application = application;
+	}
+	return self;
 }
 
-+ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
-+ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
+- (void) run:(PBGeneratedMessage *)message {
+	NSLog(@"%@", [[message class] description]);
+	[_application receiveMessage:message];
+}
+
+- (void) failure {
+	NSLog(@"failure!");
+}
 
 @end

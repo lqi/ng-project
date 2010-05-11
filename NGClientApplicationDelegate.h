@@ -15,16 +15,10 @@
  * 
  */
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
-#import "ProtocolBuffers.h"
+@protocol NGClientApplicationDelegate
 
-#import "../rpc/NGRpcMessage.h"
-
-@interface NGRpc : NSObject {
-}
-
-+ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
-+ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
+- (void) receiveMessage:(PBGeneratedMessage *)message;
 
 @end

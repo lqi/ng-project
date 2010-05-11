@@ -17,14 +17,30 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ProtocolBuffers.h"
+#import "NGHeader.h"
 
-#import "../rpc/NGRpcMessage.h"
+@class PBGeneratedMessage;
+@class NGRpcState;
 
-@interface NGRpc : NSObject {
+typedef enum {
+	PENDING,
+	ACTIVE,
+	COMPLETE
+} NGClientRpcControllerStatus;
+
+@interface NGClientRpcController : NSObject {
+	NGRpcState *_state;
 }
 
-+ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
-+ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
+- (NGClientRpcControllerStatus) status;
+- (BOOL) checkStatus:(NGClientRpcControllerStatus) aimStatus;
+
+- (void) configure:(NGRpcState *) state;
+- (void) response:(PBGeneratedMessage *)message;
+- (void) failure:(NSString *)errorText;
+- (BOOL) failed;
+- (NSString *) errorText;
+- (void) reset;
+- (void) startCancel;
 
 @end

@@ -17,14 +17,19 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ProtocolBuffers.h"
+#import "NGHeader.h"
 
-#import "../rpc/NGRpcMessage.h"
+@class PBGeneratedMessage;
+@class NGClientRpcController;
 
-@interface NGRpc : NSObject {
+@interface NGProtoCallback : NSObject {
+	NSMutableDictionary *_activeControllerMap;
 }
 
-+ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
-+ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
+- (void) addController:(long)sequenceNo controller:(NGClientRpcController *)controller;
+- (NGClientRpcController *) getController:(long)sequenceNo;
+
+- (void) message:(long)sequenceNo message:(PBGeneratedMessage *)message;
+- (void) unknown:(long)sequenceNo messageType:(NSString *)messageType;
 
 @end

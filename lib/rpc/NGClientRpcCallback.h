@@ -17,14 +17,18 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ProtocolBuffers.h"
+#import "NGHeader.h"
+#import "NGClientApplicationDelegate.h"
 
-#import "../rpc/NGRpcMessage.h"
+@class PBGeneratedMessage;
 
-@interface NGRpc : NSObject {
+@interface NGClientRpcCallback : NSObject {
+	id _application;
 }
 
-+ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
-+ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
+- (id) initWithApplication:(id <NGClientApplicationDelegate>)application;
+
+- (void) run:(PBGeneratedMessage *)message;
+- (void) failure;
 
 @end

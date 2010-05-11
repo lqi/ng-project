@@ -15,16 +15,18 @@
  * 
  */
 
-#import <Foundation/Foundation.h>
+#import "NGHost.h"
 
-#import "ProtocolBuffers.h"
+@implementation NGHost
 
-#import "../rpc/NGRpcMessage.h"
+@synthesize domain;
+@synthesize port;
 
-@interface NGRpc : NSObject {
++ (NGHost *) hostWithDomain:(NSString *)aDomain andPort:(NSInteger)aPort {
+	NGHost *hostInstance = [[[NGHost alloc] init] autorelease];
+	hostInstance.domain = aDomain;
+	hostInstance.port = aPort;
+	return hostInstance;
 }
-
-+ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
-+ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
 
 @end

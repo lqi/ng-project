@@ -17,14 +17,19 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ProtocolBuffers.h"
+#import "NGHeader.h"
 
-#import "../rpc/NGRpcMessage.h"
+@class CancelRpc;
+@class NGRpcMessage;
+@class NGClientRpcChannel;
 
-@interface NGRpc : NSObject {
+@interface NGCancelRpc : NSObject {
+	long _sequenceNo;
+	NGClientRpcChannel *_channel;
 }
 
-+ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
-+ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
+- (id) initWithSequenceNo:(long)sequenceNo channel:(NGClientRpcChannel *)channel;
+
+- (void) startCancel;
 
 @end

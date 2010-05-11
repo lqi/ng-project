@@ -17,14 +17,21 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ProtocolBuffers.h"
+#import "../proto/WaveclientRpc.pb.h"
 
-#import "../rpc/NGRpcMessage.h"
+#import "NGClientRpcChannel.h"
+#import "NGClientRpcController.h"
+#import "NGClientRpcCallback.h"
 
-@interface NGRpc : NSObject {
+@interface NGClientRpc : NSObject {
+	NGClientRpcChannel *_channel;
 }
 
-+ (void) send:(NGRpcMessage *)rpcMessage viaOutputStream:(PBCodedOutputStream *)stream;
-+ (NGRpcMessage *) receive:(PBCodedInputStream *)stream;
++ (NGClientRpc *) clientRpc:(NGClientRpcChannel *)channel;
+
+- (void) setChannel:(NGClientRpcChannel *)channel;
+
+- (void) open:(NGClientRpcController *)controller request:(ProtocolOpenRequest *)request callback:(NGClientRpcCallback *)callback;
+- (void) submit:(NGClientRpcController *)controller request:(ProtocolSubmitRequest *)request callback:(NGClientRpcCallback *)callback;
 
 @end

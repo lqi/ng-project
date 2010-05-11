@@ -19,13 +19,13 @@
 #import "NGHeader.h"
 #import "NGTextViewEditingStyle.h"
 
-@interface NGTextView : NSTextView {
+@interface NGTextView : NSTextView <NGClientApplicationDelegate> {
 	NGWaveId *_waveId;
 	NGWaveletId *_waveletId;
 	NGParticipantId *_participantId;
 	NGDocumentId *_blipId;
 	long _seqNo;
-	NGNetwork *_network;
+	NGClientRpc *_network;
 	NGHashedVersion *_hashedVersion;
 	
 	NSMutableArray *_waveRpcItems;
@@ -48,7 +48,7 @@
 - (void)replaceAttributeInPosition:(int)positionOffset forKey:(NSString *)key oldValue:(NSString *)oldValue newValue:(NSString *)newValue;
 - (void)sendDocumentOperation:(NGMutateDocument *)docOp;
 
-- (void)openWithNetwork:(NGNetwork *)network WaveId:(NGWaveId *)waveId waveletId:(NGWaveletId *)waveletId participantId:(NGParticipantId *)participantId sequenceNo:(long)seqNo;
+- (void)openWithNetwork:(NGClientRpc *)network WaveId:(NGWaveId *)waveId waveletId:(NGWaveletId *)waveletId participantId:(NGParticipantId *)participantId sequenceNo:(long)seqNo;
 - (void)close;
 
 - (NSString *)openWaveId;

@@ -21,12 +21,12 @@
 
 #import "../proto/WaveclientRpc.pb.h"
 
-#import "id/NGWaveId.h"
-#import "id/NGWaveName.h"
-#import "id/NGParticipantId.h"
-#import "operation/NGWaveletDelta.h"
-#import "operation/NGHashedVersion.h"
-#import "operation/util/NGWaveletDeltaSerializer.h"
+#import "../model/id/NGWaveId.h"
+#import "../model/id/NGWaveName.h"
+#import "../model/id/NGParticipantId.h"
+#import "../model/operation/NGWaveletDelta.h"
+#import "../model/operation/NGHashedVersion.h"
+#import "../model/operation/util/NGWaveletDeltaSerializer.h"
 
 @interface NGRpcMessage : NSObject {
 	long sequenceNo;

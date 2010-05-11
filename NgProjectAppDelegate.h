@@ -19,10 +19,12 @@
 
 #import "NGHeader.h"
 
+#import "NGClientApplicationDelegate.h"
+
 #import "NGInboxViewDelegate.h"
 #import "NGTextView.h"
 
-@interface NgProjectAppDelegate : NSObject /*<NSApplicationDelegate>*/ {
+@interface NgProjectAppDelegate : NSObject <NGClientApplicationDelegate> /*<NSApplicationDelegate>*/ {
     NSWindow *window;
 	NSTextField *statusLabel;
 	NSTextField *currentUser;
@@ -35,14 +37,17 @@
 	NSTextField *tagAdd;
 	NSComboBox *tagList;
 	
-	NSString *domain;
-	NGParticipantId *participantId;
-	long _seqNo;
-	NGNetwork *network;
-	NGIdGenerator *_idGenerator;
 	NGInboxViewDelegate *inboxViewDelegate;
 	
-	BOOL hasWaveOpened;
+	BOOL _hasWaveOpened;
+	
+	NSString *_domain;
+	NGParticipantId *_participantId;
+	NGIdGenerator *_idGenerator;
+	
+	NGHost *_host;
+	NGClientRpc *_rpc;
+	NGClientRpcChannel *_channel;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -57,14 +62,13 @@
 @property (assign) IBOutlet NSTextField *tagAdd;
 @property (assign) IBOutlet NSComboBox *tagList;
 
-- (void) connectionStatueController;
+//- (void) connectionStatueController;
 - (void) openInbox;
-- (void) newReceive;
+- (IBAction) newWave:(id)sender;
 
 - (IBAction) openWave:(id)sender;
 - (IBAction) closeWave:(id)sender;
 
-- (IBAction) newWave:(id)sender;
 - (IBAction) addParticipant:(id)sender;
 - (IBAction) rmParticipant:(id)sender;
 - (IBAction) rmSelf:(id)sender;
@@ -72,7 +76,6 @@
 - (IBAction) rmTag:(id)sender;
 
 - (void)sendWaveletDelta:(NGWaveletDelta *)delta;
-- (int) getSequenceNo;
 - (NGHashedVersion *) getHashedVersion;
 
 @end
