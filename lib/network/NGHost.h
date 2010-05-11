@@ -25,6 +25,6 @@
 @property (retain) NSString *domain;
 @property NSInteger port;
 
-+ (NGHost *) hostWithDomain:(NSString *)aDomain andPort:(NSInteger)aPort;
+- (id) initWithDomain:(NSString *)aDomain andPort:(NSInteger)aPort;
 
 @end

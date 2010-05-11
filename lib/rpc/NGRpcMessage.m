@@ -29,18 +29,4 @@
 	return returnMessage;
 }
 
-+ (NGRpcMessage *)openRequest:(NGWaveId *)waveId participantId:(NGParticipantId *)participantId seqNo:(long)sequence {
-	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
-	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
-	[openRequestBuilder setWaveId:[waveId waveIdFollowedByDomain]];
-	return [NGRpcMessage rpcMessage:[openRequestBuilder build] sequenceNo:sequence];
-}
-
-+ (NGRpcMessage *)submitRequest:(NGWaveName *)waveName waveletDelta:(NGWaveletDelta *)delta hashedVersion:(NGHashedVersion *)version seqNo:(long)sequence {
-	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
-	[submitRequestBuilder setWaveletName:[waveName url]];
-	[submitRequestBuilder setDelta:[NGWaveletDeltaSerializer bufferedWaveletDelta:delta withVersion:version]];
-	return [NGRpcMessage rpcMessage:[submitRequestBuilder build] sequenceNo:sequence];
-}
-
 @end

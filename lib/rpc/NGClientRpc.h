@@ -17,21 +17,26 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../proto/WaveclientRpc.pb.h"
+#import "NGHeader.h"
 
-#import "NGClientRpcChannel.h"
-#import "NGClientRpcController.h"
-#import "NGClientRpcCallback.h"
+@class ProtocolOpenRequest;
+@class ProtocolSubmitRequest;
+@class NGClientRpcChannel;
+@class NGClientRpcController;
+@class NGClientRpcCallback;
 
 @interface NGClientRpc : NSObject {
-	NGClientRpcChannel *_channel;
+	NGClientRpcChannel *channel;
 }
 
-+ (NGClientRpc *) clientRpc:(NGClientRpcChannel *)channel;
+@property (retain) NGClientRpcChannel *channel;
 
-- (void) setChannel:(NGClientRpcChannel *)channel;
+- (id) initWithChannel:(NGClientRpcChannel *)aChannel;
 
 - (void) open:(NGClientRpcController *)controller request:(ProtocolOpenRequest *)request callback:(NGClientRpcCallback *)callback;
 - (void) submit:(NGClientRpcController *)controller request:(ProtocolSubmitRequest *)request callback:(NGClientRpcCallback *)callback;
+
+- (void) openRequest:(NGClientRpcController *)controller waveId:(NGWaveId *)waveId participantId:(NGParticipantId *)participantId callback:(NGClientRpcCallback *)callback;
+- (void) submitRequest:(NGClientRpcController *)controller waveName:(NGWaveName *)waveName waveletDelta:(NGWaveletDelta *)delta hashedVersion:(NGHashedVersion *)version callback:(NGClientRpcCallback *)callback;
 
 @end

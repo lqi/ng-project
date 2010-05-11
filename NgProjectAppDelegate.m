@@ -40,14 +40,11 @@
 		inboxViewDelegate.currentUser = _participantId;
 		_hasWaveOpened = NO;
 		
-		_host = [[NGHost alloc] init];
-		_host.domain = _domain;
-		_host.port = 9876;
+		_host = [[NGHost alloc] initWithDomain:_domain andPort:9876];
 		
 		_channel = [[NGClientRpcChannel alloc] initWithHost:_host];
 		
-		_rpc = [[NGClientRpc alloc] init];
-		[_rpc setChannel:_channel];
+		_rpc = [[NGClientRpc alloc] initWithChannel:_channel];
 	}
 	return self;
 }
@@ -152,11 +149,9 @@
 	
 	NGWaveletDelta *newWaveletDelta = [[[[[NGWaveletDeltaBuilder builder:_participantId] addParticipantOp:_participantId] docOp:[_idGenerator manifestDocumentId] andMutateDocument:newConversation] docOp:newBlipName andMutateDocument:newBlipOp] build];
 	
-	NGRpcMessage *message = [NGRpcMessage submitRequest:newWaveName waveletDelta:newWaveletDelta hashedVersion:[NGHashedVersion hashedVersion:newWaveName] seqNo:0];
-	ProtocolSubmitRequest *request = (ProtocolSubmitRequest *)[message message];
-	NGClientRpcController *openInboxController = [[NGClientRpcController alloc] init];
-	NGClientRpcCallback *openInboxCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
-	[_rpc submit:openInboxController request:request callback:openInboxCallback];
+	NGClientRpcController *controller = [[NGClientRpcController alloc] init];
+	NGClientRpcCallback *callback = [[NGClientRpcCallback alloc] initWithApplication:self];
+	[_rpc submitRequest:controller waveName:newWaveName waveletDelta:newWaveletDelta hashedVersion:[NGHashedVersion hashedVersion:newWaveName] callback:callback];
 }
 
 - (IBAction) openWave:(id)sender {
@@ -171,11 +166,9 @@
 	[self.waveTextView openWithNetwork:_rpc WaveId:[NGWaveId waveIdWithDomain:[waveId domain] waveId:[waveId waveId]] waveletId:[NGWaveletId waveletIdWithDomain:[waveId domain] waveletId:@"conv+root"] participantId:_participantId sequenceNo:0];
 	[self.currentWave setStringValue:[self.waveTextView openWaveId]];
 	
-	NGRpcMessage *message = [NGRpcMessage openRequest:waveId participantId:_participantId seqNo:0];
-	ProtocolOpenRequest *request = (ProtocolOpenRequest *)[message message];
-	NGClientRpcController *openInboxController = [[NGClientRpcController alloc] init];
-	NGClientRpcCallback *openInboxCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
-	[_rpc open:openInboxController request:request callback:openInboxCallback];
+	NGClientRpcController *openWaveController = [[NGClientRpcController alloc] init];
+	NGClientRpcCallback *openWaveCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
+	[_rpc openRequest:openWaveController waveId:waveId participantId:_participantId callback:openWaveCallback];
 }
 
 - (IBAction) closeWave:(id)sender {
@@ -271,11 +264,9 @@
 	}
 	
 	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:_domain waveId:[self.waveTextView openWaveId]] andWaveletId:[_idGenerator newConversationRootWaveletId]];
-	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:delta hashedVersion:[self getHashedVersion] seqNo:0];
-	ProtocolSubmitRequest *request = (ProtocolSubmitRequest *)[message message];
-	NGClientRpcController *openInboxController = [[NGClientRpcController alloc] init];
-	NGClientRpcCallback *openInboxCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
-	[_rpc submit:openInboxController request:request callback:openInboxCallback];
+	NGClientRpcController *controller = [[NGClientRpcController alloc] init];
+	NGClientRpcCallback *callback = [[NGClientRpcCallback alloc] initWithApplication:self];
+	[_rpc submitRequest:controller waveName:waveName waveletDelta:delta hashedVersion:[self getHashedVersion] callback:callback];
 }
 
 - (NGHashedVersion *) getHashedVersion {
@@ -286,6 +277,9 @@
 	[inboxViewDelegate release];
 	[_participantId release];
 	[_idGenerator release];
+	[_host release];
+	[_channel release];
+	[_rpc release];
 	[super dealloc];
 }
 

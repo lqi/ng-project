@@ -22,11 +22,12 @@
 @synthesize domain;
 @synthesize port;
 
-+ (NGHost *) hostWithDomain:(NSString *)aDomain andPort:(NSInteger)aPort {
-	NGHost *hostInstance = [[[NGHost alloc] init] autorelease];
-	hostInstance.domain = aDomain;
-	hostInstance.port = aPort;
-	return hostInstance;
+- (id) initWithDomain:(NSString *)aDomain andPort:(NSInteger)aPort {
+	if (self = [super init]) {
+		self.domain = aDomain;
+		self.port = aPort;
+	}
+	return self;
 }
 
 @end

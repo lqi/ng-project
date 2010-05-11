@@ -19,55 +19,35 @@
 
 @implementation NGClientRpc
 
-- (void) setChannel:(NGClientRpcChannel *)channel {
-	_channel = channel;
-}
+@synthesize channel;
 
-+ (NGClientRpc *) clientRpc:(NGClientRpcChannel *)channel {
-	NGClientRpc *clientRpcInstance = [[[NGClientRpc alloc] init] autorelease];
-	[clientRpcInstance setChannel:channel];
-	return clientRpcInstance;
+- (id) initWithChannel:(NGClientRpcChannel *)aChannel {
+	if (self = [super init]) {
+		self.channel = aChannel;
+	}
+	return self;
 }
 
 - (void) open:(NGClientRpcController *)controller request:(ProtocolOpenRequest *)request callback:(NGClientRpcCallback *)callback {
-	/*
-	 public  void open(
-	 com.google.protobuf.RpcController controller,
-	 org.waveprotocol.wave.examples.fedone.waveserver.WaveClientRpc.ProtocolOpenRequest request,
-	 com.google.protobuf.RpcCallback<org.waveprotocol.wave.examples.fedone.waveserver.WaveClientRpc.ProtocolWaveletUpdate> done) {
-	 channel.callMethod(
-	 getDescriptor().getMethods().get(0),
-	 controller,
-	 request,
-	 org.waveprotocol.wave.examples.fedone.waveserver.WaveClientRpc.ProtocolWaveletUpdate.getDefaultInstance(),
-	 com.google.protobuf.RpcUtil.generalizeCallback(
-	 done,
-	 org.waveprotocol.wave.examples.fedone.waveserver.WaveClientRpc.ProtocolWaveletUpdate.class,
-	 org.waveprotocol.wave.examples.fedone.waveserver.WaveClientRpc.ProtocolWaveletUpdate.getDefaultInstance()));
-	 }
-	 */
-	[_channel callMethod:nil rpcController:controller requestMessage:request responsePrototype:[ProtocolWaveletUpdate defaultInstance] callback:callback];
+	[self.channel callMethod:nil rpcController:controller requestMessage:request responsePrototype:[ProtocolWaveletUpdate defaultInstance] callback:callback];
 }
 
 - (void) submit:(NGClientRpcController *)controller request:(ProtocolSubmitRequest *)request callback:(NGClientRpcCallback *)callback {
-	/*
-	 public  void submit(
-	 com.google.protobuf.RpcController controller,
-	 org.waveprotocol.wave.examples.fedone.waveserver.WaveClientRpc.ProtocolSubmitRequest request,
-	 com.google.protobuf.RpcCallback<org.waveprotocol.wave.examples.fedone.waveserver.WaveClientRpc.ProtocolSubmitResponse> done) {
-	 channel.callMethod(
-	 getDescriptor().getMethods().get(1),
-	 controller,
-	 request,
-	 org.waveprotocol.wave.examples.fedone.waveserver.WaveClientRpc.ProtocolSubmitResponse.getDefaultInstance(),
-	 com.google.protobuf.RpcUtil.generalizeCallback(
-	 done,
-	 org.waveprotocol.wave.examples.fedone.waveserver.WaveClientRpc.ProtocolSubmitResponse.class,
-	 org.waveprotocol.wave.examples.fedone.waveserver.WaveClientRpc.ProtocolSubmitResponse.getDefaultInstance()));
-	 }
-	 }
-	 */
-	[_channel callMethod:nil rpcController:controller requestMessage:request responsePrototype:[ProtocolSubmitResponse defaultInstance] callback:callback];
+	[self.channel callMethod:nil rpcController:controller requestMessage:request responsePrototype:[ProtocolSubmitResponse defaultInstance] callback:callback];
+}
+
+- (void) openRequest:(NGClientRpcController *)controller waveId:(NGWaveId *)waveId participantId:(NGParticipantId *)participantId callback:(NGClientRpcCallback *)callback {
+	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
+	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
+	[openRequestBuilder setWaveId:[waveId waveIdFollowedByDomain]];
+	[self open:controller request:[openRequestBuilder build] callback:callback];
+}
+
+- (void) submitRequest:(NGClientRpcController *)controller waveName:(NGWaveName *)waveName waveletDelta:(NGWaveletDelta *)delta hashedVersion:(NGHashedVersion *)version callback:(NGClientRpcCallback *)callback {
+	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
+	[submitRequestBuilder setWaveletName:[waveName url]];
+	[submitRequestBuilder setDelta:[NGWaveletDeltaSerializer bufferedWaveletDelta:delta withVersion:version]];
+	[self submit:controller request:[submitRequestBuilder build] callback:callback];
 }
 
 @end

@@ -296,12 +296,9 @@
 - (void)sendDocumentOperation:(NGMutateDocument *)docOp {
 	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:_waveId andWaveletId:_waveletId];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:_participantId] docOp:_blipId andMutateDocument:docOp] build];
-	NGRpcMessage *message = [NGRpcMessage submitRequest:waveName waveletDelta:waveletDelta hashedVersion:[self hashedVersion] seqNo:[self seqNo]];
-	
-	ProtocolSubmitRequest *request = (ProtocolSubmitRequest *)[message message];
-	NGClientRpcController *openInboxController = [[NGClientRpcController alloc] init];
-	NGClientRpcCallback *openInboxCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
-	[_network submit:openInboxController request:request callback:openInboxCallback];
+	NGClientRpcController *controller = [[NGClientRpcController alloc] init];
+	NGClientRpcCallback *callback = [[NGClientRpcCallback alloc] initWithApplication:self];
+	[_network submitRequest:controller waveName:waveName waveletDelta:waveletDelta hashedVersion:[self hashedVersion] callback:callback];
 }
 
 - (void) apply:(ProtocolWaveletOperation_MutateDocument *)mutateDocument {
