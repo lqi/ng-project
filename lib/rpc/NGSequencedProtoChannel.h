@@ -49,6 +49,7 @@
 - (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message;
 
 - (void) receiveMessage;
+- (void) receiveMessageThread;
 
 - (void) startAsyncRead;
 

@@ -99,32 +99,38 @@
 }
 
 - (void) receiveMessage {
-	while (YES) {
-		@synchronized (_pbInputStream) {
-			/* int32_t size = */[_pbInputStream readRawLittleEndian32];
-			long sequenceNo = [_pbInputStream readInt64];
-			NSMutableString *messageType = [[NSMutableString alloc] initWithString:[_pbInputStream readString]];
-			NSString *stringToBeDeleted = @"waveserver.";
-			NSRange rangeToBeDeleted = {0, [stringToBeDeleted length]};
-			[messageType deleteCharactersInRange:rangeToBeDeleted];
-			PBGeneratedMessage *prototype = [self getMessagePrototype:messageType];
-			if (prototype == nil) {
-				int length = [_pbInputStream readRawVarint32];
-				/* int oldLimit = */[_pbInputStream pushLimit:length];
-				[_pbInputStream popLimit:length];
-				[self.callback unknown:sequenceNo messageType:messageType];
-			}
-			else {
-				PBGeneratedMessage_Builder *messageBuilder = [prototype builder];
-				[_pbInputStream readMessage:messageBuilder extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-				[self.callback message:sequenceNo message:[messageBuilder build]];
-			}
+	@synchronized (_pbInputStream) {
+		/* int32_t size = */[_pbInputStream readRawLittleEndian32];
+		long sequenceNo = [_pbInputStream readInt64];
+		NSMutableString *messageType = [[NSMutableString alloc] initWithString:[_pbInputStream readString]];
+		NSString *stringToBeDeleted = @"waveserver.";
+		NSRange rangeToBeDeleted = {0, [stringToBeDeleted length]};
+		[messageType deleteCharactersInRange:rangeToBeDeleted];
+		PBGeneratedMessage *prototype = [self getMessagePrototype:messageType];
+		if (prototype == nil) {
+			int length = [_pbInputStream readRawVarint32];
+			/* int oldLimit = */[_pbInputStream pushLimit:length];
+			[_pbInputStream popLimit:length];
+			[self.callback unknown:sequenceNo messageType:messageType];
+		}
+		else {
+			PBGeneratedMessage_Builder *messageBuilder = [prototype builder];
+			[_pbInputStream readMessage:messageBuilder extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+			[self.callback message:sequenceNo message:[messageBuilder build]];
 		}
 	}
 }
 
+- (void) receiveMessageThread {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	while (YES) {
+		[self receiveMessage];
+	}
+	[pool release];
+}
+
 - (void) startAsyncRead {
-	[NSThread detachNewThreadSelector:@selector(receiveMessage) toTarget:self withObject:nil];
+	[NSThread detachNewThreadSelector:@selector(receiveMessageThread) toTarget:self withObject:nil];
 }
 
 - (void) dealloc {
