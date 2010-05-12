@@ -22,7 +22,7 @@
 - (id) initWithHost:(NGHost *)host {
 	if (self = [super init]) {
 		_lastSequenceNo = 0;
-		_callback = [[NGProtoCallback alloc] init];
+		_callback = [NGProtoCallback callback];
 		_protoChannel = [[NGSequencedProtoChannel alloc] initWithHost:host callback:_callback];
 		[_protoChannel expectMessage:[RpcFinished defaultInstance]];
 		[_protoChannel startAsyncRead];
@@ -84,7 +84,6 @@
 }
 
 - (void) dealloc {
-	[_callback release];
 	[_protoChannel release];
 	[super dealloc];
 }

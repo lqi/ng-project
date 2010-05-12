@@ -19,6 +19,10 @@
 
 @implementation NGProtoCallback
 
++ (NGProtoCallback *) callback {
+	return [[[NGProtoCallback alloc] init] autorelease];
+}
+
 - (id) init {
 	if (self = [super init]) {
 		_activeControllerMap = [[NSMutableDictionary alloc] init];

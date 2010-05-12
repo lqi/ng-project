@@ -19,6 +19,10 @@
 
 @implementation NGClientRpcCallback
 
++ (NGClientRpcCallback *) rpcCallbackWithApplication:(id <NGClientRpcDelegate>)application {
+	return [[[NGClientRpcCallback alloc] initWithApplication:application] autorelease];
+}
+
 - (id) initWithApplication:(id <NGClientRpcDelegate>)application {
 	if (self = [super init]) {
 		_application = application;

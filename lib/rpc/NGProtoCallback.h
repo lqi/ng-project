@@ -26,6 +26,8 @@
 	NSMutableDictionary *_activeControllerMap;
 }
 
++ (NGProtoCallback *) callback;
+
 - (void) addController:(long)sequenceNo controller:(NGClientRpcController *)controller;
 - (NGClientRpcController *) getController:(long)sequenceNo;
 

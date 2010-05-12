@@ -26,6 +26,8 @@
 	id _application;
 }
 
++ (NGClientRpcCallback *) rpcCallbackWithApplication:(id <NGClientRpcDelegate>)application;
+
 - (id) initWithApplication:(id <NGClientRpcDelegate>)application;
 
 - (void) run:(PBGeneratedMessage *)message;
