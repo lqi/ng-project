@@ -319,9 +319,9 @@
 		29E9866E1195E5DF00B06B98 /* NGClientRpc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGClientRpc.m; path = lib/rpc/NGClientRpc.m; sourceTree = "<group>"; };
 		29E986AD11962CD500B06B98 /* NGProtoCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGProtoCallback.h; path = lib/rpc/NGProtoCallback.h; sourceTree = "<group>"; };
 		29E986AE11962CD500B06B98 /* NGProtoCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGProtoCallback.m; path = lib/rpc/NGProtoCallback.m; sourceTree = "<group>"; };
-		29E988081198F64E00B06B98 /* NGClientApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGClientApplicationDelegate.h; sourceTree = "<group>"; };
 		29ED64FD116DA38A009389CB /* NGElementAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGElementAnnotation.h; path = lib/model/NGElementAnnotation.h; sourceTree = "<group>"; };
 		29ED64FE116DA38A009389CB /* NGElementAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGElementAnnotation.m; path = lib/model/NGElementAnnotation.m; sourceTree = "<group>"; };
+		29FA4670119B3E2A003C957A /* NGClientRpcDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGClientRpcDelegate.h; path = lib/rpc/NGClientRpcDelegate.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* NgProject-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NgProject-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* NgProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NgProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -356,7 +356,6 @@
 				29BD94A91142194900AA22AE /* util */,
 				291C68DB1190D1420012E370 /* rpc */,
 				29E7B80B1140C27D001E3644 /* network */,
-				29E988081198F64E00B06B98 /* NGClientApplicationDelegate.h */,
 				256AC3D80F4B6AC300CF3369 /* NgProjectAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* NgProjectAppDelegate.m */,
 				29A7E7F0114DEF02006D61A8 /* NGInboxViewDelegate.h */,
@@ -415,6 +414,7 @@
 				297228A911933B51002CD415 /* NGClientRpcChannel.m */,
 				29E9866D1195E5DF00B06B98 /* NGClientRpc.h */,
 				29E9866E1195E5DF00B06B98 /* NGClientRpc.m */,
+				29FA4670119B3E2A003C957A /* NGClientRpcDelegate.h */,
 			);
 			name = rpc;
 			sourceTree = "<group>";

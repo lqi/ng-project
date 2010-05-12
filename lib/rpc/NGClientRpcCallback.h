@@ -18,15 +18,15 @@
 #import <Foundation/Foundation.h>
 
 #import "NGHeader.h"
-#import "NGClientApplicationDelegate.h"
 
 @class PBGeneratedMessage;
+@protocol NGClientRpcDelegate;
 
 @interface NGClientRpcCallback : NSObject {
 	id _application;
 }
 
-- (id) initWithApplication:(id <NGClientApplicationDelegate>)application;
+- (id) initWithApplication:(id <NGClientRpcDelegate>)application;
 
 - (void) run:(PBGeneratedMessage *)message;
 - (void) failure;

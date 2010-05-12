@@ -15,9 +15,7 @@
  * 
  */
 
-#import <Cocoa/Cocoa.h>
-
-@protocol NGClientApplicationDelegate
+@protocol NGClientRpcDelegate
 
 - (void) receiveMessage:(PBGeneratedMessage *)message;
 

@@ -19,12 +19,10 @@
 
 #import "NGHeader.h"
 
-#import "NGClientApplicationDelegate.h"
-
 #import "NGInboxViewDelegate.h"
 #import "NGTextView.h"
 
-@interface NgProjectAppDelegate : NSObject <NGClientApplicationDelegate> /*<NSApplicationDelegate>*/ {
+@interface NgProjectAppDelegate : NSObject <NGClientRpcDelegate> /*<NSApplicationDelegate>*/ {
     NSWindow *window;
 	NSTextField *statusLabel;
 	NSTextField *currentUser;

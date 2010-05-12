@@ -19,7 +19,7 @@
 #import "NGHeader.h"
 #import "NGTextViewEditingStyle.h"
 
-@interface NGTextView : NSTextView <NGClientApplicationDelegate> {
+@interface NGTextView : NSTextView <NGClientRpcDelegate> {
 	NGWaveId *_waveId;
 	NGWaveletId *_waveletId;
 	NGParticipantId *_participantId;

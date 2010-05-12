@@ -115,7 +115,7 @@
 }
 
 - (void) openInbox {
-	NGClientRpcController *openInboxController = [[NGClientRpcController alloc] init];
+	NGClientRpcController *openInboxController = [NGClientRpcController rpcController];
 	
 	ProtocolOpenRequest_Builder *openInboxRequestBuilder = [ProtocolOpenRequest builder];
 	[openInboxRequestBuilder setParticipantId:[_participantId participantIdAtDomain]];

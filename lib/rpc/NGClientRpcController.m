@@ -19,6 +19,10 @@
 
 @implementation NGClientRpcController
 
++ (NGClientRpcController *) rpcController {
+	return [[[NGClientRpcController alloc] init] autorelease];
+}
+
 - (NGClientRpcControllerStatus) status {
 	return _state == nil ? PENDING : _state.complete ? COMPLETE : ACTIVE;
 	//return state == null ? Status.PENDING : (state.complete ? Status.COMPLETE : Status.ACTIVE);

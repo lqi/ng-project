@@ -19,7 +19,7 @@
 
 @implementation NGClientRpcCallback
 
-- (id) initWithApplication:(id <NGClientApplicationDelegate>)application {
+- (id) initWithApplication:(id <NGClientRpcDelegate>)application {
 	if (self = [super init]) {
 		_application = application;
 	}

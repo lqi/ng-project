@@ -70,5 +70,6 @@
 #import "rpc/NGClientRpcCallback.h"
 #import "rpc/NGClientRpcController.h"
 #import "rpc/NGClientRpc.h"
+#import "rpc/NGClientRpcDelegate.h"
 
 #import "network/NGHost.h"
