@@ -20,7 +20,6 @@
 #import "NGHeader.h"
 
 @class CancelRpc;
-@class NGRpcMessage;
 @class NGClientRpcChannel;
 
 @interface NGCancelRpc : NSObject {

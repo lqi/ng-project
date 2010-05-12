@@ -19,10 +19,6 @@
 
 @implementation NGClientRpcChannel
 
-+ (NGClientRpcChannel *) channelWithHost:(NGHost *)host {
-	return [[[NGClientRpcChannel alloc] initWithHost:host] autorelease];
-}
-
 - (id) initWithHost:(NGHost *)host {
 	if (self = [super init]) {
 		_lastSequenceNo = 0;
@@ -39,21 +35,12 @@
 	return _lastSequenceNo;
 }
 
-/*
- protected void sendMessage(long sequenceNo, Message message, Message responsePrototype) {
- protoChannel.sendMessage(sequenceNo, message, responsePrototype);
- }
- protected void sendMessage(long sequenceNo, Message message) {
- protoChannel.sendMessage(sequenceNo, message);
- } 
- */
-
-- (void) sendMessage:(NGRpcMessage *)message prototype:(PBGeneratedMessage *)responsePrototype {
-	[_protoChannel sendMessage:message withExpectedResponsePrototype:responsePrototype];
+- (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message prototype:(PBGeneratedMessage *)responsePrototype {
+	[_protoChannel sendMessage:sequenceNo message:message withExpectedResponsePrototype:responsePrototype];
 }
 
-- (void) sendMessage:(NGRpcMessage *)message {
-	[_protoChannel sendMessage:message];
+- (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message {
+	[_protoChannel sendMessage:sequenceNo message:message];
 }
 
 - (void) callMethod:(NSString *)method rpcController:(NGClientRpcController *)controller requestMessage:(PBGeneratedMessage *)message responsePrototype:(PBGeneratedMessage *)responsePrototype callback:(NGClientRpcCallback *)callback {
@@ -93,7 +80,7 @@
 	[controller configure:rpcState];
 	[_callback addController:sequenceNo controller:controller];
 	
-	[self sendMessage:[NGRpcMessage rpcMessage:message sequenceNo:sequenceNo] prototype:responsePrototype];
+	[self sendMessage:sequenceNo message:message prototype:responsePrototype];
 }
 
 - (void) dealloc {

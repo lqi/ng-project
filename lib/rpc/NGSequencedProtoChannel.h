@@ -24,7 +24,6 @@
 @class PBCodedInputStream;
 @class PBCodedOutputStream;
 @class NGHost;
-@class NGRpcMessage;
 @class NGProtoCallback;
 
 @interface NGSequencedProtoChannel : NSObject {
@@ -46,8 +45,8 @@
 - (void) expectMessage:(PBGeneratedMessage *)messagePrototype;
 - (PBGeneratedMessage *) getMessagePrototype:(NSString *)messageType;
 
-- (void) sendMessage:(NGRpcMessage *)message withExpectedResponsePrototype:(PBGeneratedMessage *)expectedPrototype;
-- (void) sendMessage:(NGRpcMessage *)message;
+- (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message withExpectedResponsePrototype:(PBGeneratedMessage *)expectedPrototype;
+- (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message;
 
 - (void) receiveMessage;
 

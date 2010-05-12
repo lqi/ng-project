@@ -62,7 +62,6 @@
 #import "model/NGElementAnnotation.h"
 #import "model/NGElementAnnotationUpdate.h"
 
-#import "rpc/NGRpcMessage.h"
 #import "rpc/NGProtoCallback.h"
 #import "rpc/NGSequencedProtoChannel.h"
 #import "rpc/NGCancelRpc.h"

@@ -33,8 +33,6 @@
 		291C684E1190C2FC0012E370 /* rpc.proto in Resources */ = {isa = PBXBuildFile; fileRef = 291C683A1190C2FC0012E370 /* rpc.proto */; };
 		291C68F21190D8570012E370 /* NGSequencedProtoChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68F11190D8570012E370 /* NGSequencedProtoChannel.m */; };
 		291C68F31190D8570012E370 /* NGSequencedProtoChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68F11190D8570012E370 /* NGSequencedProtoChannel.m */; };
-		291C692B1190ED440012E370 /* NGRpcMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C692A1190ED440012E370 /* NGRpcMessage.m */; };
-		291C692C1190ED440012E370 /* NGRpcMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C692A1190ED440012E370 /* NGRpcMessage.m */; };
 		291F39C7117A46A5001CAD54 /* NGDocAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F39C6117A46A5001CAD54 /* NGDocAttributes.m */; };
 		291F39C8117A46A5001CAD54 /* NGDocAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F39C6117A46A5001CAD54 /* NGDocAttributes.m */; };
 		29258B03114ED59800ED4F98 /* NGWaveNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258B02114ED59800ED4F98 /* NGWaveNameTest.m */; };
@@ -207,8 +205,6 @@
 		291C683A1190C2FC0012E370 /* rpc.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rpc.proto; sourceTree = "<group>"; };
 		291C68F01190D8570012E370 /* NGSequencedProtoChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGSequencedProtoChannel.h; path = lib/rpc/NGSequencedProtoChannel.h; sourceTree = "<group>"; };
 		291C68F11190D8570012E370 /* NGSequencedProtoChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGSequencedProtoChannel.m; path = lib/rpc/NGSequencedProtoChannel.m; sourceTree = "<group>"; };
-		291C69291190ED440012E370 /* NGRpcMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGRpcMessage.h; path = lib/rpc/NGRpcMessage.h; sourceTree = "<group>"; };
-		291C692A1190ED440012E370 /* NGRpcMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGRpcMessage.m; path = lib/rpc/NGRpcMessage.m; sourceTree = "<group>"; };
 		291F39C5117A46A5001CAD54 /* NGDocAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocAttributes.h; path = lib/model/document/operation/NGDocAttributes.h; sourceTree = "<group>"; };
 		291F39C6117A46A5001CAD54 /* NGDocAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocAttributes.m; path = lib/model/document/operation/NGDocAttributes.m; sourceTree = "<group>"; };
 		29258B01114ED59800ED4F98 /* NGWaveNameTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveNameTest.h; path = test/lib/model/NGWaveNameTest.h; sourceTree = "<group>"; };
@@ -403,8 +399,6 @@
 		291C68DB1190D1420012E370 /* rpc */ = {
 			isa = PBXGroup;
 			children = (
-				291C69291190ED440012E370 /* NGRpcMessage.h */,
-				291C692A1190ED440012E370 /* NGRpcMessage.m */,
 				291C68F01190D8570012E370 /* NGSequencedProtoChannel.h */,
 				291C68F11190D8570012E370 /* NGSequencedProtoChannel.m */,
 				29E986AD11962CD500B06B98 /* NGProtoCallback.h */,
@@ -910,7 +904,6 @@
 				291C68421190C2FC0012E370 /* ObjectivecDescriptor.pb.m in Sources */,
 				291C68431190C2FC0012E370 /* Rpc.pb.m in Sources */,
 				291C68F21190D8570012E370 /* NGSequencedProtoChannel.m in Sources */,
-				291C692B1190ED440012E370 /* NGRpcMessage.m in Sources */,
 				297228A711933A1F002CD415 /* NGRpcState.m in Sources */,
 				297228AB11933B51002CD415 /* NGClientRpcChannel.m in Sources */,
 				297228AF11933B70002CD415 /* NGClientRpcCallback.m in Sources */,
@@ -968,7 +961,6 @@
 				291C684C1190C2FC0012E370 /* ObjectivecDescriptor.pb.m in Sources */,
 				291C684D1190C2FC0012E370 /* Rpc.pb.m in Sources */,
 				291C68F31190D8570012E370 /* NGSequencedProtoChannel.m in Sources */,
-				291C692C1190ED440012E370 /* NGRpcMessage.m in Sources */,
 				297228A611933A1F002CD415 /* NGRpcState.m in Sources */,
 				297228AA11933B51002CD415 /* NGClientRpcChannel.m in Sources */,
 				297228AE11933B70002CD415 /* NGClientRpcCallback.m in Sources */,

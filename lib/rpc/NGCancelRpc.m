@@ -38,7 +38,7 @@
 }
 
 - (void) startCancel {
-	[_channel sendMessage:[NGRpcMessage rpcMessage:[CancelRpc defaultInstance] sequenceNo:_sequenceNo]];
+	[_channel sendMessage:_sequenceNo message:[CancelRpc defaultInstance]];
 }
 
 @end

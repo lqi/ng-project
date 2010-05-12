@@ -22,7 +22,6 @@
 @class PBGeneratedMessage;
 @class NGHost;
 @class NGSequencedProtoChannel;
-@class NGRpcMessage;
 @class NGProtoCallback;
 @class NGCancelRpc;
 @class NGRpcState;
@@ -35,14 +34,12 @@
 	NGProtoCallback *_callback;
 }
 
-+ (NGClientRpcChannel *) channelWithHost:(NGHost *)host;
-
 - (id) initWithHost:(NGHost *)host;
 
 - (long) increaseAndGetSequenceNo;
 
-- (void) sendMessage:(NGRpcMessage *)message prototype:(PBGeneratedMessage *)responsePrototype;
-- (void) sendMessage:(NGRpcMessage *)message;
+- (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message prototype:(PBGeneratedMessage *)responsePrototype;
+- (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message;
 
 - (void) callMethod:(NSString *)method rpcController:(NGClientRpcController *)controller requestMessage:(PBGeneratedMessage *)message responsePrototype:(PBGeneratedMessage *)responsePrototype callback:(NGClientRpcCallback *)callback;
 

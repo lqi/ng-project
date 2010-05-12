@@ -80,20 +80,20 @@
 	return [_expectedMessages valueForKey:messageType];
 }
 
-- (void) sendMessage:(NGRpcMessage *)message withExpectedResponsePrototype:(PBGeneratedMessage *)expectedPrototype {
+- (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message withExpectedResponsePrototype:(PBGeneratedMessage *)expectedPrototype {
 	[self expectMessage:expectedPrototype];
-	[self sendMessage:message];
+	[self sendMessage:sequenceNo message:message];
 }
 
-- (void) sendMessage:(NGRpcMessage *)message {
+- (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message {
 	NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
-	[messageType appendString:[[[message message] class] description]];
-	int32_t size = computeInt32SizeNoTag([message sequenceNo]) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag([message message]);
+	[messageType appendString:[[message class] description]];
+	int32_t size = computeInt32SizeNoTag(sequenceNo) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag(message);
 	@synchronized (_pbOutputStream) {
 		[_pbOutputStream writeRawLittleEndian32:size];
-		[_pbOutputStream writeInt64NoTag:[message sequenceNo]];
+		[_pbOutputStream writeInt64NoTag:sequenceNo];
 		[_pbOutputStream writeStringNoTag:messageType];
-		[_pbOutputStream writeMessageNoTag:[message message]];
+		[_pbOutputStream writeMessageNoTag:message];
 		[_pbOutputStream flush];
 	}
 }
