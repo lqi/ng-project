@@ -27,121 +27,55 @@
 
 - (NGClientRpcControllerStatus) status {
 	return self.state == nil ? PENDING : self.state.complete ? COMPLETE : ACTIVE;
-	//return state == null ? Status.PENDING : (state.complete ? Status.COMPLETE : Status.ACTIVE);
 }
 
-- (BOOL) checkStatus:(NGClientRpcControllerStatus) aimStatus {
+- (void) checkStatus:(NGClientRpcControllerStatus) aimStatus {
 	NGClientRpcControllerStatus currentStatus = [self status];
-	return currentStatus == aimStatus;
-	/*
-	 Status currentStatus = status();
-	 if (!currentStatus.equals(statusToAssert)) {
-	 throw new IllegalStateException("Controller expected status " + statusToAssert + ", was "
-	 + currentStatus);
-	 }
-	 */
+	if (currentStatus != aimStatus) {
+		[NSException raise:@"Illegal Status in NGClientRpcController" format:@"Current status of %d isn't matching aim status of %d", currentStatus, aimStatus];
+	}
 }
 
 - (void) configure:(NGRpcState *) theState {
-	if ([self checkStatus:PENDING]) {
-		if (self.state == nil) {
-			self.state = theState;
-		}
-		else {
-			// TODO: ignore at the moment;
-		}
+	[self checkStatus:PENDING];
+	if (self.state == nil) {
+		self.state = theState;
 	}
 	else {
-		// TODO: ignore at the moment;
+		[NSException raise:@"Illegal Status in NGClientRpcController" format:@"Can't configure this RPC, as it's already configured."];
 	}
-	/*
-	 checkStatus(Status.PENDING);
-	 if (this.state != null) {
-	 throw new IllegalStateException("Can't configure this RPC, already configured.");
-	 } else if (!owner.equals(state.creator)) {
-	 throw new IllegalArgumentException("Should only be configured by " + owner
-	 + ", configuration attempted by " + state.creator);
-	 }
-	 this.state = state;
-	 */
 }
 
 - (void) response:(PBGeneratedMessage *)message {
-	if ([self checkStatus:ACTIVE]) {
-		/*
-		if (!_state.isStreamingRpc) {
-			if (message == nil) {
-				// TODO: thorw exception
-			}
-			else {
-				_state.complete = YES;
-			}
+	[self checkStatus:ACTIVE];
+	/*
+	if (!_state.isStreamingRpc) {
+		if (message == nil) {
+			[NSException raise:@"Illegal Status in NGClientRpcController" format:@"Normal RPCs should not be completed early."];
 		}
-		else if (message == nil) {
+		else {
 			_state.complete = YES;
 		}
-		 */
-		[self.state.callback run:message];
 	}
-	else {
-		// TODO: ignore at the moment
+	else if (message == nil) {
+		_state.complete = YES;
 	}
-
-	/*
-	 checkStatus(Status.ACTIVE);
-	 // Any message will complete a normal RPC, whereas only a null message will
-	 // end a streaming RPC.
-	 if (!state.isStreamingRpc) {
-	 if (message == null) {
-	 // The server end-point should not actually allow non-streaming RPCs
-	 // to call back with null messages - we should never get here.
-	 throw new IllegalStateException("Normal RPCs should not be completed early.");
-	 } else {
-	 // Normal RPCs will complete on any valid incoming message.
-	 state.complete = true;
-	 }
-	 } else if (message == null) {
-	 // Complete this streaming RPC with this blank message.
-	 state.complete = true;
-	 }
-	 try {
-	 state.callback.run(message);
-	 } catch (RuntimeException e) {
-	 e.printStackTrace();
-	 }
-	 */
+	*/ // TODO: as isStreamingRpc doesn't work functional, comment this part to make the overal application running
+	[self.state.callback onSuccess:message];
 }
 
 - (void) failure:(NSString *)errorText {
-	if ([self checkStatus:ACTIVE]) {
-		self.state.complete = YES;
-		self.state.failed = YES;
-		self.state.errorText = errorText;
-		
-		[self.state.callback failure];
-	}
-	else {
-		// TODO: ignore at the moment
-	}
-
-	/*
-	 checkStatus(Status.ACTIVE);
-	 state.complete = true;
-	 state.failed = true;
-	 state.errorText = errorText;
-	 
-	 // Hint to the internal callback that this RPC is finished (Normal RPCs
-	 // will always understand this as an error case, whereas streaming RPCs
-	 // will have to check their controller).
-	 state.callback.run(null);
-	 */
+	[self checkStatus:ACTIVE];
+	self.state.complete = YES;
+	self.state.failed = YES;
+	self.state.errorText = errorText;
+	
+	[self.state.callback onFailure:errorText];
 }
 
 - (BOOL) failed {
-	if ([self checkStatus:COMPLETE]) {
-		return self.state.failed;
-	}
-	return NO; // TODO: ignore at the moment, should be an excpetion in checkStatus method
+	[self checkStatus:COMPLETE];
+	return self.state.failed;
 }
 
 - (NSString *) errorText {
@@ -156,7 +90,7 @@
 - (void) startCancel {
 	NGClientRpcControllerStatus currentStatus = [self status];
 	if (currentStatus == PENDING) {
-		// TODO: IllegalStateException("Can't cancel this RPC, not currently active.");
+		[NSException raise:@"Illegal Status in NGClientRpcController" format:@"Can't cancel this RPC, not currently active."];
 	}
 	else if (currentStatus == COMPLETE) {
 		// TODO: keep silence at the moment
@@ -164,19 +98,6 @@
 	else {
 		[self.state.cancelRpc startCancel];
 	}
-
-	/*
-	 Status status = status();
-	 if (status == Status.PENDING) {
-	 throw new IllegalStateException("Can't cancel this RPC, not currently active.");
-	 } else if (status == Status.COMPLETE) {
-	 // We drop these requests silently - since there is no way for the client
-	 // to know whether the RPC has finished while they are setting up their
-	 // cancellation.
-	 } else {
-	 state.cancelRpc.run();
-	 }
-	 */
 }
 
 @end

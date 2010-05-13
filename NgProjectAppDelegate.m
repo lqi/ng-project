@@ -62,6 +62,10 @@
 	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
 }
 
+- (void) rpcError:(NSString *)errorText {
+	NSLog(@"RPC Failed in NgProjectAppDelegate: %@", errorText);
+}
+
 - (void) receiveMessage:(PBGeneratedMessage *)message {
 	if ([[[message class] description] isEqual:@"ProtocolWaveletUpdate"]) {
 		ProtocolWaveletUpdate *waveletUpdate = (ProtocolWaveletUpdate *)message;
@@ -112,7 +116,7 @@
 		[inboxTableView reloadData];
 	}
 	else if ([[[message class] description] isEqual:@"ProtocolSubmitResponse"]) {
-		//NSLog(@"%d: Submit", [msg sequenceNo]);
+		NSLog(@"receive a submit response in NgProjectAppDelegate");
 	}
 }
 

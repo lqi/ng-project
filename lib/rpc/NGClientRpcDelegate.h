@@ -18,5 +18,6 @@
 @protocol NGClientRpcDelegate
 
 - (void) receiveMessage:(PBGeneratedMessage *)message;
+- (void) rpcError:(NSString *)errorText;
 
 @end

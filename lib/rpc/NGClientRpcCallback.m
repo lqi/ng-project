@@ -30,12 +30,12 @@
 	return self;
 }
 
-- (void) run:(PBGeneratedMessage *)message {
-	[_application receiveMessage:message];
+- (void) onSuccess:(PBGeneratedMessage *)message {
+	[_application receiveMessage:message]; // TODO: can do the parser work here, and add listeners to respond the actions in NGClientRpcDelegate
 }
 
-- (void) failure {
-	NSLog(@"failure!");
+- (void) onFailure:(NSString *)errorText {
+	[_application rpcError:errorText];
 }
 
 @end

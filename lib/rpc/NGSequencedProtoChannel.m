@@ -93,7 +93,6 @@
 
 - (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message {
 	NSString *messageType = [self messageTypeFromMessageClassName:[[message class] description]];
-	NSLog(@"%d, %@", sequenceNo, messageType);
 	int32_t size = computeInt32SizeNoTag(sequenceNo) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag(message);
 	@synchronized (_pbOutputStream) {
 		[_pbOutputStream writeRawLittleEndian32:size];

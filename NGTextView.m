@@ -284,9 +284,13 @@
 	[self sendDocumentOperation:[[[[[NGDocOpBuilder builder] retain:positionOffset] updateAttributes:[[NGDocAttributesUpdate emptyAttributesUpdate] addAttributeWithKey:key oldValue:oldValue andNewValue:newValue]] retain:([self positionLength] - positionOffset - 1)] build]];
 }
 
+- (void) rpcError:(NSString *)errorText {
+	NSLog(@"RPC Failed in NGTextView: %@", errorText);
+}
+
 - (void) receiveMessage:(PBGeneratedMessage *)message {
 	if ([[[message class] description] isEqual:@"ProtocolWaveletUpdate"]) {
-		
+		NSLog(@"should not happen here! - View");
 	}
 	else if ([[[message class] description] isEqual:@"ProtocolSubmitResponse"]) {
 		NSLog(@"SubmitResponse in TextView");

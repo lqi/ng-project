@@ -30,7 +30,7 @@
 
 - (id) initWithApplication:(id <NGClientRpcDelegate>)application;
 
-- (void) run:(PBGeneratedMessage *)message;
-- (void) failure;
+- (void) onSuccess:(PBGeneratedMessage *)message;
+- (void) onFailure:(NSString *)errorText;
 
 @end

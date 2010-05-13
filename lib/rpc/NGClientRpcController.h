@@ -37,7 +37,7 @@ typedef enum {
 + (NGClientRpcController *) rpcController;
 
 - (NGClientRpcControllerStatus) status;
-- (BOOL) checkStatus:(NGClientRpcControllerStatus) aimStatus;
+- (void) checkStatus:(NGClientRpcControllerStatus) aimStatus;
 
 - (void) configure:(NGRpcState *) theState;
 - (void) response:(PBGeneratedMessage *)message;
