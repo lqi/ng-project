@@ -62,8 +62,10 @@
 #import "model/NGElementAnnotation.h"
 #import "model/NGElementAnnotationUpdate.h"
 
-#import "rpc/NGProtoCallback.h"
-#import "rpc/NGSequencedProtoChannel.h"
+#import "network/NGHost.h"
+#import "network/NGProtoCallback.h"
+#import "network/NGSequencedProtoChannel.h"
+
 #import "rpc/NGCancelRpc.h"
 #import "rpc/NGRpcState.h"
 #import "rpc/NGClientRpcChannel.h"
@@ -71,5 +73,3 @@
 #import "rpc/NGClientRpcController.h"
 #import "rpc/NGClientRpc.h"
 #import "rpc/NGClientRpcDelegate.h"
-
-#import "network/NGHost.h"

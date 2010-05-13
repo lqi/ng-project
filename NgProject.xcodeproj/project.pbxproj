@@ -31,8 +31,6 @@
 		291C684C1190C2FC0012E370 /* ObjectivecDescriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68371190C2FC0012E370 /* ObjectivecDescriptor.pb.m */; };
 		291C684D1190C2FC0012E370 /* Rpc.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68391190C2FC0012E370 /* Rpc.pb.m */; };
 		291C684E1190C2FC0012E370 /* rpc.proto in Resources */ = {isa = PBXBuildFile; fileRef = 291C683A1190C2FC0012E370 /* rpc.proto */; };
-		291C68F21190D8570012E370 /* NGSequencedProtoChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68F11190D8570012E370 /* NGSequencedProtoChannel.m */; };
-		291C68F31190D8570012E370 /* NGSequencedProtoChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C68F11190D8570012E370 /* NGSequencedProtoChannel.m */; };
 		291F39C7117A46A5001CAD54 /* NGDocAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F39C6117A46A5001CAD54 /* NGDocAttributes.m */; };
 		291F39C8117A46A5001CAD54 /* NGDocAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F39C6117A46A5001CAD54 /* NGDocAttributes.m */; };
 		29258B03114ED59800ED4F98 /* NGWaveNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 29258B02114ED59800ED4F98 /* NGWaveNameTest.m */; };
@@ -124,10 +122,12 @@
 		29E986411195DE6700B06B98 /* NGCancelRpc.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E9863F1195DE6700B06B98 /* NGCancelRpc.m */; };
 		29E9866F1195E5DF00B06B98 /* NGClientRpc.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E9866E1195E5DF00B06B98 /* NGClientRpc.m */; };
 		29E986701195E5DF00B06B98 /* NGClientRpc.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E9866E1195E5DF00B06B98 /* NGClientRpc.m */; };
-		29E986AF11962CD500B06B98 /* NGProtoCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E986AE11962CD500B06B98 /* NGProtoCallback.m */; };
-		29E986B011962CD500B06B98 /* NGProtoCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E986AE11962CD500B06B98 /* NGProtoCallback.m */; };
 		29ED64FF116DA38A009389CB /* NGElementAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 29ED64FE116DA38A009389CB /* NGElementAnnotation.m */; };
 		29ED6500116DA38A009389CB /* NGElementAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 29ED64FE116DA38A009389CB /* NGElementAnnotation.m */; };
+		29FA47FA119CB716003C957A /* NGProtoCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FA47F7119CB716003C957A /* NGProtoCallback.m */; };
+		29FA47FB119CB716003C957A /* NGSequencedProtoChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FA47F9119CB716003C957A /* NGSequencedProtoChannel.m */; };
+		29FA47FC119CB716003C957A /* NGProtoCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FA47F7119CB716003C957A /* NGProtoCallback.m */; };
+		29FA47FD119CB716003C957A /* NGSequencedProtoChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FA47F9119CB716003C957A /* NGSequencedProtoChannel.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -203,8 +203,6 @@
 		291C68381190C2FC0012E370 /* Rpc.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rpc.pb.h; sourceTree = "<group>"; };
 		291C68391190C2FC0012E370 /* Rpc.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rpc.pb.m; sourceTree = "<group>"; };
 		291C683A1190C2FC0012E370 /* rpc.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rpc.proto; sourceTree = "<group>"; };
-		291C68F01190D8570012E370 /* NGSequencedProtoChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGSequencedProtoChannel.h; path = lib/rpc/NGSequencedProtoChannel.h; sourceTree = "<group>"; };
-		291C68F11190D8570012E370 /* NGSequencedProtoChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGSequencedProtoChannel.m; path = lib/rpc/NGSequencedProtoChannel.m; sourceTree = "<group>"; };
 		291F39C5117A46A5001CAD54 /* NGDocAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGDocAttributes.h; path = lib/model/document/operation/NGDocAttributes.h; sourceTree = "<group>"; };
 		291F39C6117A46A5001CAD54 /* NGDocAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGDocAttributes.m; path = lib/model/document/operation/NGDocAttributes.m; sourceTree = "<group>"; };
 		29258B01114ED59800ED4F98 /* NGWaveNameTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGWaveNameTest.h; path = test/lib/model/NGWaveNameTest.h; sourceTree = "<group>"; };
@@ -317,11 +315,13 @@
 		29E9863F1195DE6700B06B98 /* NGCancelRpc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGCancelRpc.m; path = lib/rpc/NGCancelRpc.m; sourceTree = "<group>"; };
 		29E9866D1195E5DF00B06B98 /* NGClientRpc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGClientRpc.h; path = lib/rpc/NGClientRpc.h; sourceTree = "<group>"; };
 		29E9866E1195E5DF00B06B98 /* NGClientRpc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGClientRpc.m; path = lib/rpc/NGClientRpc.m; sourceTree = "<group>"; };
-		29E986AD11962CD500B06B98 /* NGProtoCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGProtoCallback.h; path = lib/rpc/NGProtoCallback.h; sourceTree = "<group>"; };
-		29E986AE11962CD500B06B98 /* NGProtoCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGProtoCallback.m; path = lib/rpc/NGProtoCallback.m; sourceTree = "<group>"; };
 		29ED64FD116DA38A009389CB /* NGElementAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGElementAnnotation.h; path = lib/model/NGElementAnnotation.h; sourceTree = "<group>"; };
 		29ED64FE116DA38A009389CB /* NGElementAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGElementAnnotation.m; path = lib/model/NGElementAnnotation.m; sourceTree = "<group>"; };
 		29FA4670119B3E2A003C957A /* NGClientRpcDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGClientRpcDelegate.h; path = lib/rpc/NGClientRpcDelegate.h; sourceTree = "<group>"; };
+		29FA47F6119CB716003C957A /* NGProtoCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGProtoCallback.h; path = lib/network/NGProtoCallback.h; sourceTree = "<group>"; };
+		29FA47F7119CB716003C957A /* NGProtoCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGProtoCallback.m; path = lib/network/NGProtoCallback.m; sourceTree = "<group>"; };
+		29FA47F8119CB716003C957A /* NGSequencedProtoChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NGSequencedProtoChannel.h; path = lib/network/NGSequencedProtoChannel.h; sourceTree = "<group>"; };
+		29FA47F9119CB716003C957A /* NGSequencedProtoChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NGSequencedProtoChannel.m; path = lib/network/NGSequencedProtoChannel.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* NgProject-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NgProject-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* NgProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NgProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -398,10 +398,6 @@
 		291C68DB1190D1420012E370 /* rpc */ = {
 			isa = PBXGroup;
 			children = (
-				291C68F01190D8570012E370 /* NGSequencedProtoChannel.h */,
-				291C68F11190D8570012E370 /* NGSequencedProtoChannel.m */,
-				29E986AD11962CD500B06B98 /* NGProtoCallback.h */,
-				29E986AE11962CD500B06B98 /* NGProtoCallback.m */,
 				29E9863E1195DE6700B06B98 /* NGCancelRpc.h */,
 				29E9863F1195DE6700B06B98 /* NGCancelRpc.m */,
 				297228A411933A1F002CD415 /* NGRpcState.h */,
@@ -707,6 +703,10 @@
 			children = (
 				29E985D6119413A500B06B98 /* NGHost.h */,
 				29E985D7119413A500B06B98 /* NGHost.m */,
+				29FA47F8119CB716003C957A /* NGSequencedProtoChannel.h */,
+				29FA47F9119CB716003C957A /* NGSequencedProtoChannel.m */,
+				29FA47F6119CB716003C957A /* NGProtoCallback.h */,
+				29FA47F7119CB716003C957A /* NGProtoCallback.m */,
 			);
 			name = network;
 			sourceTree = "<group>";
@@ -903,7 +903,6 @@
 				291C68401190C2FC0012E370 /* FederationError.pb.m in Sources */,
 				291C68421190C2FC0012E370 /* ObjectivecDescriptor.pb.m in Sources */,
 				291C68431190C2FC0012E370 /* Rpc.pb.m in Sources */,
-				291C68F21190D8570012E370 /* NGSequencedProtoChannel.m in Sources */,
 				297228A711933A1F002CD415 /* NGRpcState.m in Sources */,
 				297228AB11933B51002CD415 /* NGClientRpcChannel.m in Sources */,
 				297228AF11933B70002CD415 /* NGClientRpcCallback.m in Sources */,
@@ -911,7 +910,8 @@
 				29E985D9119413A500B06B98 /* NGHost.m in Sources */,
 				29E986411195DE6700B06B98 /* NGCancelRpc.m in Sources */,
 				29E986701195E5DF00B06B98 /* NGClientRpc.m in Sources */,
-				29E986B011962CD500B06B98 /* NGProtoCallback.m in Sources */,
+				29FA47FA119CB716003C957A /* NGProtoCallback.m in Sources */,
+				29FA47FB119CB716003C957A /* NGSequencedProtoChannel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -960,7 +960,6 @@
 				291C684A1190C2FC0012E370 /* FederationError.pb.m in Sources */,
 				291C684C1190C2FC0012E370 /* ObjectivecDescriptor.pb.m in Sources */,
 				291C684D1190C2FC0012E370 /* Rpc.pb.m in Sources */,
-				291C68F31190D8570012E370 /* NGSequencedProtoChannel.m in Sources */,
 				297228A611933A1F002CD415 /* NGRpcState.m in Sources */,
 				297228AA11933B51002CD415 /* NGClientRpcChannel.m in Sources */,
 				297228AE11933B70002CD415 /* NGClientRpcCallback.m in Sources */,
@@ -968,7 +967,8 @@
 				29E985D8119413A500B06B98 /* NGHost.m in Sources */,
 				29E986401195DE6700B06B98 /* NGCancelRpc.m in Sources */,
 				29E9866F1195E5DF00B06B98 /* NGClientRpc.m in Sources */,
-				29E986AF11962CD500B06B98 /* NGProtoCallback.m in Sources */,
+				29FA47FC119CB716003C957A /* NGProtoCallback.m in Sources */,
+				29FA47FD119CB716003C957A /* NGSequencedProtoChannel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
