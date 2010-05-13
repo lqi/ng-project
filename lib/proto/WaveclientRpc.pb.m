@@ -26,6 +26,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
 @property (retain) NSString* waveId;
 @property (retain) NSMutableArray* mutableWaveletIdPrefixList;
 @property int32_t maximumWavelets;
+@property BOOL snapshots;
 @end
 
 @implementation ProtocolOpenRequest
@@ -52,6 +53,18 @@ static PBExtensionRegistry* extensionRegistry = nil;
   hasMaximumWavelets_ = !!value;
 }
 @synthesize maximumWavelets;
+- (BOOL) hasSnapshots {
+  return !!hasSnapshots_;
+}
+- (void) setHasSnapshots:(BOOL) value {
+  hasSnapshots_ = !!value;
+}
+- (BOOL) snapshots {
+  return !!snapshots_;
+}
+- (void) setSnapshots:(BOOL) value {
+  snapshots_ = !!value;
+}
 - (void) dealloc {
   self.participantId = nil;
   self.waveId = nil;
@@ -63,6 +76,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
     self.participantId = @"";
     self.waveId = @"";
     self.maximumWavelets = 0;
+    self.snapshots = NO;
   }
   return self;
 }
@@ -107,6 +121,9 @@ static ProtocolOpenRequest* defaultProtocolOpenRequestInstance = nil;
   if (self.hasMaximumWavelets) {
     [output writeInt32:4 value:self.maximumWavelets];
   }
+  if (self.hasSnapshots) {
+    [output writeBool:5 value:self.snapshots];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -132,6 +149,9 @@ static ProtocolOpenRequest* defaultProtocolOpenRequestInstance = nil;
   }
   if (self.hasMaximumWavelets) {
     size += computeInt32Size(4, self.maximumWavelets);
+  }
+  if (self.hasSnapshots) {
+    size += computeBoolSize(5, self.snapshots);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -223,6 +243,9 @@ static ProtocolOpenRequest* defaultProtocolOpenRequestInstance = nil;
   if (other.hasMaximumWavelets) {
     [self setMaximumWavelets:other.maximumWavelets];
   }
+  if (other.hasSnapshots) {
+    [self setSnapshots:other.snapshots];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -258,6 +281,10 @@ static ProtocolOpenRequest* defaultProtocolOpenRequestInstance = nil;
       }
       case 32: {
         [self setMaximumWavelets:[input readInt32]];
+        break;
+      }
+      case 40: {
+        [self setSnapshots:[input readBool]];
         break;
       }
     }
@@ -342,6 +369,530 @@ static ProtocolOpenRequest* defaultProtocolOpenRequestInstance = nil;
   result.maximumWavelets = 0;
   return self;
 }
+- (BOOL) hasSnapshots {
+  return result.hasSnapshots;
+}
+- (BOOL) snapshots {
+  return result.snapshots;
+}
+- (ProtocolOpenRequest_Builder*) setSnapshots:(BOOL) value {
+  result.hasSnapshots = YES;
+  result.snapshots = value;
+  return self;
+}
+- (ProtocolOpenRequest_Builder*) clearSnapshots {
+  result.hasSnapshots = NO;
+  result.snapshots = NO;
+  return self;
+}
+@end
+
+@interface WaveletSnapshot ()
+@property (retain) NSMutableArray* mutableParticipantIdList;
+@property (retain) NSMutableArray* mutableDocumentList;
+@end
+
+@implementation WaveletSnapshot
+
+@synthesize mutableParticipantIdList;
+@synthesize mutableDocumentList;
+- (void) dealloc {
+  self.mutableParticipantIdList = nil;
+  self.mutableDocumentList = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static WaveletSnapshot* defaultWaveletSnapshotInstance = nil;
++ (void) initialize {
+  if (self == [WaveletSnapshot class]) {
+    defaultWaveletSnapshotInstance = [[WaveletSnapshot alloc] init];
+  }
+}
++ (WaveletSnapshot*) defaultInstance {
+  return defaultWaveletSnapshotInstance;
+}
+- (WaveletSnapshot*) defaultInstance {
+  return defaultWaveletSnapshotInstance;
+}
+- (NSArray*) participantIdList {
+  return mutableParticipantIdList;
+}
+- (NSString*) participantIdAtIndex:(int32_t) index {
+  id value = [mutableParticipantIdList objectAtIndex:index];
+  return value;
+}
+- (NSArray*) documentList {
+  return mutableDocumentList;
+}
+- (WaveletSnapshot_DocumentSnapshot*) documentAtIndex:(int32_t) index {
+  id value = [mutableDocumentList objectAtIndex:index];
+  return value;
+}
+- (BOOL) isInitialized {
+  for (WaveletSnapshot_DocumentSnapshot* element in self.documentList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  for (NSString* element in self.mutableParticipantIdList) {
+    [output writeString:1 value:element];
+  }
+  for (WaveletSnapshot_DocumentSnapshot* element in self.documentList) {
+    [output writeMessage:2 value:element];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  {
+    int32_t dataSize = 0;
+    for (NSString* element in self.mutableParticipantIdList) {
+      dataSize += computeStringSizeNoTag(element);
+    }
+    size += dataSize;
+    size += 1 * self.mutableParticipantIdList.count;
+  }
+  for (WaveletSnapshot_DocumentSnapshot* element in self.documentList) {
+    size += computeMessageSize(2, element);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (WaveletSnapshot*) parseFromData:(NSData*) data {
+  return (WaveletSnapshot*)[[[WaveletSnapshot builder] mergeFromData:data] build];
+}
++ (WaveletSnapshot*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WaveletSnapshot*)[[[WaveletSnapshot builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (WaveletSnapshot*) parseFromInputStream:(NSInputStream*) input {
+  return (WaveletSnapshot*)[[[WaveletSnapshot builder] mergeFromInputStream:input] build];
+}
++ (WaveletSnapshot*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WaveletSnapshot*)[[[WaveletSnapshot builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (WaveletSnapshot*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (WaveletSnapshot*)[[[WaveletSnapshot builder] mergeFromCodedInputStream:input] build];
+}
++ (WaveletSnapshot*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WaveletSnapshot*)[[[WaveletSnapshot builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (WaveletSnapshot_Builder*) builder {
+  return [[[WaveletSnapshot_Builder alloc] init] autorelease];
+}
++ (WaveletSnapshot_Builder*) builderWithPrototype:(WaveletSnapshot*) prototype {
+  return [[WaveletSnapshot builder] mergeFrom:prototype];
+}
+- (WaveletSnapshot_Builder*) builder {
+  return [WaveletSnapshot builder];
+}
+@end
+
+@interface WaveletSnapshot_DocumentSnapshot ()
+@property (retain) NSString* documentId;
+@property (retain) ProtocolDocumentOperation* documentOperation;
+@end
+
+@implementation WaveletSnapshot_DocumentSnapshot
+
+- (BOOL) hasDocumentId {
+  return !!hasDocumentId_;
+}
+- (void) setHasDocumentId:(BOOL) value {
+  hasDocumentId_ = !!value;
+}
+@synthesize documentId;
+- (BOOL) hasDocumentOperation {
+  return !!hasDocumentOperation_;
+}
+- (void) setHasDocumentOperation:(BOOL) value {
+  hasDocumentOperation_ = !!value;
+}
+@synthesize documentOperation;
+- (void) dealloc {
+  self.documentId = nil;
+  self.documentOperation = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.documentId = @"";
+    self.documentOperation = [ProtocolDocumentOperation defaultInstance];
+  }
+  return self;
+}
+static WaveletSnapshot_DocumentSnapshot* defaultWaveletSnapshot_DocumentSnapshotInstance = nil;
++ (void) initialize {
+  if (self == [WaveletSnapshot_DocumentSnapshot class]) {
+    defaultWaveletSnapshot_DocumentSnapshotInstance = [[WaveletSnapshot_DocumentSnapshot alloc] init];
+  }
+}
++ (WaveletSnapshot_DocumentSnapshot*) defaultInstance {
+  return defaultWaveletSnapshot_DocumentSnapshotInstance;
+}
+- (WaveletSnapshot_DocumentSnapshot*) defaultInstance {
+  return defaultWaveletSnapshot_DocumentSnapshotInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasDocumentId) {
+    return NO;
+  }
+  if (!self.hasDocumentOperation) {
+    return NO;
+  }
+  if (!self.documentOperation.isInitialized) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasDocumentId) {
+    [output writeString:1 value:self.documentId];
+  }
+  if (self.hasDocumentOperation) {
+    [output writeMessage:2 value:self.documentOperation];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  if (self.hasDocumentId) {
+    size += computeStringSize(1, self.documentId);
+  }
+  if (self.hasDocumentOperation) {
+    size += computeMessageSize(2, self.documentOperation);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (WaveletSnapshot_DocumentSnapshot*) parseFromData:(NSData*) data {
+  return (WaveletSnapshot_DocumentSnapshot*)[[[WaveletSnapshot_DocumentSnapshot builder] mergeFromData:data] build];
+}
++ (WaveletSnapshot_DocumentSnapshot*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WaveletSnapshot_DocumentSnapshot*)[[[WaveletSnapshot_DocumentSnapshot builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (WaveletSnapshot_DocumentSnapshot*) parseFromInputStream:(NSInputStream*) input {
+  return (WaveletSnapshot_DocumentSnapshot*)[[[WaveletSnapshot_DocumentSnapshot builder] mergeFromInputStream:input] build];
+}
++ (WaveletSnapshot_DocumentSnapshot*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WaveletSnapshot_DocumentSnapshot*)[[[WaveletSnapshot_DocumentSnapshot builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (WaveletSnapshot_DocumentSnapshot*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (WaveletSnapshot_DocumentSnapshot*)[[[WaveletSnapshot_DocumentSnapshot builder] mergeFromCodedInputStream:input] build];
+}
++ (WaveletSnapshot_DocumentSnapshot*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WaveletSnapshot_DocumentSnapshot*)[[[WaveletSnapshot_DocumentSnapshot builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (WaveletSnapshot_DocumentSnapshot_Builder*) builder {
+  return [[[WaveletSnapshot_DocumentSnapshot_Builder alloc] init] autorelease];
+}
++ (WaveletSnapshot_DocumentSnapshot_Builder*) builderWithPrototype:(WaveletSnapshot_DocumentSnapshot*) prototype {
+  return [[WaveletSnapshot_DocumentSnapshot builder] mergeFrom:prototype];
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) builder {
+  return [WaveletSnapshot_DocumentSnapshot builder];
+}
+@end
+
+@interface WaveletSnapshot_DocumentSnapshot_Builder()
+@property (retain) WaveletSnapshot_DocumentSnapshot* result;
+@end
+
+@implementation WaveletSnapshot_DocumentSnapshot_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[WaveletSnapshot_DocumentSnapshot alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) clear {
+  self.result = [[[WaveletSnapshot_DocumentSnapshot alloc] init] autorelease];
+  return self;
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) clone {
+  return [WaveletSnapshot_DocumentSnapshot builderWithPrototype:result];
+}
+- (WaveletSnapshot_DocumentSnapshot*) defaultInstance {
+  return [WaveletSnapshot_DocumentSnapshot defaultInstance];
+}
+- (WaveletSnapshot_DocumentSnapshot*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (WaveletSnapshot_DocumentSnapshot*) buildPartial {
+  WaveletSnapshot_DocumentSnapshot* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) mergeFrom:(WaveletSnapshot_DocumentSnapshot*) other {
+  if (other == [WaveletSnapshot_DocumentSnapshot defaultInstance]) {
+    return self;
+  }
+  if (other.hasDocumentId) {
+    [self setDocumentId:other.documentId];
+  }
+  if (other.hasDocumentOperation) {
+    [self mergeDocumentOperation:other.documentOperation];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setDocumentId:[input readString]];
+        break;
+      }
+      case 18: {
+        ProtocolDocumentOperation_Builder* subBuilder = [ProtocolDocumentOperation builder];
+        if (self.hasDocumentOperation) {
+          [subBuilder mergeFrom:self.documentOperation];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setDocumentOperation:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasDocumentId {
+  return result.hasDocumentId;
+}
+- (NSString*) documentId {
+  return result.documentId;
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) setDocumentId:(NSString*) value {
+  result.hasDocumentId = YES;
+  result.documentId = value;
+  return self;
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) clearDocumentId {
+  result.hasDocumentId = NO;
+  result.documentId = @"";
+  return self;
+}
+- (BOOL) hasDocumentOperation {
+  return result.hasDocumentOperation;
+}
+- (ProtocolDocumentOperation*) documentOperation {
+  return result.documentOperation;
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) setDocumentOperation:(ProtocolDocumentOperation*) value {
+  result.hasDocumentOperation = YES;
+  result.documentOperation = value;
+  return self;
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) setDocumentOperationBuilder:(ProtocolDocumentOperation_Builder*) builderForValue {
+  return [self setDocumentOperation:[builderForValue build]];
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) mergeDocumentOperation:(ProtocolDocumentOperation*) value {
+  if (result.hasDocumentOperation &&
+      result.documentOperation != [ProtocolDocumentOperation defaultInstance]) {
+    result.documentOperation =
+      [[[ProtocolDocumentOperation builderWithPrototype:result.documentOperation] mergeFrom:value] buildPartial];
+  } else {
+    result.documentOperation = value;
+  }
+  result.hasDocumentOperation = YES;
+  return self;
+}
+- (WaveletSnapshot_DocumentSnapshot_Builder*) clearDocumentOperation {
+  result.hasDocumentOperation = NO;
+  result.documentOperation = [ProtocolDocumentOperation defaultInstance];
+  return self;
+}
+@end
+
+@interface WaveletSnapshot_Builder()
+@property (retain) WaveletSnapshot* result;
+@end
+
+@implementation WaveletSnapshot_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[WaveletSnapshot alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (WaveletSnapshot_Builder*) clear {
+  self.result = [[[WaveletSnapshot alloc] init] autorelease];
+  return self;
+}
+- (WaveletSnapshot_Builder*) clone {
+  return [WaveletSnapshot builderWithPrototype:result];
+}
+- (WaveletSnapshot*) defaultInstance {
+  return [WaveletSnapshot defaultInstance];
+}
+- (WaveletSnapshot*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (WaveletSnapshot*) buildPartial {
+  WaveletSnapshot* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (WaveletSnapshot_Builder*) mergeFrom:(WaveletSnapshot*) other {
+  if (other == [WaveletSnapshot defaultInstance]) {
+    return self;
+  }
+  if (other.mutableParticipantIdList.count > 0) {
+    if (result.mutableParticipantIdList == nil) {
+      result.mutableParticipantIdList = [NSMutableArray array];
+    }
+    [result.mutableParticipantIdList addObjectsFromArray:other.mutableParticipantIdList];
+  }
+  if (other.mutableDocumentList.count > 0) {
+    if (result.mutableDocumentList == nil) {
+      result.mutableDocumentList = [NSMutableArray array];
+    }
+    [result.mutableDocumentList addObjectsFromArray:other.mutableDocumentList];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (WaveletSnapshot_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (WaveletSnapshot_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self addParticipantId:[input readString]];
+        break;
+      }
+      case 18: {
+        WaveletSnapshot_DocumentSnapshot_Builder* subBuilder = [WaveletSnapshot_DocumentSnapshot builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addDocument:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSArray*) participantIdList {
+  if (result.mutableParticipantIdList == nil) {
+    return [NSArray array];
+  }
+  return result.mutableParticipantIdList;
+}
+- (NSString*) participantIdAtIndex:(int32_t) index {
+  return [result participantIdAtIndex:index];
+}
+- (WaveletSnapshot_Builder*) replaceParticipantIdAtIndex:(int32_t) index with:(NSString*) value {
+  [result.mutableParticipantIdList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (WaveletSnapshot_Builder*) addParticipantId:(NSString*) value {
+  if (result.mutableParticipantIdList == nil) {
+    result.mutableParticipantIdList = [NSMutableArray array];
+  }
+  [result.mutableParticipantIdList addObject:value];
+  return self;
+}
+- (WaveletSnapshot_Builder*) addAllParticipantId:(NSArray*) values {
+  if (result.mutableParticipantIdList == nil) {
+    result.mutableParticipantIdList = [NSMutableArray array];
+  }
+  [result.mutableParticipantIdList addObjectsFromArray:values];
+  return self;
+}
+- (WaveletSnapshot_Builder*) clearParticipantIdList {
+  result.mutableParticipantIdList = nil;
+  return self;
+}
+- (NSArray*) documentList {
+  if (result.mutableDocumentList == nil) { return [NSArray array]; }
+  return result.mutableDocumentList;
+}
+- (WaveletSnapshot_DocumentSnapshot*) documentAtIndex:(int32_t) index {
+  return [result documentAtIndex:index];
+}
+- (WaveletSnapshot_Builder*) replaceDocumentAtIndex:(int32_t) index with:(WaveletSnapshot_DocumentSnapshot*) value {
+  [result.mutableDocumentList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (WaveletSnapshot_Builder*) addAllDocument:(NSArray*) values {
+  if (result.mutableDocumentList == nil) {
+    result.mutableDocumentList = [NSMutableArray array];
+  }
+  [result.mutableDocumentList addObjectsFromArray:values];
+  return self;
+}
+- (WaveletSnapshot_Builder*) clearDocumentList {
+  result.mutableDocumentList = nil;
+  return self;
+}
+- (WaveletSnapshot_Builder*) addDocument:(WaveletSnapshot_DocumentSnapshot*) value {
+  if (result.mutableDocumentList == nil) {
+    result.mutableDocumentList = [NSMutableArray array];
+  }
+  [result.mutableDocumentList addObject:value];
+  return self;
+}
 @end
 
 @interface ProtocolWaveletUpdate ()
@@ -349,6 +900,7 @@ static ProtocolOpenRequest* defaultProtocolOpenRequestInstance = nil;
 @property (retain) NSMutableArray* mutableAppliedDeltaList;
 @property (retain) ProtocolHashedVersion* commitNotice;
 @property (retain) ProtocolHashedVersion* resultingVersion;
+@property (retain) WaveletSnapshot* snapshot;
 @end
 
 @implementation ProtocolWaveletUpdate
@@ -375,11 +927,19 @@ static ProtocolOpenRequest* defaultProtocolOpenRequestInstance = nil;
   hasResultingVersion_ = !!value;
 }
 @synthesize resultingVersion;
+- (BOOL) hasSnapshot {
+  return !!hasSnapshot_;
+}
+- (void) setHasSnapshot:(BOOL) value {
+  hasSnapshot_ = !!value;
+}
+@synthesize snapshot;
 - (void) dealloc {
   self.waveletName = nil;
   self.mutableAppliedDeltaList = nil;
   self.commitNotice = nil;
   self.resultingVersion = nil;
+  self.snapshot = nil;
   [super dealloc];
 }
 - (id) init {
@@ -387,6 +947,7 @@ static ProtocolOpenRequest* defaultProtocolOpenRequestInstance = nil;
     self.waveletName = @"";
     self.commitNotice = [ProtocolHashedVersion defaultInstance];
     self.resultingVersion = [ProtocolHashedVersion defaultInstance];
+    self.snapshot = [WaveletSnapshot defaultInstance];
   }
   return self;
 }
@@ -428,6 +989,11 @@ static ProtocolWaveletUpdate* defaultProtocolWaveletUpdateInstance = nil;
       return NO;
     }
   }
+  if (self.hasSnapshot) {
+    if (!self.snapshot.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -442,6 +1008,9 @@ static ProtocolWaveletUpdate* defaultProtocolWaveletUpdateInstance = nil;
   }
   if (self.hasResultingVersion) {
     [output writeMessage:4 value:self.resultingVersion];
+  }
+  if (self.hasSnapshot) {
+    [output writeMessage:5 value:self.snapshot];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -463,6 +1032,9 @@ static ProtocolWaveletUpdate* defaultProtocolWaveletUpdateInstance = nil;
   }
   if (self.hasResultingVersion) {
     size += computeMessageSize(4, self.resultingVersion);
+  }
+  if (self.hasSnapshot) {
+    size += computeMessageSize(5, self.snapshot);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -554,6 +1126,9 @@ static ProtocolWaveletUpdate* defaultProtocolWaveletUpdateInstance = nil;
   if (other.hasResultingVersion) {
     [self mergeResultingVersion:other.resultingVersion];
   }
+  if (other.hasSnapshot) {
+    [self mergeSnapshot:other.snapshot];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -601,6 +1176,15 @@ static ProtocolWaveletUpdate* defaultProtocolWaveletUpdateInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setResultingVersion:[subBuilder buildPartial]];
+        break;
+      }
+      case 42: {
+        WaveletSnapshot_Builder* subBuilder = [WaveletSnapshot builder];
+        if (self.hasSnapshot) {
+          [subBuilder mergeFrom:self.snapshot];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setSnapshot:[subBuilder buildPartial]];
         break;
       }
     }
@@ -709,6 +1293,36 @@ static ProtocolWaveletUpdate* defaultProtocolWaveletUpdateInstance = nil;
 - (ProtocolWaveletUpdate_Builder*) clearResultingVersion {
   result.hasResultingVersion = NO;
   result.resultingVersion = [ProtocolHashedVersion defaultInstance];
+  return self;
+}
+- (BOOL) hasSnapshot {
+  return result.hasSnapshot;
+}
+- (WaveletSnapshot*) snapshot {
+  return result.snapshot;
+}
+- (ProtocolWaveletUpdate_Builder*) setSnapshot:(WaveletSnapshot*) value {
+  result.hasSnapshot = YES;
+  result.snapshot = value;
+  return self;
+}
+- (ProtocolWaveletUpdate_Builder*) setSnapshotBuilder:(WaveletSnapshot_Builder*) builderForValue {
+  return [self setSnapshot:[builderForValue build]];
+}
+- (ProtocolWaveletUpdate_Builder*) mergeSnapshot:(WaveletSnapshot*) value {
+  if (result.hasSnapshot &&
+      result.snapshot != [WaveletSnapshot defaultInstance]) {
+    result.snapshot =
+      [[[WaveletSnapshot builderWithPrototype:result.snapshot] mergeFrom:value] buildPartial];
+  } else {
+    result.snapshot = value;
+  }
+  result.hasSnapshot = YES;
+  return self;
+}
+- (ProtocolWaveletUpdate_Builder*) clearSnapshot {
+  result.hasSnapshot = NO;
+  result.snapshot = [WaveletSnapshot defaultInstance];
   return self;
 }
 @end

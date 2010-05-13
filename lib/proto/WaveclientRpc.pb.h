@@ -87,6 +87,10 @@
 @class UninterpretedOption_Builder;
 @class UninterpretedOption_NamePart;
 @class UninterpretedOption_NamePart_Builder;
+@class WaveletSnapshot;
+@class WaveletSnapshot_Builder;
+@class WaveletSnapshot_DocumentSnapshot;
+@class WaveletSnapshot_DocumentSnapshot_Builder;
 
 @interface WaveclientRpcRoot : NSObject {
 }
@@ -96,9 +100,11 @@
 
 @interface ProtocolOpenRequest : PBGeneratedMessage {
 @private
+  BOOL hasSnapshots_:1;
   BOOL hasMaximumWavelets_:1;
   BOOL hasParticipantId_:1;
   BOOL hasWaveId_:1;
+  BOOL snapshots_:1;
   int32_t maximumWavelets;
   NSString* participantId;
   NSString* waveId;
@@ -107,9 +113,11 @@
 - (BOOL) hasParticipantId;
 - (BOOL) hasWaveId;
 - (BOOL) hasMaximumWavelets;
+- (BOOL) hasSnapshots;
 @property (readonly, retain) NSString* participantId;
 @property (readonly, retain) NSString* waveId;
 @property (readonly) int32_t maximumWavelets;
+- (BOOL) snapshots;
 - (NSArray*) waveletIdPrefixList;
 - (NSString*) waveletIdPrefixAtIndex:(int32_t) index;
 
@@ -168,6 +176,129 @@
 - (int32_t) maximumWavelets;
 - (ProtocolOpenRequest_Builder*) setMaximumWavelets:(int32_t) value;
 - (ProtocolOpenRequest_Builder*) clearMaximumWavelets;
+
+- (BOOL) hasSnapshots;
+- (BOOL) snapshots;
+- (ProtocolOpenRequest_Builder*) setSnapshots:(BOOL) value;
+- (ProtocolOpenRequest_Builder*) clearSnapshots;
+@end
+
+@interface WaveletSnapshot : PBGeneratedMessage {
+@private
+  NSMutableArray* mutableParticipantIdList;
+  NSMutableArray* mutableDocumentList;
+}
+- (NSArray*) participantIdList;
+- (NSString*) participantIdAtIndex:(int32_t) index;
+- (NSArray*) documentList;
+- (WaveletSnapshot_DocumentSnapshot*) documentAtIndex:(int32_t) index;
+
++ (WaveletSnapshot*) defaultInstance;
+- (WaveletSnapshot*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (WaveletSnapshot_Builder*) builder;
++ (WaveletSnapshot_Builder*) builder;
++ (WaveletSnapshot_Builder*) builderWithPrototype:(WaveletSnapshot*) prototype;
+
++ (WaveletSnapshot*) parseFromData:(NSData*) data;
++ (WaveletSnapshot*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (WaveletSnapshot*) parseFromInputStream:(NSInputStream*) input;
++ (WaveletSnapshot*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (WaveletSnapshot*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (WaveletSnapshot*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface WaveletSnapshot_DocumentSnapshot : PBGeneratedMessage {
+@private
+  BOOL hasDocumentId_:1;
+  BOOL hasDocumentOperation_:1;
+  NSString* documentId;
+  ProtocolDocumentOperation* documentOperation;
+}
+- (BOOL) hasDocumentId;
+- (BOOL) hasDocumentOperation;
+@property (readonly, retain) NSString* documentId;
+@property (readonly, retain) ProtocolDocumentOperation* documentOperation;
+
++ (WaveletSnapshot_DocumentSnapshot*) defaultInstance;
+- (WaveletSnapshot_DocumentSnapshot*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (WaveletSnapshot_DocumentSnapshot_Builder*) builder;
++ (WaveletSnapshot_DocumentSnapshot_Builder*) builder;
++ (WaveletSnapshot_DocumentSnapshot_Builder*) builderWithPrototype:(WaveletSnapshot_DocumentSnapshot*) prototype;
+
++ (WaveletSnapshot_DocumentSnapshot*) parseFromData:(NSData*) data;
++ (WaveletSnapshot_DocumentSnapshot*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (WaveletSnapshot_DocumentSnapshot*) parseFromInputStream:(NSInputStream*) input;
++ (WaveletSnapshot_DocumentSnapshot*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (WaveletSnapshot_DocumentSnapshot*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (WaveletSnapshot_DocumentSnapshot*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface WaveletSnapshot_DocumentSnapshot_Builder : PBGeneratedMessage_Builder {
+@private
+  WaveletSnapshot_DocumentSnapshot* result;
+}
+
+- (WaveletSnapshot_DocumentSnapshot*) defaultInstance;
+
+- (WaveletSnapshot_DocumentSnapshot_Builder*) clear;
+- (WaveletSnapshot_DocumentSnapshot_Builder*) clone;
+
+- (WaveletSnapshot_DocumentSnapshot*) build;
+- (WaveletSnapshot_DocumentSnapshot*) buildPartial;
+
+- (WaveletSnapshot_DocumentSnapshot_Builder*) mergeFrom:(WaveletSnapshot_DocumentSnapshot*) other;
+- (WaveletSnapshot_DocumentSnapshot_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (WaveletSnapshot_DocumentSnapshot_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasDocumentId;
+- (NSString*) documentId;
+- (WaveletSnapshot_DocumentSnapshot_Builder*) setDocumentId:(NSString*) value;
+- (WaveletSnapshot_DocumentSnapshot_Builder*) clearDocumentId;
+
+- (BOOL) hasDocumentOperation;
+- (ProtocolDocumentOperation*) documentOperation;
+- (WaveletSnapshot_DocumentSnapshot_Builder*) setDocumentOperation:(ProtocolDocumentOperation*) value;
+- (WaveletSnapshot_DocumentSnapshot_Builder*) setDocumentOperationBuilder:(ProtocolDocumentOperation_Builder*) builderForValue;
+- (WaveletSnapshot_DocumentSnapshot_Builder*) mergeDocumentOperation:(ProtocolDocumentOperation*) value;
+- (WaveletSnapshot_DocumentSnapshot_Builder*) clearDocumentOperation;
+@end
+
+@interface WaveletSnapshot_Builder : PBGeneratedMessage_Builder {
+@private
+  WaveletSnapshot* result;
+}
+
+- (WaveletSnapshot*) defaultInstance;
+
+- (WaveletSnapshot_Builder*) clear;
+- (WaveletSnapshot_Builder*) clone;
+
+- (WaveletSnapshot*) build;
+- (WaveletSnapshot*) buildPartial;
+
+- (WaveletSnapshot_Builder*) mergeFrom:(WaveletSnapshot*) other;
+- (WaveletSnapshot_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (WaveletSnapshot_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSArray*) participantIdList;
+- (NSString*) participantIdAtIndex:(int32_t) index;
+- (WaveletSnapshot_Builder*) replaceParticipantIdAtIndex:(int32_t) index with:(NSString*) value;
+- (WaveletSnapshot_Builder*) addParticipantId:(NSString*) value;
+- (WaveletSnapshot_Builder*) addAllParticipantId:(NSArray*) values;
+- (WaveletSnapshot_Builder*) clearParticipantIdList;
+
+- (NSArray*) documentList;
+- (WaveletSnapshot_DocumentSnapshot*) documentAtIndex:(int32_t) index;
+- (WaveletSnapshot_Builder*) replaceDocumentAtIndex:(int32_t) index with:(WaveletSnapshot_DocumentSnapshot*) value;
+- (WaveletSnapshot_Builder*) addDocument:(WaveletSnapshot_DocumentSnapshot*) value;
+- (WaveletSnapshot_Builder*) addAllDocument:(NSArray*) values;
+- (WaveletSnapshot_Builder*) clearDocumentList;
 @end
 
 @interface ProtocolWaveletUpdate : PBGeneratedMessage {
@@ -175,17 +306,21 @@
   BOOL hasWaveletName_:1;
   BOOL hasCommitNotice_:1;
   BOOL hasResultingVersion_:1;
+  BOOL hasSnapshot_:1;
   NSString* waveletName;
   ProtocolHashedVersion* commitNotice;
   ProtocolHashedVersion* resultingVersion;
+  WaveletSnapshot* snapshot;
   NSMutableArray* mutableAppliedDeltaList;
 }
 - (BOOL) hasWaveletName;
 - (BOOL) hasCommitNotice;
 - (BOOL) hasResultingVersion;
+- (BOOL) hasSnapshot;
 @property (readonly, retain) NSString* waveletName;
 @property (readonly, retain) ProtocolHashedVersion* commitNotice;
 @property (readonly, retain) ProtocolHashedVersion* resultingVersion;
+@property (readonly, retain) WaveletSnapshot* snapshot;
 - (NSArray*) appliedDeltaList;
 - (ProtocolWaveletDelta*) appliedDeltaAtIndex:(int32_t) index;
 
@@ -248,6 +383,13 @@
 - (ProtocolWaveletUpdate_Builder*) setResultingVersionBuilder:(ProtocolHashedVersion_Builder*) builderForValue;
 - (ProtocolWaveletUpdate_Builder*) mergeResultingVersion:(ProtocolHashedVersion*) value;
 - (ProtocolWaveletUpdate_Builder*) clearResultingVersion;
+
+- (BOOL) hasSnapshot;
+- (WaveletSnapshot*) snapshot;
+- (ProtocolWaveletUpdate_Builder*) setSnapshot:(WaveletSnapshot*) value;
+- (ProtocolWaveletUpdate_Builder*) setSnapshotBuilder:(WaveletSnapshot_Builder*) builderForValue;
+- (ProtocolWaveletUpdate_Builder*) mergeSnapshot:(WaveletSnapshot*) value;
+- (ProtocolWaveletUpdate_Builder*) clearSnapshot;
 @end
 
 @interface ProtocolSubmitRequest : PBGeneratedMessage {
