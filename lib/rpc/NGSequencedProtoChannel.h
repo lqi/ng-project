@@ -48,9 +48,6 @@
 - (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message withExpectedResponsePrototype:(PBGeneratedMessage *)expectedPrototype;
 - (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message;
 
-- (void) receiveMessage;
-- (void) receiveMessageThread;
-
 - (void) startAsyncRead;
 
 @end

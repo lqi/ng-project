@@ -31,7 +31,6 @@
 }
 
 - (void) run:(PBGeneratedMessage *)message {
-	NSLog(@"%@", [[message class] description]);
 	[_application receiveMessage:message];
 }
 

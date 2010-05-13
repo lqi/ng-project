@@ -22,6 +22,11 @@
 - (void) getStreamsToHostName:(NSString *)domain port:(NSInteger)port inputStream:(NSInputStream **)inputStreamPtr outputStream:(NSOutputStream **)outputStreamPtr;
 - (void) connectToHost:(NSString *)domain port:(NSInteger)port;
 
+- (void) receiveMessage;
+- (void) receiveMessageThread;
+
+- (NSString *) messageTypeFromMessageClassName:(NSString *)messageClassName;
+
 @end
 
 @implementation NGSequencedProtoChannel
@@ -73,7 +78,8 @@
 }
 
 - (void) expectMessage:(PBGeneratedMessage *)messagePrototype {
-	[_expectedMessages setValue:messagePrototype forKey:[[messagePrototype class] description]];
+	NSString *messageType = [self messageTypeFromMessageClassName:[[messagePrototype class] description]];
+	[_expectedMessages setValue:messagePrototype forKey:messageType];
 }
 
 - (PBGeneratedMessage *) getMessagePrototype:(NSString *)messageType {
@@ -86,8 +92,8 @@
 }
 
 - (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message {
-	NSMutableString *messageType = [[NSMutableString alloc] initWithString:@"waveserver."];
-	[messageType appendString:[[message class] description]];
+	NSString *messageType = [self messageTypeFromMessageClassName:[[message class] description]];
+	NSLog(@"%d, %@", sequenceNo, messageType);
 	int32_t size = computeInt32SizeNoTag(sequenceNo) + computeStringSizeNoTag(messageType) + computeMessageSizeNoTag(message);
 	@synchronized (_pbOutputStream) {
 		[_pbOutputStream writeRawLittleEndian32:size];
@@ -102,10 +108,7 @@
 	@synchronized (_pbInputStream) {
 		/* int32_t size = */[_pbInputStream readRawLittleEndian32];
 		long sequenceNo = [_pbInputStream readInt64];
-		NSMutableString *messageType = [[NSMutableString alloc] initWithString:[_pbInputStream readString]];
-		NSString *stringToBeDeleted = @"waveserver.";
-		NSRange rangeToBeDeleted = {0, [stringToBeDeleted length]};
-		[messageType deleteCharactersInRange:rangeToBeDeleted];
+		NSString *messageType = [[NSString alloc] initWithString:[_pbInputStream readString]];
 		PBGeneratedMessage *prototype = [self getMessagePrototype:messageType];
 		if (prototype == nil) {
 			int length = [_pbInputStream readRawVarint32];
@@ -131,6 +134,19 @@
 
 - (void) startAsyncRead {
 	[NSThread detachNewThreadSelector:@selector(receiveMessageThread) toTarget:self withObject:nil];
+}
+
+- (NSString *) messageTypeFromMessageClassName:(NSString *)messageClassName {
+	NSMutableString *messageType;
+	if ([messageClassName isEqual:@"CancelRpc"] || [messageClassName isEqual:@"RpcFinished"]) {
+		messageType = [[NSMutableString alloc] initWithString:@"rpc"];
+	}
+	else {
+		messageType = [[NSMutableString alloc] initWithString:@"waveserver"]; // TODO: assume all other messages are in this protobuf package
+	}
+	[messageType appendString:@"."];
+	[messageType appendString:messageClassName];
+	return messageType;
 }
 
 - (void) dealloc {

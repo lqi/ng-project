@@ -75,8 +75,8 @@
 	 sendMessage(sequenceNo, request, responsePrototype);
 	 */
 	long sequenceNo = [self increaseAndGetSequenceNo];
-	NGCancelRpc *cancelRpc = [[NGCancelRpc alloc] initWithSequenceNo:sequenceNo channel:self];
-	NGRpcState *rpcState = [[NGRpcState alloc] initWithStreamRpc:NO rpcCallback:callback andCancelRpc:cancelRpc];
+	NGCancelRpc *cancelRpc = [NGCancelRpc cancelRpcWithSequenceNo:sequenceNo channel:self];
+	NGRpcState *rpcState = [NGRpcState rpcStateWithStreamRpc:NO rpcCallback:callback andCancelRpc:cancelRpc];
 	[controller configure:rpcState];
 	[_callback addController:sequenceNo controller:controller];
 	

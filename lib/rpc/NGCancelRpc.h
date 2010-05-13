@@ -27,6 +27,8 @@
 	NGClientRpcChannel *_channel;
 }
 
++ (NGCancelRpc *) cancelRpcWithSequenceNo:(long)sequenceNo channel:(NGClientRpcChannel *)channel;
+
 - (id) initWithSequenceNo:(long)sequenceNo channel:(NGClientRpcChannel *)channel;
 
 - (void) startCancel;

@@ -17,22 +17,16 @@
 
 #import "NGCancelRpc.h"
 
-@interface NGCancelRpc()
-
-- (void) setSequenceNo:(long)sequenceNo channel:(NGClientRpcChannel *)channel;
-
-@end
-
 @implementation NGCancelRpc
 
-- (void) setSequenceNo:(long)sequenceNo channel:(NGClientRpcChannel *)channel {
-	_sequenceNo = sequenceNo;
-	_channel = channel;
++ (NGCancelRpc *) cancelRpcWithSequenceNo:(long)sequenceNo channel:(NGClientRpcChannel *)channel {
+	return [[[NGCancelRpc alloc] initWithSequenceNo:sequenceNo channel:channel] autorelease];
 }
 
 - (id) initWithSequenceNo:(long)sequenceNo channel:(NGClientRpcChannel *)channel {
 	if (self = [super init]) {
-		[self setSequenceNo:sequenceNo channel:channel];
+		_sequenceNo = sequenceNo;
+		_channel = channel;
 	}
 	return self;
 }

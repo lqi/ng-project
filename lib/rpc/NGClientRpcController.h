@@ -29,15 +29,17 @@ typedef enum {
 } NGClientRpcControllerStatus;
 
 @interface NGClientRpcController : NSObject {
-	NGRpcState *_state;
+	NGRpcState *state;
 }
+
+@property (retain) NGRpcState *state;
 
 + (NGClientRpcController *) rpcController;
 
 - (NGClientRpcControllerStatus) status;
 - (BOOL) checkStatus:(NGClientRpcControllerStatus) aimStatus;
 
-- (void) configure:(NGRpcState *) state;
+- (void) configure:(NGRpcState *) theState;
 - (void) response:(PBGeneratedMessage *)message;
 - (void) failure:(NSString *)errorText;
 - (BOOL) failed;

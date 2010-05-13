@@ -19,12 +19,14 @@
 
 @implementation NGClientRpcController
 
+@synthesize state;
+
 + (NGClientRpcController *) rpcController {
 	return [[[NGClientRpcController alloc] init] autorelease];
 }
 
 - (NGClientRpcControllerStatus) status {
-	return _state == nil ? PENDING : _state.complete ? COMPLETE : ACTIVE;
+	return self.state == nil ? PENDING : self.state.complete ? COMPLETE : ACTIVE;
 	//return state == null ? Status.PENDING : (state.complete ? Status.COMPLETE : Status.ACTIVE);
 }
 
@@ -40,10 +42,10 @@
 	 */
 }
 
-- (void) configure:(NGRpcState *) state {
+- (void) configure:(NGRpcState *) theState {
 	if ([self checkStatus:PENDING]) {
-		if (_state == nil) {
-			_state = state;
+		if (self.state == nil) {
+			self.state = theState;
 		}
 		else {
 			// TODO: ignore at the moment;
@@ -79,7 +81,7 @@
 			_state.complete = YES;
 		}
 		 */
-		[_state.callback run:message];
+		[self.state.callback run:message];
 	}
 	else {
 		// TODO: ignore at the moment
@@ -112,11 +114,11 @@
 
 - (void) failure:(NSString *)errorText {
 	if ([self checkStatus:ACTIVE]) {
-		_state.complete = YES;
-		_state.failed = YES;
-		_state.errorText = errorText;
+		self.state.complete = YES;
+		self.state.failed = YES;
+		self.state.errorText = errorText;
 		
-		[_state.callback failure];
+		[self.state.callback failure];
 	}
 	else {
 		// TODO: ignore at the moment
@@ -137,18 +139,18 @@
 
 - (BOOL) failed {
 	if ([self checkStatus:COMPLETE]) {
-		return _state.failed;
+		return self.state.failed;
 	}
 	return NO; // TODO: ignore at the moment, should be an excpetion in checkStatus method
 }
 
 - (NSString *) errorText {
-	return [self failed] ? _state.errorText : nil;
+	return [self failed] ? self.state.errorText : nil;
 }
 
 - (void) reset {
 	[self checkStatus:COMPLETE];
-    _state = nil;
+    self.state = nil;
 }
 
 - (void) startCancel {
@@ -160,7 +162,7 @@
 		// TODO: keep silence at the moment
 	}
 	else {
-		[_state.cancelRpc startCancel];
+		[self.state.cancelRpc startCancel];
 	}
 
 	/*

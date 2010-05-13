@@ -46,6 +46,7 @@
 	NGHost *_host;
 	NGClientRpc *_rpc;
 	NGClientRpcChannel *_channel;
+	NSMutableArray *_controllerMap;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -72,6 +73,8 @@
 - (IBAction) rmSelf:(id)sender;
 - (IBAction) addTag:(id)sender;
 - (IBAction) rmTag:(id)sender;
+
+- (IBAction) shutdown:(id)sender;
 
 - (void)sendWaveletDelta:(NGWaveletDelta *)delta;
 - (NGHashedVersion *) getHashedVersion;

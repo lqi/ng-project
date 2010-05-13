@@ -45,6 +45,8 @@
 		_channel = [[NGClientRpcChannel alloc] initWithHost:_host];
 		
 		_rpc = [[NGClientRpc alloc] initWithChannel:_channel];
+		
+		_controllerMap = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -116,6 +118,7 @@
 
 - (void) openInbox {
 	NGClientRpcController *openInboxController = [NGClientRpcController rpcController];
+	[_controllerMap addObject:openInboxController];
 	
 	ProtocolOpenRequest_Builder *openInboxRequestBuilder = [ProtocolOpenRequest builder];
 	[openInboxRequestBuilder setParticipantId:[_participantId participantIdAtDomain]];
@@ -149,7 +152,8 @@
 	
 	NGWaveletDelta *newWaveletDelta = [[[[[NGWaveletDeltaBuilder builder:_participantId] addParticipantOp:_participantId] docOp:[_idGenerator manifestDocumentId] andMutateDocument:newConversation] docOp:newBlipName andMutateDocument:newBlipOp] build];
 	
-	NGClientRpcController *controller = [[NGClientRpcController alloc] init];
+	NGClientRpcController *controller = [NGClientRpcController rpcController];
+	[_controllerMap addObject:controller];
 	NGClientRpcCallback *callback = [[NGClientRpcCallback alloc] initWithApplication:self];
 	[_rpc submitRequest:controller waveName:newWaveName waveletDelta:newWaveletDelta hashedVersion:[NGHashedVersion hashedVersion:newWaveName] callback:callback];
 }
@@ -166,9 +170,10 @@
 	[self.waveTextView openWithNetwork:_rpc WaveId:[NGWaveId waveIdWithDomain:[waveId domain] waveId:[waveId waveId]] waveletId:[NGWaveletId waveletIdWithDomain:[waveId domain] waveletId:@"conv+root"] participantId:_participantId sequenceNo:0];
 	[self.currentWave setStringValue:[self.waveTextView openWaveId]];
 	
-	NGClientRpcController *openWaveController = [[NGClientRpcController alloc] init];
+	NGClientRpcController *controller = [NGClientRpcController rpcController];
+	[_controllerMap addObject:controller];
 	NGClientRpcCallback *openWaveCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
-	[_rpc openRequest:openWaveController waveId:waveId participantId:_participantId callback:openWaveCallback];
+	[_rpc openRequest:controller waveId:waveId participantId:_participantId callback:openWaveCallback];
 }
 
 - (IBAction) closeWave:(id)sender {
@@ -258,13 +263,21 @@
 	[self.tagList setStringValue:@""];
 }
 
+- (IBAction) shutdown:(id)sender {
+	NSLog(@"shutdown!");
+	for (NGClientRpcController *controller in _controllerMap) {
+		[controller startCancel];
+	}
+}
+
 - (void)sendWaveletDelta:(NGWaveletDelta *)delta {
 	if (!_hasWaveOpened) {
 		return;
 	}
 	
 	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:_domain waveId:[self.waveTextView openWaveId]] andWaveletId:[_idGenerator newConversationRootWaveletId]];
-	NGClientRpcController *controller = [[NGClientRpcController alloc] init];
+	NGClientRpcController *controller = [NGClientRpcController rpcController];
+	[_controllerMap addObject:controller];
 	NGClientRpcCallback *callback = [[NGClientRpcCallback alloc] initWithApplication:self];
 	[_rpc submitRequest:controller waveName:waveName waveletDelta:delta hashedVersion:[self getHashedVersion] callback:callback];
 }
@@ -280,6 +293,7 @@
 	[_host release];
 	[_channel release];
 	[_rpc release];
+	[_controllerMap release];
 	[super dealloc];
 }
 

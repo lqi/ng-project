@@ -38,24 +38,8 @@
 @property BOOL failed;
 @property (retain) NSString *errorText;
 
++ (NGRpcState *) rpcStateWithStreamRpc:(BOOL)streamRpc rpcCallback:(NGClientRpcCallback *)rpcCallback andCancelRpc:(NGCancelRpc *)theCancelRpc;
+
 - (id) initWithStreamRpc:(BOOL)streamRpc rpcCallback:(NGClientRpcCallback *)rpcCallback andCancelRpc:(NGCancelRpc *)theCancelRpc;
 
 @end
-
-/*
- private final ClientRpcChannel creator;
- private final boolean isStreamingRpc;
- private final RpcCallback<Message> callback;
- private final Runnable cancelRpc;
- private boolean complete = false;
- private boolean failed = false;
- private String errorText = null;
- 
- RpcState(ClientRpcChannel creator, boolean isStreamingRpc, RpcCallback<Message> callback,
- Runnable cancelRpc) {
- this.creator = creator;
- this.isStreamingRpc = isStreamingRpc;
- this.callback = callback;
- this.cancelRpc = cancelRpc;
- }
- */
