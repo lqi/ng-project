@@ -268,6 +268,7 @@
 	for (NGClientRpcController *controller in _controllerMap) {
 		[controller startCancel];
 	}
+	exit(0);
 }
 
 - (void)sendWaveletDelta:(NGWaveletDelta *)delta {

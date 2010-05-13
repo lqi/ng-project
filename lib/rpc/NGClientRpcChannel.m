@@ -44,36 +44,6 @@
 }
 
 - (void) callMethod:(NSString *)method rpcController:(NGClientRpcController *)controller requestMessage:(PBGeneratedMessage *)message responsePrototype:(PBGeneratedMessage *)responsePrototype callback:(NGClientRpcCallback *)callback {
-	/*
-	 final ClientRpcController controller;
-	 if (genericRpcController instanceof ClientRpcController) {
-	 controller = (ClientRpcController) genericRpcController;
-	 } else {
-	 throw new IllegalArgumentException("Expected ClientRpcController, got: "
-	 + genericRpcController.getClass());
-	 }
-	 
-	 // Generate a new sequence number, and configure the controller - notably,
-	 // this throws an IllegalStateException if it is *already* configured.
-	 final long sequenceNo = lastSequenceNumber.incrementAndGet();
-	 final ClientRpcController.RpcState rpcStatus =
-	 new ClientRpcController.RpcState(this, method.getOptions()
-	 .getExtension(Rpc.isStreamingRpc), callback, new Runnable() {
-	 @Override
-	 public void run() {
-	 sendMessage(sequenceNo, Rpc.CancelRpc.getDefaultInstance());
-	 }
-	 });
-	 controller.configure(rpcStatus);
-	 synchronized (activeMethodMap) {
-	 activeMethodMap.put(sequenceNo, controller);
-	 }
-	 LOG.fine("Calling a new RPC (seq " + sequenceNo + "), method " + method.getFullName() + " for "
-	 + protoChannel);
-	 
-	 // Kick off the RPC by sending the request to the server end-point.
-	 sendMessage(sequenceNo, request, responsePrototype);
-	 */
 	long sequenceNo = [self increaseAndGetSequenceNo];
 	NGCancelRpc *cancelRpc = [NGCancelRpc cancelRpcWithSequenceNo:sequenceNo channel:self];
 	NGRpcState *rpcState = [NGRpcState rpcStateWithStreamRpc:NO rpcCallback:callback andCancelRpc:cancelRpc];
