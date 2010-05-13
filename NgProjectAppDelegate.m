@@ -127,6 +127,7 @@
 	ProtocolOpenRequest_Builder *openInboxRequestBuilder = [ProtocolOpenRequest builder];
 	[openInboxRequestBuilder setParticipantId:[_participantId participantIdAtDomain]];
 	[openInboxRequestBuilder setWaveId:[[_idGenerator indexWaveId] waveIdFollowedByDomain]];
+	[openInboxRequestBuilder setSnapshots:NO];
 	
 	NGClientRpcCallback *openInboxCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
 	
@@ -177,7 +178,7 @@
 	NGClientRpcController *controller = [NGClientRpcController rpcController];
 	[_controllerMap addObject:controller];
 	NGClientRpcCallback *openWaveCallback = [[NGClientRpcCallback alloc] initWithApplication:self];
-	[_rpc openRequest:controller waveId:waveId participantId:_participantId callback:openWaveCallback];
+	[_rpc openRequest:controller waveId:waveId participantId:_participantId snapshot:YES callback:openWaveCallback];
 }
 
 - (IBAction) closeWave:(id)sender {

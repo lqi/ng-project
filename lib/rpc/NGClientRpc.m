@@ -36,10 +36,11 @@
 	[self.channel callMethod:nil rpcController:controller requestMessage:request responsePrototype:[ProtocolSubmitResponse defaultInstance] callback:callback];
 }
 
-- (void) openRequest:(NGClientRpcController *)controller waveId:(NGWaveId *)waveId participantId:(NGParticipantId *)participantId callback:(NGClientRpcCallback *)callback {
+- (void) openRequest:(NGClientRpcController *)controller waveId:(NGWaveId *)waveId participantId:(NGParticipantId *)participantId snapshot:(BOOL)snapshot callback:(NGClientRpcCallback *)callback {
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
 	[openRequestBuilder setWaveId:[waveId waveIdFollowedByDomain]];
+	[openRequestBuilder setSnapshots:snapshot];
 	[self open:controller request:[openRequestBuilder build] callback:callback];
 }
 
