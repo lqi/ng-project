@@ -43,10 +43,10 @@
 	[_protoChannel sendMessage:sequenceNo message:message];
 }
 
-- (void) callMethod:(NSString *)method rpcController:(NGClientRpcController *)controller requestMessage:(PBGeneratedMessage *)message responsePrototype:(PBGeneratedMessage *)responsePrototype callback:(NGClientRpcCallback *)callback {
+- (void) callMethod:(BOOL)isStreamingRpc rpcController:(NGClientRpcController *)controller requestMessage:(PBGeneratedMessage *)message responsePrototype:(PBGeneratedMessage *)responsePrototype callback:(NGClientRpcCallback *)callback {
 	long sequenceNo = [self increaseAndGetSequenceNo];
 	NGCancelRpc *cancelRpc = [NGCancelRpc cancelRpcWithSequenceNo:sequenceNo channel:self];
-	NGRpcState *rpcState = [NGRpcState rpcStateWithStreamRpc:NO rpcCallback:callback andCancelRpc:cancelRpc];
+	NGRpcState *rpcState = [NGRpcState rpcStateWithStreamRpc:isStreamingRpc rpcCallback:callback andCancelRpc:cancelRpc];
 	[controller configure:rpcState];
 	[_callback addController:sequenceNo controller:controller];
 	

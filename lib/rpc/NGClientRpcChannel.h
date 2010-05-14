@@ -41,6 +41,6 @@
 - (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message prototype:(PBGeneratedMessage *)responsePrototype;
 - (void) sendMessage:(long)sequenceNo message:(PBGeneratedMessage *)message;
 
-- (void) callMethod:(NSString *)method rpcController:(NGClientRpcController *)controller requestMessage:(PBGeneratedMessage *)message responsePrototype:(PBGeneratedMessage *)responsePrototype callback:(NGClientRpcCallback *)callback;
+- (void) callMethod:(BOOL)isStreamingRpc rpcController:(NGClientRpcController *)controller requestMessage:(PBGeneratedMessage *)message responsePrototype:(PBGeneratedMessage *)responsePrototype callback:(NGClientRpcCallback *)callback;
 
 @end

@@ -29,11 +29,11 @@
 }
 
 - (void) open:(NGClientRpcController *)controller request:(ProtocolOpenRequest *)request callback:(NGClientRpcCallback *)callback {
-	[self.channel callMethod:nil rpcController:controller requestMessage:request responsePrototype:[ProtocolWaveletUpdate defaultInstance] callback:callback];
+	[self.channel callMethod:YES rpcController:controller requestMessage:request responsePrototype:[ProtocolWaveletUpdate defaultInstance] callback:callback];
 }
 
 - (void) submit:(NGClientRpcController *)controller request:(ProtocolSubmitRequest *)request callback:(NGClientRpcCallback *)callback {
-	[self.channel callMethod:nil rpcController:controller requestMessage:request responsePrototype:[ProtocolSubmitResponse defaultInstance] callback:callback];
+	[self.channel callMethod:NO rpcController:controller requestMessage:request responsePrototype:[ProtocolSubmitResponse defaultInstance] callback:callback];
 }
 
 - (void) openRequest:(NGClientRpcController *)controller waveId:(NGWaveId *)waveId participantId:(NGParticipantId *)participantId snapshot:(BOOL)snapshot callback:(NGClientRpcCallback *)callback {

@@ -48,19 +48,17 @@
 
 - (void) response:(PBGeneratedMessage *)message {
 	[self checkStatus:ACTIVE];
-	/*
-	if (!_state.isStreamingRpc) {
+	if (!self.state.isStreamingRpc) {
 		if (message == nil) {
 			[NSException raise:@"Illegal Status in NGClientRpcController" format:@"Normal RPCs should not be completed early."];
 		}
 		else {
-			_state.complete = YES;
+			self.state.complete = YES;
 		}
 	}
 	else if (message == nil) {
-		_state.complete = YES;
+		self.state.complete = YES;
 	}
-	*/ // TODO: as isStreamingRpc doesn't work functional, comment this part to make the overal application running
 	[self.state.callback onSuccess:message];
 }
 
