@@ -54,11 +54,17 @@
 	return [NSString stringWithFormat:@"%@@%@", _participantId, _domain];
 }
 
-- (void) parse:(NSString *)stringParticipantIdAtDomain {
-	NSArray *splitParticipantIdFromDomain = [stringParticipantIdAtDomain componentsSeparatedByString:@"@"];
-	assert([splitParticipantIdFromDomain count] == 2);
-	_participantId = [splitParticipantIdFromDomain objectAtIndex:0];
-	_domain = [splitParticipantIdFromDomain objectAtIndex:1];
+- (void) parse:(NSString *)stringParticipantId {
+	if ([stringParticipantId isEqual:[NGIdConstant DIGEST_AUTHOR]]) {
+		_participantId = stringParticipantId;
+		_domain = @"waveserver";
+	}
+	else {
+		NSArray *splitParticipantIdFromDomain = [stringParticipantId componentsSeparatedByString:@"@"];
+		assert([splitParticipantIdFromDomain count] == 2);
+		_participantId = [splitParticipantIdFromDomain objectAtIndex:0];
+		_domain = [splitParticipantIdFromDomain objectAtIndex:1];
+	}
 }
 
 - (BOOL) isEqual:(id)object {

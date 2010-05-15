@@ -30,5 +30,6 @@
 + (NSString *) TAGS_DOC_ID;
 + (NSString *) MANIFEST_DOC_ID;
 + (NSString *) CONVERSATION_ROOT_WAVELET;
++ (NSString *) DIGEST_AUTHOR;
 
 @end

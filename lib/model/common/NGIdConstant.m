@@ -55,4 +55,8 @@
 	return [NSString stringWithFormat:@"%@%@root", [NGIdConstant CONVERSATION_WAVELET_PREFIX], [NGIdConstant TOKEN_SEPARATOR]];
 }
 
++ (NSString *) DIGEST_AUTHOR {
+	return @"digest-author";
+}
+
 @end

@@ -297,6 +297,38 @@
 	}
 }
 
+- (void) rpcCallbackUpdateHashedVersion:(NGHashedVersion *)hashedVersion forWavelet:(NGWaveName *)waveName {
+	NSLog(@"should not happen here! - View");
+}
+
+- (void) rpcCallbackAddParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSLog(@"should not happen here! - View");
+}
+
+- (void) rpcCallbackRemoveParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSLog(@"should not happen here! - View");
+}
+
+- (void) rpcCallbackWaveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSLog(@"should not happen here! - View");
+}
+
+- (void) rpcCallbackNoOperationFromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSLog(@"should not happen here! - View");
+}
+
+- (void) rpcCallbackSubmitResponse {
+	NSLog(@"SubmitResponse in TextView");
+}
+
+- (void) rpcCallbackFailure:(NSString *)errorText {
+	NSLog(@"Callback Failture in TextView: %@", errorText);
+}
+
+- (void) rpcCallbackUnknownMessage:(NSString *)messageType message:(PBGeneratedMessage *)message {
+	NSLog(@"should not happen here! - View");
+}
+
 - (void)sendDocumentOperation:(NGMutateDocument *)docOp {
 	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:_waveId andWaveletId:_waveletId];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:_participantId] docOp:_blipId andMutateDocument:docOp] build];

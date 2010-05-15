@@ -17,7 +17,17 @@
 
 @protocol NGClientRpcDelegate
 
-- (void) receiveMessage:(PBGeneratedMessage *)message;
-- (void) rpcError:(NSString *)errorText;
+- (void) rpcCallbackUpdateHashedVersion:(NGHashedVersion *)hashedVersion forWavelet:(NGWaveName *)waveName;
+
+- (void) rpcCallbackAddParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
+- (void) rpcCallbackRemoveParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
+- (void) rpcCallbackWaveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
+- (void) rpcCallbackNoOperationFromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
+
+- (void) rpcCallbackSubmitResponse;
+
+- (void) rpcCallbackFailure:(NSString *)errorText;
+
+- (void) rpcCallbackUnknownMessage:(NSString *)messageType message:(PBGeneratedMessage *)message;
 
 @end

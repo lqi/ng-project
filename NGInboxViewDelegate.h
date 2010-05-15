@@ -17,6 +17,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class NGWaveDigest;
 
 @interface NGInboxViewDelegate : NSObject /*<NSTableViewDataSource>*/ {
 	NSMutableArray *inboxArray;
@@ -25,7 +26,13 @@
 
 @property (assign) NGParticipantId *currentUser;
 
-- (void) passSignal:(ProtocolWaveletUpdate *)update;
 - (NGWaveId *) getWaveIdByRowIndex:(NSInteger)rowIndex;
+- (NSInteger) getIndexFromWaveName:(NGWaveName *)waveName;
+- (NGWaveDigest *) getDigestFromIndex:(NSInteger)index andWaveName:(NGWaveName *)waveName;
+- (void) updateDigest:(NGWaveDigest *)digest withIndex:(NSInteger)index;
+
+- (void) addParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
+- (void) removeParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
+- (void) waveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
 
 @end

@@ -62,62 +62,82 @@
 	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
 }
 
-- (void) rpcError:(NSString *)errorText {
+- (void) rpcCallbackUpdateHashedVersion:(NGHashedVersion *)hashedVersion forWavelet:(NGWaveName *)waveName {
+	NSString *updateWaveId = [[waveName waveId] waveId];
+	if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
+		// ignore, as indexwave at the moment doesn't care version
+	}
+	else if (_hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
+		[self.waveTextView setHashedVersion:hashedVersion.version withHistoryHash:hashedVersion.historyHash];
+		[versionInfo setStringValue:[[self.waveTextView hashedVersion] stringValue]];
+	}
+}
+
+- (void) rpcCallbackAddParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSString *updateWaveId = [[waveName waveId] waveId];
+	if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
+		[inboxViewDelegate addParticipant:participantId fromAuthor:author forWavelet:waveName];
+		[inboxTableView reloadData];
+	}
+	else if (_hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
+		[participantList addItemWithObjectValue:[participantId participantIdAtDomain]];
+	}
+}
+
+- (void) rpcCallbackRemoveParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSString *updateWaveId = [[waveName waveId] waveId];
+	if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
+		[inboxViewDelegate removeParticipant:participantId fromAuthor:author forWavelet:waveName];
+		[inboxTableView reloadData];
+	}
+	else if (_hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
+		[participantList removeItemWithObjectValue:[participantId participantIdAtDomain]];
+	}
+}
+
+- (void) rpcCallbackWaveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSString *updateWaveId = [[waveName waveId] waveId];
+	if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
+		[inboxViewDelegate waveletDocument:document fromAuthor:author forWavelet:waveName];
+		[inboxTableView reloadData];
+	}
+	else if (_hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
+		if ([[document documentId] isEqual:@"tags"]) {
+			for (ProtocolDocumentOperation_Component *comp in [[document documentOperation] componentList]) {
+				if ([comp hasCharacters]) {
+					[tagList addItemWithObjectValue:[comp characters]];
+				}
+				if ([comp hasDeleteCharacters]) {
+					[tagList removeItemWithObjectValue:[comp deleteCharacters]];
+				}
+			}
+		}
+		else {
+			[self.waveTextView apply:document];
+		}
+	}
+}
+
+- (void) rpcCallbackNoOperationFromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSString *updateWaveId = [[waveName waveId] waveId];
+	if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
+		// ignore, as indexwave at the moment doesn't care no operation
+	}
+	else if (_hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
+		NSLog(@"receive a no operation in NgProjectAppDelegate from author: %@", [author participantIdAtDomain]);
+	}
+}
+
+- (void) rpcCallbackSubmitResponse {
+	NSLog(@"receive a submit response in NgProjectAppDelegate");
+}
+
+- (void) rpcCallbackFailure:(NSString *)errorText {
 	NSLog(@"RPC Failed in NgProjectAppDelegate: %@", errorText);
 }
 
-- (void) receiveMessage:(PBGeneratedMessage *)message {
-	if ([[[message class] description] isEqual:@"ProtocolWaveletUpdate"]) {
-		ProtocolWaveletUpdate *waveletUpdate = (ProtocolWaveletUpdate *)message;
-		NGWaveName *waveUrl = [[NGWaveName alloc] initWithString:[waveletUpdate waveletName]];
-		NSString *updateWaveId = [[waveUrl waveId] waveId];
-		if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
-			[inboxViewDelegate passSignal:waveletUpdate];
-		}
-		else if (_hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
-			[self.waveTextView setHashedVersion:[[waveletUpdate resultingVersion] version] withHistoryHash:[[waveletUpdate resultingVersion] historyHash]];
-			
-			[versionInfo setStringValue:[[self.waveTextView hashedVersion] stringValue]];
-			// mutation document for open wave
-			
-			for (ProtocolWaveletDelta *wd in [waveletUpdate appliedDeltaList]) {
-				for (ProtocolWaveletOperation *op in [wd operationList]) {
-					if ([op hasAddParticipant]) {
-						[participantList addItemWithObjectValue:[[NGParticipantId participantIdWithParticipantIdAtDomain:[op addParticipant]] participantIdAtDomain]];
-					}
-					if ([op hasRemoveParticipant]) {
-						[participantList removeItemWithObjectValue:[[NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]] participantIdAtDomain]];
-					}
-					if ([op hasMutateDocument]) {
-						ProtocolWaveletOperation_MutateDocument *md = [op mutateDocument];
-						if ([[md documentId] isEqual:@"tags"]) {
-							for (ProtocolDocumentOperation_Component *comp in [[md documentOperation] componentList]) {
-								if ([comp hasCharacters]) {
-									[tagList addItemWithObjectValue:[comp characters]];
-								}
-								if ([comp hasDeleteCharacters]) {
-									[tagList removeItemWithObjectValue:[comp deleteCharacters]];
-								}
-							}
-						}
-						else {
-							[self.waveTextView apply:[op mutateDocument]];
-						}
-					}
-					if ([op hasNoOp]) {
-						NSLog(@"TODO: No operation!");
-					}
-				}
-			}
-			
-			// end mutation document for open wave
-		}
-		[waveUrl release];
-		[inboxTableView reloadData];
-	}
-	else if ([[[message class] description] isEqual:@"ProtocolSubmitResponse"]) {
-		NSLog(@"receive a submit response in NgProjectAppDelegate");
-	}
+- (void) rpcCallbackUnknownMessage:(NSString *)messageType message:(PBGeneratedMessage *)message {
+	NSLog(@"RPC Unknown Message in NgProjectAppDelegate: %@", messageType);
 }
 
 - (void) openInbox {

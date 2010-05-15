@@ -17,6 +17,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "NGIdConstant.h"
+
 @interface NGParticipantId : NSObject {
 	NSString *_participantId;
 	NSString *_domain;
@@ -32,6 +34,6 @@
 - (NSString *) participantId;
 - (NSString *) participantIdAtDomain;
 
-- (void) parse:(NSString *)stringParticipantIdAtDomain;
+- (void) parse:(NSString *)stringParticipantId;
 
 @end

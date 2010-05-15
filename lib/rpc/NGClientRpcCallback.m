@@ -31,11 +31,43 @@
 }
 
 - (void) onSuccess:(PBGeneratedMessage *)message {
-	[_application receiveMessage:message]; // TODO: can do the parser work here, and add listeners to respond the actions in NGClientRpcDelegate
+	NSString *messageType = [[message class] description];
+	if ([messageType isEqual:@"ProtocolWaveletUpdate"]) {
+		ProtocolWaveletUpdate *waveletUpdate = (ProtocolWaveletUpdate *)message;
+		NGWaveName *waveName = [NGWaveName waveNameWithString:[waveletUpdate waveletName]];
+		NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:[[waveletUpdate resultingVersion] version] withHistoryHash:[[waveletUpdate resultingVersion] historyHash]];
+		[_application rpcCallbackUpdateHashedVersion:hashedVersion forWavelet:waveName];
+		for (ProtocolWaveletDelta *waveletDelta in [waveletUpdate appliedDeltaList]) {
+			NGParticipantId *authorId = [NGParticipantId participantIdWithParticipantIdAtDomain:[waveletDelta author]];
+			for (ProtocolWaveletOperation *waveletOperation in [waveletDelta operationList]) {
+				if ([waveletOperation hasAddParticipant]) {
+					NGParticipantId *addParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[waveletOperation addParticipant]];
+					[_application rpcCallbackAddParticipant:addParticipantId fromAuthor:authorId forWavelet:waveName];
+				}
+				if ([waveletOperation hasRemoveParticipant]) {
+					NGParticipantId *removeParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[waveletOperation removeParticipant]];
+					[_application rpcCallbackRemoveParticipant:removeParticipantId fromAuthor:authorId forWavelet:waveName];
+				}
+				if ([waveletOperation hasMutateDocument]) {
+					[_application rpcCallbackWaveletDocument:[waveletOperation mutateDocument] fromAuthor:authorId forWavelet:waveName];
+				}
+				if ([waveletOperation hasNoOp]) {
+					[_application rpcCallbackNoOperationFromAuthor:authorId forWavelet:waveName];
+				}
+			}
+		}
+	}
+	else if ([messageType isEqual:@"ProtocolSubmitResponse"]) {
+		[_application rpcCallbackSubmitResponse];
+	}
+	else {
+		[_application rpcCallbackUnknownMessage:messageType message:message];
+	}
+
 }
 
 - (void) onFailure:(NSString *)errorText {
-	[_application rpcError:errorText];
+	[_application rpcCallbackFailure:errorText];
 }
 
 @end

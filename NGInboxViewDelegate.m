@@ -158,87 +158,89 @@
 	return [waveDigest waveId];
 }
 
-- (void) passSignal:(ProtocolWaveletUpdate *)update {
-	NGWaveName *waveUrl = [[[NGWaveName alloc] initWithString:[update waveletName]] autorelease];
-	NSAssert([[[waveUrl waveId] waveId] isEqual:@"indexwave!indexwave"], @"Message here must be the one for inbox!");
-	NGWaveletId *waveId = [waveUrl waveletId];
-	/*
-	ProtocolHashedVersion *resultingVersion = [update resultingVersion];
-	int64_t version = [resultingVersion version];
-	NSData *historyHash = [resultingVersion historyHash];
-	 */
-	NGWaveDigest *waveDigest;
-	int oldIndex = -1;
+- (NSInteger) getIndexFromWaveName:(NGWaveName *)waveName {
+	NSAssert([[[waveName waveId] waveId] isEqual:@"indexwave!indexwave"], @"Message here must be the one for inbox!");
+	NGWaveletId *waveId = [waveName waveletId];
+	NSInteger oldIndex = -1;
 	NSUInteger i, count = [inboxArray count];
 	for (i = 0; i < count; i++) {
 		NGWaveDigest *it = [inboxArray objectAtIndex:i];
 		if ([[it waveId] isEqual:[NGWaveId waveIdWithDomain:[waveId domain] waveId:[waveId waveletId]]]) {
-			waveDigest = it;
 			oldIndex = i;
 			break;
 		}
 	}
-	if (oldIndex == -1) {
+	return oldIndex;
+}
+
+- (NGWaveDigest *) getDigestFromIndex:(NSInteger)index andWaveName:(NGWaveName *)waveName {
+	NGWaveletId *waveId = [waveName waveletId];
+	NGWaveDigest *waveDigest;
+	if (index == -1) {
 		waveDigest = [[[NGWaveDigest alloc] init] autorelease];
 		[waveDigest setWaveId:[NGWaveId waveIdWithDomain:[waveId domain] waveId:[waveId waveletId]]];
 	}
-	for (ProtocolWaveletDelta *wd in [update appliedDeltaList]) {
-		NSString *wdAuthor = [wd author];
-		if (![wdAuthor isEqual:@"digest-author"]) {
-			[waveDigest addAuthor:[NGParticipantId participantIdWithParticipantIdAtDomain:wdAuthor]];
-		}
-		else {
-			[waveDigest addAuthor:[NGParticipantId participantIdWithDomain:@"google" participantId:@"digest-author"]];
-		}
-
-		for (ProtocolWaveletOperation *op in [wd operationList]) {
-			if ([op hasAddParticipant]) {
-				[waveDigest addParticipant:[NGParticipantId participantIdWithParticipantIdAtDomain:[op addParticipant]]];
-			}
-			if ([op hasRemoveParticipant]) {
-				NGParticipantId *removeParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[op removeParticipant]];
-				if ([removeParticipantId isEqual:self.currentUser]) {
-					NSAssert(oldIndex != -1, @"there should be a waveDigest which will contains this participant");
-					[inboxArray removeObjectAtIndex:oldIndex];
-					return;
-				}
-				else {
-					[waveDigest rmParticipant:removeParticipantId];
-				}
-			}
-			if ([op hasMutateDocument]) {
-				ProtocolWaveletOperation_MutateDocument *md = [op mutateDocument];
-				//assert([[md documentId] isEqual:@"digest"]);
-				int pos = 0;
-				for (ProtocolDocumentOperation_Component *comp in [[md documentOperation] componentList]) {
-					if ([comp hasCharacters]) {
-						NSString *chars = [comp characters];
-						[waveDigest insertChars:chars atPosition:pos];
-						pos += [chars length];
-					}
-					if ([comp hasDeleteCharacters]) {
-						NSString *chars = [comp deleteCharacters];
-						[waveDigest deleteChars:chars atPosition:pos];
-					}
-					if ([comp hasRetainItemCount]) {
-						pos = [comp retainItemCount];
-					}
-				}
-			}
-			if ([op hasNoOp]) {
-				NSLog(@"TODO: No operation!");
-			}
-		}
+	else {
+		waveDigest = [inboxArray objectAtIndex:index];
 	}
-	if (oldIndex == -1) {
-		[inboxArray insertObject:waveDigest atIndex:0];
+	return waveDigest;
+}
+
+- (void) updateDigest:(NGWaveDigest *)digest withIndex:(NSInteger)index {
+	if (index == -1) {
+		[inboxArray insertObject:digest atIndex:0];
 	}
 	else {
 		//[inboxArray replaceObjectAtIndex:oldIndex withObject:waveDigest];
 		// above method is update in the old place, following is to replace in the top
-		[inboxArray removeObjectAtIndex:oldIndex];
-		[inboxArray insertObject:waveDigest atIndex:0];
+		[inboxArray removeObjectAtIndex:index];
+		[inboxArray insertObject:digest atIndex:0];
 	}
+}
+
+- (void) addParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSInteger oldIndex = [self getIndexFromWaveName:waveName];
+	NGWaveDigest *waveDigest = [self getDigestFromIndex:oldIndex andWaveName:waveName];
+	[waveDigest addAuthor:author];
+	[waveDigest addParticipant:participantId];
+	[self updateDigest:waveDigest withIndex:oldIndex];
+}
+
+- (void) removeParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSInteger oldIndex = [self getIndexFromWaveName:waveName];
+	NGWaveDigest *waveDigest = [self getDigestFromIndex:oldIndex andWaveName:waveName];
+	[waveDigest addAuthor:author];
+	if ([participantId isEqual:self.currentUser]) {
+		NSAssert(oldIndex != -1, @"there should be a waveDigest which will contains this participant");
+		[inboxArray removeObjectAtIndex:oldIndex];
+		return;
+	}
+	else {
+		[waveDigest rmParticipant:participantId];
+	}
+	[self updateDigest:waveDigest withIndex:oldIndex];
+}
+
+- (void) waveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+	NSInteger oldIndex = [self getIndexFromWaveName:waveName];
+	NGWaveDigest *waveDigest = [self getDigestFromIndex:oldIndex andWaveName:waveName];
+	[waveDigest addAuthor:author];
+	int pos = 0;
+	for (ProtocolDocumentOperation_Component *comp in [[document documentOperation] componentList]) {
+		if ([comp hasCharacters]) {
+			NSString *chars = [comp characters];
+			[waveDigest insertChars:chars atPosition:pos];
+			pos += [chars length];
+		}
+		if ([comp hasDeleteCharacters]) {
+			NSString *chars = [comp deleteCharacters];
+			[waveDigest deleteChars:chars atPosition:pos];
+		}
+		if ([comp hasRetainItemCount]) {
+			pos = [comp retainItemCount];
+		}
+	}
+	[self updateDigest:waveDigest withIndex:oldIndex];
 }
 
 @end

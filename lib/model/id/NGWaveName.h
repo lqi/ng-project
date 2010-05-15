@@ -29,6 +29,7 @@
 @property (retain) NGWaveletId *waveletId;
 
 + (NGWaveName *) waveNameWithWaveId:(NGWaveId *)aWaveId andWaveletId:(NGWaveletId *)aWaveletId;
++ (NGWaveName *) waveNameWithString:(NSString *)stringWaveUrl;
 
 - (NSString *)domain;
 

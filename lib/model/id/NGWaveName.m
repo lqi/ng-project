@@ -26,6 +26,10 @@
 	return [[[NGWaveName alloc] initWithWaveId:aWaveId WaveletId:aWaveletId] autorelease];
 }
 
++ (NGWaveName *) waveNameWithString:(NSString *)stringWaveUrl {
+	return [[[NGWaveName alloc] initWithString:stringWaveUrl] autorelease];
+}
+
 - (NSString *)domain {
 	return [[self waveletId] domain];
 }
