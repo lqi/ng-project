@@ -61,7 +61,8 @@
 @property (assign) IBOutlet NSTextField *tagAdd;
 @property (assign) IBOutlet NSComboBox *tagList;
 
-//- (void) connectionStatueController;
+- (void) connectionStatueControllerThread;
+- (void) connectionStatueController;
 - (void) openInbox;
 - (IBAction) newWave:(id)sender;
 

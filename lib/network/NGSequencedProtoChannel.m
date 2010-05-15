@@ -135,6 +135,21 @@
 	[NSThread detachNewThreadSelector:@selector(receiveMessageThread) toTarget:self withObject:nil];
 }
 
+- (BOOL) isStreamOpen:(NSStream *)stream {
+	if (stream == nil) {
+		return NO;
+	}
+	NSInteger streamStatus = [stream streamStatus];
+	if (streamStatus >= 2 && streamStatus <= 5) {
+		return YES;
+	}
+	return NO;
+}
+
+- (BOOL) isConnected {
+	return [self isStreamOpen:_inputStream] && [self isStreamOpen:_outputStream];
+}
+
 - (NSString *) messageTypeFromMessageClassName:(NSString *)messageClassName {
 	NSMutableString *messageType;
 	if ([messageClassName isEqual:@"CancelRpc"] || [messageClassName isEqual:@"RpcFinished"]) {

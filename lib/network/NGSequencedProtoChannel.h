@@ -50,4 +50,7 @@
 
 - (void) startAsyncRead;
 
+- (BOOL) isStreamOpen:(NSStream *)stream;
+- (BOOL) isConnected;
+
 @end

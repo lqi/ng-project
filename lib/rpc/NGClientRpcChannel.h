@@ -43,4 +43,6 @@
 
 - (void) callMethod:(BOOL)isStreamingRpc rpcController:(NGClientRpcController *)controller requestMessage:(PBGeneratedMessage *)message responsePrototype:(PBGeneratedMessage *)responsePrototype callback:(NGClientRpcCallback *)callback;
 
+- (BOOL) isConnected;
+
 @end

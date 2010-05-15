@@ -53,6 +53,10 @@
 	[self sendMessage:sequenceNo message:message prototype:responsePrototype];
 }
 
+- (BOOL) isConnected {
+	return [_protoChannel isConnected];
+}
+
 - (void) dealloc {
 	[_protoChannel release];
 	[super dealloc];

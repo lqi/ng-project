@@ -47,6 +47,8 @@
 		_rpc = [[NGClientRpc alloc] initWithChannel:_channel];
 		
 		_controllerMap = [[NSMutableArray alloc] init];
+		
+		[NSThread detachNewThreadSelector:@selector(connectionStatueControllerThread) toTarget:self withObject:nil];
 	}
 	return self;
 }
@@ -60,6 +62,21 @@
 	[inboxTableView setDoubleAction:@selector(openWave:)];
 	
 	[self.currentWave setStringValue:@"No open wave, double-click wave in the inbox"];
+}
+
+- (void) connectionStatueControllerThread {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	while (YES) {
+		[NSThread sleepForTimeInterval:0.5];
+		[self connectionStatueController];
+	}
+	
+	[pool release];
+}
+
+- (void) connectionStatueController {
+	[self.statusLabel setStringValue:([_channel isConnected] ? @"Online": @"Offline")];
 }
 
 - (void) rpcCallbackUpdateHashedVersion:(NGHashedVersion *)hashedVersion forWavelet:(NGWaveName *)waveName {
