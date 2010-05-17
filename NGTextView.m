@@ -297,23 +297,23 @@
 	}
 }
 
-- (void) rpcCallbackUpdateHashedVersion:(NGHashedVersion *)hashedVersion forWavelet:(NGWaveName *)waveName {
+- (void) rpcCallbackUpdateHashedVersion:(NGHashedVersion *)hashedVersion forWavelet:(NGWaveletName *)waveName {
 	NSLog(@"should not happen here! - View");
 }
 
-- (void) rpcCallbackAddParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) rpcCallbackAddParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSLog(@"should not happen here! - View");
 }
 
-- (void) rpcCallbackRemoveParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) rpcCallbackRemoveParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSLog(@"should not happen here! - View");
 }
 
-- (void) rpcCallbackWaveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) rpcCallbackWaveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSLog(@"should not happen here! - View");
 }
 
-- (void) rpcCallbackNoOperationFromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) rpcCallbackNoOperationFromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSLog(@"should not happen here! - View");
 }
 
@@ -330,7 +330,7 @@
 }
 
 - (void)sendDocumentOperation:(NGMutateDocument *)docOp {
-	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:_waveId andWaveletId:_waveletId];
+	NGWaveletName *waveName = [NGWaveletName waveNameWithWaveId:_waveId andWaveletId:_waveletId];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:_participantId] docOp:_blipId andMutateDocument:docOp] build];
 	NGClientRpcController *controller = [[NGClientRpcController alloc] init];
 	NGClientRpcCallback *callback = [[NGClientRpcCallback alloc] initWithApplication:self];

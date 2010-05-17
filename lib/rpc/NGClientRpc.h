@@ -37,6 +37,6 @@
 - (void) submit:(NGClientRpcController *)controller request:(ProtocolSubmitRequest *)request callback:(NGClientRpcCallback *)callback;
 
 - (void) openRequest:(NGClientRpcController *)controller waveId:(NGWaveId *)waveId participantId:(NGParticipantId *)participantId snapshot:(BOOL)snapshot callback:(NGClientRpcCallback *)callback;
-- (void) submitRequest:(NGClientRpcController *)controller waveName:(NGWaveName *)waveName waveletDelta:(NGWaveletDelta *)delta hashedVersion:(NGHashedVersion *)version callback:(NGClientRpcCallback *)callback;
+- (void) submitRequest:(NGClientRpcController *)controller waveName:(NGWaveletName *)waveName waveletDelta:(NGWaveletDelta *)delta hashedVersion:(NGHashedVersion *)version callback:(NGClientRpcCallback *)callback;
 
 @end

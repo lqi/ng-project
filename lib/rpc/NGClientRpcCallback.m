@@ -34,7 +34,7 @@
 	NSString *messageType = [[message class] description];
 	if ([messageType isEqual:@"ProtocolWaveletUpdate"]) {
 		ProtocolWaveletUpdate *waveletUpdate = (ProtocolWaveletUpdate *)message;
-		NGWaveName *waveName = [NGWaveName waveNameWithString:[waveletUpdate waveletName]];
+		NGWaveletName *waveName = [NGWaveletName waveNameWithString:[waveletUpdate waveletName]];
 		NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:[[waveletUpdate resultingVersion] version] withHistoryHash:[[waveletUpdate resultingVersion] historyHash]];
 		[_application rpcCallbackUpdateHashedVersion:hashedVersion forWavelet:waveName];
 		for (ProtocolWaveletDelta *waveletDelta in [waveletUpdate appliedDeltaList]) {

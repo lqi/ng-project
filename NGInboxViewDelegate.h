@@ -27,12 +27,12 @@
 @property (assign) NGParticipantId *currentUser;
 
 - (NGWaveId *) getWaveIdByRowIndex:(NSInteger)rowIndex;
-- (NSInteger) getIndexFromWaveName:(NGWaveName *)waveName;
-- (NGWaveDigest *) getDigestFromIndex:(NSInteger)index andWaveName:(NGWaveName *)waveName;
+- (NSInteger) getIndexFromWaveName:(NGWaveletName *)waveName;
+- (NGWaveDigest *) getDigestFromIndex:(NSInteger)index andWaveName:(NGWaveletName *)waveName;
 - (void) updateDigest:(NGWaveDigest *)digest withIndex:(NSInteger)index;
 
-- (void) addParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
-- (void) removeParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
-- (void) waveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
+- (void) addParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName;
+- (void) removeParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName;
+- (void) waveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName;
 
 @end

@@ -15,28 +15,14 @@
  * 
  */
 
-#import <Foundation/Foundation.h>
+#import <SenTestingKit/SenTestingKit.h>
 
+#import "NGWaveletName.h"
 #import "NGWaveId.h"
 #import "NGWaveletId.h"
 
-@interface NGWaveName : NSObject {
-	NGWaveId *waveId;
-	NGWaveletId *waveletId;
+@interface NGWaveletNameTest : SenTestCase {
+	NGWaveletName *_waveName;
 }
-
-@property (retain) NGWaveId *waveId;
-@property (retain) NGWaveletId *waveletId;
-
-+ (NGWaveName *) waveNameWithWaveId:(NGWaveId *)aWaveId andWaveletId:(NGWaveletId *)aWaveletId;
-+ (NGWaveName *) waveNameWithString:(NSString *)stringWaveUrl;
-
-- (NSString *)domain;
-
-- (id) initWithWaveId:(NGWaveId *)aWaveId WaveletId:(NGWaveletId *)aWaveletId;
-- (id) initWithString:(NSString *)stringWaveUrl;
-
-- (void) parse:(NSString *)stringWaveUrl;
-- (NSString *) url;
 
 @end

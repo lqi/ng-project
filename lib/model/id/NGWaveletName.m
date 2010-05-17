@@ -15,19 +15,19 @@
  * 
  */
 
-#import "NGWaveName.h"
+#import "NGWaveletName.h"
 
-@implementation NGWaveName
+@implementation NGWaveletName
 
 @synthesize waveId;
 @synthesize waveletId;
 
-+ (NGWaveName *) waveNameWithWaveId:(NGWaveId *)aWaveId andWaveletId:(NGWaveletId *)aWaveletId {
-	return [[[NGWaveName alloc] initWithWaveId:aWaveId WaveletId:aWaveletId] autorelease];
++ (NGWaveletName *) waveNameWithWaveId:(NGWaveId *)aWaveId andWaveletId:(NGWaveletId *)aWaveletId {
+	return [[[NGWaveletName alloc] initWithWaveId:aWaveId WaveletId:aWaveletId] autorelease];
 }
 
-+ (NGWaveName *) waveNameWithString:(NSString *)stringWaveUrl {
-	return [[[NGWaveName alloc] initWithString:stringWaveUrl] autorelease];
++ (NGWaveletName *) waveNameWithString:(NSString *)stringWaveUrl {
+	return [[[NGWaveletName alloc] initWithString:stringWaveUrl] autorelease];
 }
 
 - (NSString *)domain {

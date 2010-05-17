@@ -17,12 +17,12 @@
 
 @protocol NGClientRpcDelegate
 
-- (void) rpcCallbackUpdateHashedVersion:(NGHashedVersion *)hashedVersion forWavelet:(NGWaveName *)waveName;
+- (void) rpcCallbackUpdateHashedVersion:(NGHashedVersion *)hashedVersion forWavelet:(NGWaveletName *)waveName;
 
-- (void) rpcCallbackAddParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
-- (void) rpcCallbackRemoveParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
-- (void) rpcCallbackWaveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
-- (void) rpcCallbackNoOperationFromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName;
+- (void) rpcCallbackAddParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName;
+- (void) rpcCallbackRemoveParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName;
+- (void) rpcCallbackWaveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName;
+- (void) rpcCallbackNoOperationFromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName;
 
 - (void) rpcCallbackSubmitResponse;
 

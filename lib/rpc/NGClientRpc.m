@@ -44,7 +44,7 @@
 	[self open:controller request:[openRequestBuilder build] callback:callback];
 }
 
-- (void) submitRequest:(NGClientRpcController *)controller waveName:(NGWaveName *)waveName waveletDelta:(NGWaveletDelta *)delta hashedVersion:(NGHashedVersion *)version callback:(NGClientRpcCallback *)callback {
+- (void) submitRequest:(NGClientRpcController *)controller waveName:(NGWaveletName *)waveName waveletDelta:(NGWaveletDelta *)delta hashedVersion:(NGHashedVersion *)version callback:(NGClientRpcCallback *)callback {
 	ProtocolSubmitRequest_Builder *submitRequestBuilder = [ProtocolSubmitRequest builder];
 	[submitRequestBuilder setWaveletName:[waveName url]];
 	[submitRequestBuilder setDelta:[NGWaveletDeltaSerializer bufferedWaveletDelta:delta withVersion:version]];

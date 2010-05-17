@@ -31,7 +31,7 @@
 #import "model/id/NGWaveletId.h"
 #import "model/id/NGDocumentId.h"
 #import "model/id/NGParticipantId.h"
-#import "model/id/NGWaveName.h"
+#import "model/id/NGWaveletName.h"
 #import "model/id/util/NGIdGenerator.h"
 
 #import "model/document/operation/NGMutateDocument.h"

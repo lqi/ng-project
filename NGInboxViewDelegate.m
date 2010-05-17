@@ -158,7 +158,7 @@
 	return [waveDigest waveId];
 }
 
-- (NSInteger) getIndexFromWaveName:(NGWaveName *)waveName {
+- (NSInteger) getIndexFromWaveName:(NGWaveletName *)waveName {
 	NSAssert([[[waveName waveId] waveId] isEqual:@"indexwave!indexwave"], @"Message here must be the one for inbox!");
 	NGWaveletId *waveId = [waveName waveletId];
 	NSInteger oldIndex = -1;
@@ -173,7 +173,7 @@
 	return oldIndex;
 }
 
-- (NGWaveDigest *) getDigestFromIndex:(NSInteger)index andWaveName:(NGWaveName *)waveName {
+- (NGWaveDigest *) getDigestFromIndex:(NSInteger)index andWaveName:(NGWaveletName *)waveName {
 	NGWaveletId *waveId = [waveName waveletId];
 	NGWaveDigest *waveDigest;
 	if (index == -1) {
@@ -198,7 +198,7 @@
 	}
 }
 
-- (void) addParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) addParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSInteger oldIndex = [self getIndexFromWaveName:waveName];
 	NGWaveDigest *waveDigest = [self getDigestFromIndex:oldIndex andWaveName:waveName];
 	[waveDigest addAuthor:author];
@@ -206,7 +206,7 @@
 	[self updateDigest:waveDigest withIndex:oldIndex];
 }
 
-- (void) removeParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) removeParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSInteger oldIndex = [self getIndexFromWaveName:waveName];
 	NGWaveDigest *waveDigest = [self getDigestFromIndex:oldIndex andWaveName:waveName];
 	[waveDigest addAuthor:author];
@@ -221,7 +221,7 @@
 	[self updateDigest:waveDigest withIndex:oldIndex];
 }
 
-- (void) waveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) waveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSInteger oldIndex = [self getIndexFromWaveName:waveName];
 	NGWaveDigest *waveDigest = [self getDigestFromIndex:oldIndex andWaveName:waveName];
 	[waveDigest addAuthor:author];

@@ -79,7 +79,7 @@
 	[self.statusLabel setStringValue:([_channel isConnected] ? @"Online": @"Offline")];
 }
 
-- (void) rpcCallbackUpdateHashedVersion:(NGHashedVersion *)hashedVersion forWavelet:(NGWaveName *)waveName {
+- (void) rpcCallbackUpdateHashedVersion:(NGHashedVersion *)hashedVersion forWavelet:(NGWaveletName *)waveName {
 	NSString *updateWaveId = [[waveName waveId] waveId];
 	if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
 		// ignore, as indexwave at the moment doesn't care version
@@ -90,7 +90,7 @@
 	}
 }
 
-- (void) rpcCallbackAddParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) rpcCallbackAddParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSString *updateWaveId = [[waveName waveId] waveId];
 	if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
 		[inboxViewDelegate addParticipant:participantId fromAuthor:author forWavelet:waveName];
@@ -101,7 +101,7 @@
 	}
 }
 
-- (void) rpcCallbackRemoveParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) rpcCallbackRemoveParticipant:(NGParticipantId *)participantId fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSString *updateWaveId = [[waveName waveId] waveId];
 	if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
 		[inboxViewDelegate removeParticipant:participantId fromAuthor:author forWavelet:waveName];
@@ -112,7 +112,7 @@
 	}
 }
 
-- (void) rpcCallbackWaveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) rpcCallbackWaveletDocument:(ProtocolWaveletOperation_MutateDocument *)document fromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSString *updateWaveId = [[waveName waveId] waveId];
 	if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
 		[inboxViewDelegate waveletDocument:document fromAuthor:author forWavelet:waveName];
@@ -135,7 +135,7 @@
 	}
 }
 
-- (void) rpcCallbackNoOperationFromAuthor:(NGParticipantId *)author forWavelet:(NGWaveName *)waveName {
+- (void) rpcCallbackNoOperationFromAuthor:(NGParticipantId *)author forWavelet:(NGWaveletName *)waveName {
 	NSString *updateWaveId = [[waveName waveId] waveId];
 	if ([updateWaveId isEqual:@"indexwave!indexwave"]) {
 		// ignore, as indexwave at the moment doesn't care no operation
@@ -173,7 +173,7 @@
 
 - (IBAction) newWave:(id)sender {
 	
-	NGWaveName *newWaveName = [NGWaveName waveNameWithWaveId:[_idGenerator newWaveId] andWaveletId:[_idGenerator newConversationRootWaveletId]];
+	NGWaveletName *newWaveName = [NGWaveletName waveNameWithWaveId:[_idGenerator newWaveId] andWaveletId:[_idGenerator newConversationRootWaveletId]];
 	NGDocumentId *newBlipName = [_idGenerator newDocumentId];
 	
 	NGMutateDocument *newConversation = [[[[[[NGDocOpBuilder builder]
@@ -318,7 +318,7 @@
 		return;
 	}
 	
-	NGWaveName *waveName = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:_domain waveId:[self.waveTextView openWaveId]] andWaveletId:[_idGenerator newConversationRootWaveletId]];
+	NGWaveletName *waveName = [NGWaveletName waveNameWithWaveId:[NGWaveId waveIdWithDomain:_domain waveId:[self.waveTextView openWaveId]] andWaveletId:[_idGenerator newConversationRootWaveletId]];
 	NGClientRpcController *controller = [NGClientRpcController rpcController];
 	[_controllerMap addObject:controller];
 	NGClientRpcCallback *callback = [[NGClientRpcCallback alloc] initWithApplication:self];

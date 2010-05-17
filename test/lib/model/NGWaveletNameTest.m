@@ -15,12 +15,12 @@
  * 
  */
 
-#import "NGWaveNameTest.h"
+#import "NGWaveletNameTest.h"
 
-@implementation NGWaveNameTest
+@implementation NGWaveletNameTest
 
 - (void) setUp {
-	_waveName = [[NGWaveName alloc] initWithString:@"wave://testDomain/testWaveId/testWaveletId"];
+	_waveName = [[NGWaveletName alloc] initWithString:@"wave://testDomain/testWaveId/testWaveletId"];
 }
 
 - (void) tearDown {
@@ -40,14 +40,14 @@
 }
 
 - (void) testStringValue {
-	NGWaveName *testUrl = [[NGWaveName alloc] init];
+	NGWaveletName *testUrl = [[NGWaveletName alloc] init];
 	[testUrl setWaveId:[NGWaveId waveIdWithDomain:@"testWaveDomain" waveId:@"testWaveId"]];
 	[testUrl setWaveletId:[NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"]];
 	STAssertEqualObjects([testUrl url], @"wave://testDomain/testWaveId/testWaveletId", @"string value of this wave url should be 'wave://testDomain/testWaveId/testWaveletId'");
 }
 
 - (void) testStringValueWithGlobalInitializeMethod {
-	NGWaveName *testUrl = [NGWaveName waveNameWithWaveId:[NGWaveId waveIdWithDomain:@"testWaveDomain" waveId:@"testWaveId"] andWaveletId:[NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"]];
+	NGWaveletName *testUrl = [NGWaveletName waveNameWithWaveId:[NGWaveId waveIdWithDomain:@"testWaveDomain" waveId:@"testWaveId"] andWaveletId:[NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"]];
 	STAssertEqualObjects([testUrl url], @"wave://testDomain/testWaveId/testWaveletId", @"string value of this wave url should be 'wave://testDomain/testWaveId/testWaveletId'");
 }
 

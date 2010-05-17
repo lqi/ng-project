@@ -34,7 +34,7 @@
 	return [[[NGHashedVersion alloc] init] autorelease];
 }
 
-+ (NGHashedVersion *) hashedVersion:(NGWaveName *)newWaveName {
++ (NGHashedVersion *) hashedVersion:(NGWaveletName *)newWaveName {
 	NGHashedVersion *hashedVersionInstance = [[[NGHashedVersion alloc] init] autorelease];
 	hashedVersionInstance.historyHash = [[newWaveName url] dataUsingEncoding:NSUTF8StringEncoding];
 	return hashedVersionInstance;
