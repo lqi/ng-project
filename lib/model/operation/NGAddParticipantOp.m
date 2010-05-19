@@ -29,7 +29,7 @@
 
 - (ProtocolWaveletOperation *) buffer {
 	ProtocolWaveletOperation_Builder *waveletOpBuilder = [ProtocolWaveletOperation builder];
-	[waveletOpBuilder setAddParticipant:[self.participantId participantIdAtDomain]];
+	[waveletOpBuilder setAddParticipant:[self.participantId serialise]];
 	return [waveletOpBuilder build];
 }
 

@@ -38,14 +38,14 @@
 		NGHashedVersion *hashedVersion = [NGHashedVersion hashedVersion:[[waveletUpdate resultingVersion] version] withHistoryHash:[[waveletUpdate resultingVersion] historyHash]];
 		[_application rpcCallbackUpdateHashedVersion:hashedVersion forWavelet:waveName];
 		for (ProtocolWaveletDelta *waveletDelta in [waveletUpdate appliedDeltaList]) {
-			NGParticipantId *authorId = [NGParticipantId participantIdWithParticipantIdAtDomain:[waveletDelta author]];
+			NGParticipantId *authorId = [NGParticipantId participantIdWithSerialisedParticipantId:[waveletDelta author]];
 			for (ProtocolWaveletOperation *waveletOperation in [waveletDelta operationList]) {
 				if ([waveletOperation hasAddParticipant]) {
-					NGParticipantId *addParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[waveletOperation addParticipant]];
+					NGParticipantId *addParticipantId = [NGParticipantId participantIdWithSerialisedParticipantId:[waveletOperation addParticipant]];
 					[_application rpcCallbackAddParticipant:addParticipantId fromAuthor:authorId forWavelet:waveName];
 				}
 				if ([waveletOperation hasRemoveParticipant]) {
-					NGParticipantId *removeParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[waveletOperation removeParticipant]];
+					NGParticipantId *removeParticipantId = [NGParticipantId participantIdWithSerialisedParticipantId:[waveletOperation removeParticipant]];
 					[_application rpcCallbackRemoveParticipant:removeParticipantId fromAuthor:authorId forWavelet:waveName];
 				}
 				if ([waveletOperation hasMutateDocument]) {

@@ -20,20 +20,20 @@
 #import "NGIdConstant.h"
 
 @interface NGParticipantId : NSObject {
-	NSString *_participantId;
-	NSString *_domain;
+	NSString *participantId;
+	NSString *domain;
 }
 
-+ (NGParticipantId *) participantIdWithDomain:(NSString *)domain participantId:(NSString *)participantId;
-+ (NGParticipantId *) participantIdWithParticipantIdAtDomain:(NSString *)stringParticipantIdAtDomain;
+@property (retain) NSString *participantId;
+@property (retain) NSString *domain;
 
-- (id) initWithDomain:(NSString *)domain participantId:(NSString *)participantId;
-- (id) initWithParticipantIdAtDomain:(NSString *)stringParticipantIdAtDomain;
++ (NGParticipantId *) participantIdWithDomain:(NSString *)theDomain participantId:(NSString *)theParticipantId;
++ (NGParticipantId *) participantIdWithSerialisedParticipantId:(NSString *)serialisedParticipantId;
 
-- (NSString *) domain;
-- (NSString *) participantId;
-- (NSString *) participantIdAtDomain;
+- (id) initWithDomain:(NSString *)theDomain participantId:(NSString *)theParticipantId;
 
-- (void) parse:(NSString *)stringParticipantId;
+- (NSString *) serialise;
+
+- (void) deserialise:(NSString *)serialisedParticipantId;
 
 @end

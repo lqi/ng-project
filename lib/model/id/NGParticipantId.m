@@ -19,59 +19,57 @@
 
 @implementation NGParticipantId
 
-+ (NGParticipantId *) participantIdWithDomain:(NSString *)domain participantId:(NSString *)participantId {
-	return [[[NGParticipantId alloc] initWithDomain:domain participantId:participantId] autorelease];
+@synthesize participantId;
+@synthesize domain;
+
++ (NGParticipantId *) participantIdWithDomain:(NSString *)theDomain participantId:(NSString *)theParticipantId {
+	return [[[NGParticipantId alloc] initWithDomain:theDomain participantId:theParticipantId] autorelease];
 }
 
-+ (NGParticipantId *) participantIdWithParticipantIdAtDomain:(NSString *)stringParticipantIdAtDomain {
-	return [[[NGParticipantId alloc] initWithParticipantIdAtDomain:stringParticipantIdAtDomain] autorelease];
++ (NGParticipantId *) participantIdWithSerialisedParticipantId:(NSString *)serialisedParticipantId {
+	NGParticipantId *participantIdInstance = [[NGParticipantId alloc] init];
+	[participantIdInstance deserialise:serialisedParticipantId];
+	[participantIdInstance autorelease];
+	return participantIdInstance;
 }
 
-- (id) initWithDomain:(NSString *)domain participantId:(NSString *)participantId {
+- (id) initWithDomain:(NSString *)theDomain participantId:(NSString *)theParticipantId {
 	if (self = [super init]) {
-		_domain = domain;
-		_participantId = participantId;
+		self.domain = theDomain;
+		self.participantId = theParticipantId;
 	}
 	return self;
 }
 
-- (id) initWithParticipantIdAtDomain:(NSString *)stringParticipantIdAtDomain {
-	if (self = [super init]) {
-		[self parse:stringParticipantIdAtDomain];
-	}
-	return self;
+- (NSString *) serialise {
+	return [NSString stringWithFormat:@"%@@%@", self.participantId, self.domain];
 }
 
-- (NSString *) domain {
-	return _domain;
-}
-
-- (NSString *) participantId {
-	return _participantId;
-}
-
-- (NSString *) participantIdAtDomain {
-	return [NSString stringWithFormat:@"%@@%@", _participantId, _domain];
-}
-
-- (void) parse:(NSString *)stringParticipantId {
-	if ([stringParticipantId isEqual:[NGIdConstant DIGEST_AUTHOR]]) {
-		_participantId = stringParticipantId;
-		_domain = @"waveserver";
+- (void) deserialise:(NSString *)serialisedParticipantId {
+	if ([serialisedParticipantId isEqual:[NGIdConstant DIGEST_AUTHOR]]) {
+		self.participantId = serialisedParticipantId;
+		self.domain = @"waveserver";
 	}
 	else {
-		NSArray *splitParticipantIdFromDomain = [stringParticipantId componentsSeparatedByString:@"@"];
+		NSArray *splitParticipantIdFromDomain = [serialisedParticipantId componentsSeparatedByString:@"@"];
 		assert([splitParticipantIdFromDomain count] == 2);
-		_participantId = [splitParticipantIdFromDomain objectAtIndex:0];
-		_domain = [splitParticipantIdFromDomain objectAtIndex:1];
+		self.participantId = [splitParticipantIdFromDomain objectAtIndex:0];
+		self.domain = [splitParticipantIdFromDomain objectAtIndex:1];
 	}
 }
 
 - (BOOL) isEqual:(id)object {
+	if (object == nil) {
+		return NO;
+	}
+	if (self == object) {
+		return YES;
+	}
 	if (![[[self class] description] isEqual:[[object class] description]]) {
 		return NO;
 	}
-	return [[self domain] isEqual:[object domain]] && [[self participantId] isEqual:[object participantId]];
+	NGParticipantId *other = (NGParticipantId *)object;
+	return [self.domain isEqual:other.domain] && [self.participantId isEqual:other.participantId];
 }
 
 @end

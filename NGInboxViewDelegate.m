@@ -72,7 +72,7 @@
 - (NSString *) stringParticipants {
 	NSMutableString *returnString = [[[NSMutableString alloc] init] autorelease];
 	for (NGParticipantId *participantId in _participants) {
-		[returnString appendFormat:@"%@, ", [participantId participantIdAtDomain]];
+		[returnString appendFormat:@"%@, ", [participantId serialise]];
 	}
 	return returnString;
 }
@@ -86,7 +86,7 @@
 - (NSString *) stringAuthors {
 	NSMutableString *returnString = [[[NSMutableString alloc] init] autorelease];
 	for (NGParticipantId *participantId in _authors) {
-		[returnString appendFormat:@"%@, ", [participantId participantIdAtDomain]];
+		[returnString appendFormat:@"%@, ", [participantId serialise]];
 	}
 	return returnString;
 }

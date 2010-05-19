@@ -25,7 +25,7 @@
 	[hashedVersionBuilder setHistoryHash:version.historyHash];
 	
 	ProtocolWaveletDelta_Builder *deltaBuilder = [ProtocolWaveletDelta builder];
-	[deltaBuilder setAuthor:[waveletDelta.author participantIdAtDomain]];
+	[deltaBuilder setAuthor:[waveletDelta.author serialise]];
 	for (id <NGWaveletOperation> operation in [waveletDelta operations]) {
 		[deltaBuilder addOperation:[operation buffer]];
 	}

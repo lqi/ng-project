@@ -54,7 +54,7 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[self.currentUser setStringValue:[_participantId participantIdAtDomain]];
+	[self.currentUser setStringValue:[_participantId serialise]];
 	
 	[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(openInbox) userInfo:nil repeats:NO];
 	
@@ -97,7 +97,7 @@
 		[inboxTableView reloadData];
 	}
 	else if (_hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
-		[participantList addItemWithObjectValue:[participantId participantIdAtDomain]];
+		[participantList addItemWithObjectValue:[participantId serialise]];
 	}
 }
 
@@ -108,7 +108,7 @@
 		[inboxTableView reloadData];
 	}
 	else if (_hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
-		[participantList removeItemWithObjectValue:[participantId participantIdAtDomain]];
+		[participantList removeItemWithObjectValue:[participantId serialise]];
 	}
 }
 
@@ -141,7 +141,7 @@
 		// ignore, as indexwave at the moment doesn't care no operation
 	}
 	else if (_hasWaveOpened && [updateWaveId isEqual:[self.waveTextView openWaveId]]) {
-		NSLog(@"receive a no operation in NgProjectAppDelegate from author: %@", [author participantIdAtDomain]);
+		NSLog(@"receive a no operation in NgProjectAppDelegate from author: %@", [author serialise]);
 	}
 }
 
@@ -162,7 +162,7 @@
 	[_controllerMap addObject:openInboxController];
 	
 	ProtocolOpenRequest_Builder *openInboxRequestBuilder = [ProtocolOpenRequest builder];
-	[openInboxRequestBuilder setParticipantId:[_participantId participantIdAtDomain]];
+	[openInboxRequestBuilder setParticipantId:[_participantId serialise]];
 	[openInboxRequestBuilder setWaveId:[[_idGenerator indexWaveId] serialise]];
 	[openInboxRequestBuilder setSnapshots:NO];
 	
@@ -184,7 +184,7 @@
 										 build];
 	
 	NGMutateDocument *newBlipOp = [[[[[[[[NGDocOpBuilder builder]
-								   elementStart:[NGDocumentConstant CONTRIBUTOR] withAttributes:[[NGDocAttributes emptyAttribute] addAttributeWithKey:[NGDocumentConstant CONTRIBUTOR_NAME] andValue:[_participantId participantIdAtDomain]]]
+								   elementStart:[NGDocumentConstant CONTRIBUTOR] withAttributes:[[NGDocAttributes emptyAttribute] addAttributeWithKey:[NGDocumentConstant CONTRIBUTOR_NAME] andValue:[_participantId serialise]]]
 								   elementEnd]
 								   elementStart:[NGDocumentConstant BODY] withAttributes:[NGDocAttributes emptyAttribute]]
 								   elementStart:[NGDocumentConstant LINE] withAttributes:[NGDocAttributes emptyAttribute]]
@@ -236,14 +236,14 @@
 }
 
 - (IBAction) addParticipant:(id)sender {
-	NGParticipantId *addParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[self.participantAdd stringValue]];
+	NGParticipantId *addParticipantId = [NGParticipantId participantIdWithSerialisedParticipantId:[self.participantAdd stringValue]];
 	[self sendWaveletDelta:[[[NGWaveletDeltaBuilder builder:_participantId] addParticipantOp:addParticipantId] build]];
 	
 	[self.participantAdd setStringValue:@""];
 }
 
 - (IBAction) rmParticipant:(id)sender {
-	NGParticipantId *rmParticipantId = [NGParticipantId participantIdWithParticipantIdAtDomain:[self.participantList stringValue]];
+	NGParticipantId *rmParticipantId = [NGParticipantId participantIdWithSerialisedParticipantId:[self.participantList stringValue]];
 	[self sendWaveletDelta:[[[NGWaveletDeltaBuilder builder:_participantId] removeParticipantOp:rmParticipantId] build]];
 	
 	[self.participantList setStringValue:@""];
