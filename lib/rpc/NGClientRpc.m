@@ -39,7 +39,7 @@
 - (void) openRequest:(NGClientRpcController *)controller waveId:(NGWaveId *)waveId participantId:(NGParticipantId *)participantId snapshot:(BOOL)snapshot callback:(NGClientRpcCallback *)callback {
 	ProtocolOpenRequest_Builder *openRequestBuilder = [ProtocolOpenRequest builder];
 	[openRequestBuilder setParticipantId:[participantId participantIdAtDomain]];
-	[openRequestBuilder setWaveId:[waveId waveIdFollowedByDomain]];
+	[openRequestBuilder setWaveId:[waveId serialise]];
 	[openRequestBuilder setSnapshots:snapshot];
 	[self open:controller request:[openRequestBuilder build] callback:callback];
 }

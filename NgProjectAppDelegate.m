@@ -163,7 +163,7 @@
 	
 	ProtocolOpenRequest_Builder *openInboxRequestBuilder = [ProtocolOpenRequest builder];
 	[openInboxRequestBuilder setParticipantId:[_participantId participantIdAtDomain]];
-	[openInboxRequestBuilder setWaveId:[[_idGenerator indexWaveId] waveIdFollowedByDomain]];
+	[openInboxRequestBuilder setWaveId:[[_idGenerator indexWaveId] serialise]];
 	[openInboxRequestBuilder setSnapshots:NO];
 	
 	NGClientRpcCallback *openInboxCallback = [[NGClientRpcCallback alloc] initWithApplication:self];

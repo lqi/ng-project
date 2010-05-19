@@ -18,17 +18,19 @@
 #import <Foundation/Foundation.h>
 
 @interface NGWaveId : NSObject {
-	NSString *_domain;
-	NSString *_waveId;
+	NSString *domain;
+	NSString *waveId;
 }
 
-+ (NGWaveId *) waveIdWithDomain:(NSString *)domain waveId:(NSString *)waveId;
+@property (retain) NSString *domain;
+@property (retain) NSString *waveId;
 
-- (id) initWithDomain:(NSString *)domain waveId:(NSString *)waveId;
++ (NGWaveId *) waveIdWithDomain:(NSString *)theDomain waveId:(NSString *)theWaveId;
++ (NGWaveId *) waveIdWithSerialisedWaveId:(NSString *)serialisedWaveId;
 
-- (NSString *) domain;
-- (NSString *) waveId;
+- (id) initWithDomain:(NSString *)theDomain waveId:(NSString *)theWaveId;
 
-- (NSString *) waveIdFollowedByDomain;
+- (NSString *) serialise;
+- (void) deserialise:(NSString *)serialisedWaveId;
 
 @end

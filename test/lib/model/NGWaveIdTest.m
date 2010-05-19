@@ -36,12 +36,37 @@
 }
 
 - (void) testWaveIdFollowedByDomain {
-	STAssertEqualObjects([_waveId waveIdFollowedByDomain], @"testDomain!testId", @"waveIdFollowedByDomain should be 'testDomain!testId");
+	STAssertEqualObjects([_waveId serialise], @"testDomain!testId", @"waveIdFollowedByDomain should be 'testDomain!testId");
 }
 
-- (void) testEquals {
+- (void) testEqualsCompareToSameObject {
+	STAssertEqualObjects(_waveId, _waveId, @"WaveId with samd object should be equal");
+}
+
+- (void) testEqualsCompareToNil {
+	STAssertFalse([_waveId isEqual:nil], @"WaveId cannot equal to a nil object");
+}
+
+- (void) testEqualsCompareToDifferentType {
+	STAssertFalse([_waveId isEqual:@"NSString"], @"WaveId cannot equal to an object with different type");
+}
+
+- (void) testEqualsCompareToSameValue {
 	NGWaveId *compareWaveId = [NGWaveId waveIdWithDomain:@"testDomain" waveId:@"testId"];
 	STAssertEqualObjects(_waveId, compareWaveId, @"WaveId with same domain and id should be equal");
+}
+
+- (void) testDeserialise {
+	NGWaveId *waveId = [[NGWaveId alloc] init];
+	[waveId deserialise:@"testDomain!testId"];
+	STAssertEqualObjects(waveId.domain, @"testDomain", @"domain should be 'testDomain'");
+	STAssertEqualObjects(waveId.waveId, @"testId", @"id should be 'testId'");
+	[waveId release];
+}
+
+- (void) testDeserialiseInstance {
+	NGWaveId *waveId = [NGWaveId waveIdWithSerialisedWaveId:@"testDomain!testId"];
+	STAssertEqualObjects(_waveId, waveId, @"too waveid should be same");
 }
 
 @end

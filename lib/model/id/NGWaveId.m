@@ -19,35 +19,51 @@
 
 @implementation NGWaveId
 
-+ (NGWaveId *) waveIdWithDomain:(NSString *)domain waveId:(NSString *)waveId {
-	return [[[NGWaveId alloc] initWithDomain:domain waveId:waveId] autorelease];
+@synthesize domain;
+@synthesize waveId;
+
++ (NGWaveId *) waveIdWithDomain:(NSString *)theDomain waveId:(NSString *)theWaveId {
+	return [[[NGWaveId alloc] initWithDomain:theDomain waveId:theWaveId] autorelease];
 }
 
-- (id) initWithDomain:(NSString *)domain waveId:(NSString *)waveId {
++ (NGWaveId *) waveIdWithSerialisedWaveId:(NSString *)serialisedWaveId {
+	NGWaveId *waveIdInstance = [[NGWaveId alloc] init];
+	[waveIdInstance deserialise:serialisedWaveId];
+	[waveIdInstance autorelease];
+	return waveIdInstance;
+}
+
+- (id) initWithDomain:(NSString *)theDomain waveId:(NSString *)theWaveId {
 	if (self = [super init]) {
-		_domain = domain;
-		_waveId = waveId;
+		self.domain = theDomain;
+		self.waveId = theWaveId;
 	}
 	return self;
 }
 
-- (NSString *) domain {
-	return _domain;
+- (NSString *) serialise {
+	return [NSString stringWithFormat:@"%@!%@", self.domain, self.waveId];
 }
 
-- (NSString *) waveId {
-	return _waveId;
-}
-
-- (NSString *) waveIdFollowedByDomain {
-	return [NSString stringWithFormat:@"%@!%@", _domain, _waveId];
+- (void) deserialise:(NSString *)serialisedWaveId {
+	NSArray *parts = [serialisedWaveId componentsSeparatedByString:@"!"];
+	NSAssert([parts count] == 2, @"WaveId must be in the form of <domain>!<id>");
+	self.domain = [parts objectAtIndex:0];
+	self.waveId = [parts objectAtIndex:1];
 }
 
 - (BOOL) isEqual:(id)object {
+	if (self == object) {
+		return YES;
+	}
+	if (object == nil) {
+		return NO;
+	}
 	if (![[[self class] description] isEqual:[[object class] description]]) {
 		return NO;
 	}
-	return [[self domain] isEqual:[object domain]] && [[self waveId] isEqual:[object waveId]];
+	NGWaveId *other = (NGWaveId *)object;
+	return [self.domain isEqual:other.domain] && [self.waveId isEqual:other.waveId];
 }
 
 @end
