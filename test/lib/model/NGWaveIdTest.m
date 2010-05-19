@@ -20,7 +20,9 @@
 @implementation NGWaveIdTest
 
 - (void) setUp {
-	_waveId = [[NGWaveId alloc] initWithDomain:@"testDomain" waveId:@"testId"];
+	_waveId = [[NGWaveId alloc] init];
+	_waveId.domain = @"testDomain";
+	_waveId.waveId = @"testId";
 }
 
 - (void) tearDown {

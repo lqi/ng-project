@@ -18,15 +18,15 @@
 #import <Foundation/Foundation.h>
 
 @interface NGWaveletId : NSObject {
-	NSString *_domain;
-	NSString *_waveletId;
+	NSString *domain;
+	NSString *waveletId;
 }
 
-+ (NGWaveletId *) waveletIdWithDomain:(NSString *)domain waveletId:(NSString *)waveletId;
+@property (retain) NSString *domain;
+@property (retain) NSString *waveletId;
 
-- (id) initWithDomain:(NSString *)domain waveletId:(NSString *)waveletId;
++ (NGWaveletId *) waveletIdWithDomain:(NSString *)theDomain waveletId:(NSString *)theWaveletId;
 
-- (NSString *) domain;
-- (NSString *) waveletId;
+- (id) initWithDomain:(NSString *)theDomain waveletId:(NSString *)theWaveletId;
 
 @end

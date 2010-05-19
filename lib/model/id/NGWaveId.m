@@ -53,11 +53,11 @@
 }
 
 - (BOOL) isEqual:(id)object {
-	if (self == object) {
-		return YES;
-	}
 	if (object == nil) {
 		return NO;
+	}
+	if (self == object) {
+		return YES;
 	}
 	if (![[[self class] description] isEqual:[[object class] description]]) {
 		return NO;

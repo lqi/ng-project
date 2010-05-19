@@ -20,7 +20,9 @@
 @implementation NGWaveletIdTest
 
 - (void) setUp {
-	_waveletId = [[NGWaveletId alloc] initWithDomain:@"testDomain" waveletId:@"testId"];
+	_waveletId = [[NGWaveletId alloc] init];
+	_waveletId.domain = @"testDomain";
+	_waveletId.waveletId = @"testId";
 }
 
 - (void) tearDown {
@@ -35,9 +37,21 @@
 	STAssertEqualObjects([_waveletId waveletId], @"testId", @"waveId should be 'waveId'");
 }
 
-- (void) testEquals {
+- (void) testEqualsCompareToSameObject {
+	STAssertEqualObjects(_waveletId, _waveletId, @"WaveletId with samd object should be equal");
+}
+
+- (void) testEqualsCompareToNil {
+	STAssertFalse([_waveletId isEqual:nil], @"WaveletId cannot equal to a nil object");
+}
+
+- (void) testEqualsCompareToDifferentType {
+	STAssertFalse([_waveletId isEqual:@"NSString"], @"WaveletId cannot equal to an object with different type");
+}
+
+- (void) testEqualsCompareToSameValue {
 	NGWaveletId *compareWaveletId = [NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testId"];
-	STAssertEqualObjects(_waveletId, compareWaveletId, @"WaveId with same domain and id should be equal");
+	STAssertEqualObjects(_waveletId, compareWaveletId, @"WaveletId with same domain and id should be equal");
 }
 
 @end

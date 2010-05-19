@@ -19,31 +19,33 @@
 
 @implementation NGWaveletId
 
-+ (NGWaveletId *) waveletIdWithDomain:(NSString *)domain waveletId:(NSString *)waveletId {
-	return [[[NGWaveletId alloc] initWithDomain:domain waveletId:waveletId] autorelease];
+@synthesize domain;
+@synthesize waveletId;
+
++ (NGWaveletId *) waveletIdWithDomain:(NSString *)theDomain waveletId:(NSString *)theWaveletId {
+	return [[[NGWaveletId alloc] initWithDomain:theDomain waveletId:theWaveletId] autorelease];
 }
 
-- (id) initWithDomain:(NSString *)domain waveletId:(NSString *)waveletId {
+- (id) initWithDomain:(NSString *)theDomain waveletId:(NSString *)theWaveletId {
 	if (self = [super init]) {
-		_domain = domain;
-		_waveletId = waveletId;
+		self.domain = theDomain;
+		self.waveletId = theWaveletId;
 	}
 	return self;
 }
 
-- (NSString *) domain {
-	return _domain;
-}
-
-- (NSString *) waveletId {
-	return _waveletId;
-}
-
 - (BOOL) isEqual:(id)object {
+	if (object == nil) {
+		return NO;
+	}
+	if (self == object) {
+		return YES;
+	}
 	if (![[[self class] description] isEqual:[[object class] description]]) {
 		return NO;
 	}
-	return [[self domain] isEqual:[object domain]] && [[self waveletId] isEqual:[object waveletId]];
+	NGWaveletId *other = (NGWaveletId *)object;
+	return [self.domain isEqual:other.domain] && [self.waveletId isEqual:other.waveletId];
 }
 
 @end
