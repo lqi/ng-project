@@ -28,15 +28,14 @@
 @property (retain) NGWaveId *waveId;
 @property (retain) NGWaveletId *waveletId;
 
-+ (NGWaveletName *) waveNameWithWaveId:(NGWaveId *)aWaveId andWaveletId:(NGWaveletId *)aWaveletId;
-+ (NGWaveletName *) waveNameWithString:(NSString *)stringWaveUrl;
++ (NGWaveletName *) waveletNameWithWaveId:(NGWaveId *)aWaveId andWaveletId:(NGWaveletId *)aWaveletId;
++ (NGWaveletName *) waveletNameWithSerialisedWaveletName:(NSString *)serialisedWaveletName;
 
 - (NSString *)domain;
 
 - (id) initWithWaveId:(NGWaveId *)aWaveId WaveletId:(NGWaveletId *)aWaveletId;
-- (id) initWithString:(NSString *)stringWaveUrl;
 
-- (void) parse:(NSString *)stringWaveUrl;
-- (NSString *) url;
+- (void) deserialise:(NSString *)serialisedWaveletName;
+- (NSString *) serialise;
 
 @end

@@ -173,7 +173,7 @@
 
 - (IBAction) newWave:(id)sender {
 	
-	NGWaveletName *newWaveName = [NGWaveletName waveNameWithWaveId:[_idGenerator newWaveId] andWaveletId:[_idGenerator newConversationRootWaveletId]];
+	NGWaveletName *newWaveName = [NGWaveletName waveletNameWithWaveId:[_idGenerator newWaveId] andWaveletId:[_idGenerator newConversationRootWaveletId]];
 	NGDocumentId *newBlipName = [_idGenerator newDocumentId];
 	
 	NGMutateDocument *newConversation = [[[[[[NGDocOpBuilder builder]
@@ -318,7 +318,7 @@
 		return;
 	}
 	
-	NGWaveletName *waveName = [NGWaveletName waveNameWithWaveId:[NGWaveId waveIdWithDomain:_domain waveId:[self.waveTextView openWaveId]] andWaveletId:[_idGenerator newConversationRootWaveletId]];
+	NGWaveletName *waveName = [NGWaveletName waveletNameWithWaveId:[NGWaveId waveIdWithDomain:_domain waveId:[self.waveTextView openWaveId]] andWaveletId:[_idGenerator newConversationRootWaveletId]];
 	NGClientRpcController *controller = [NGClientRpcController rpcController];
 	[_controllerMap addObject:controller];
 	NGClientRpcCallback *callback = [[NGClientRpcCallback alloc] initWithApplication:self];

@@ -22,16 +22,19 @@
 @synthesize waveId;
 @synthesize waveletId;
 
-+ (NGWaveletName *) waveNameWithWaveId:(NGWaveId *)aWaveId andWaveletId:(NGWaveletId *)aWaveletId {
++ (NGWaveletName *) waveletNameWithWaveId:(NGWaveId *)aWaveId andWaveletId:(NGWaveletId *)aWaveletId {
 	return [[[NGWaveletName alloc] initWithWaveId:aWaveId WaveletId:aWaveletId] autorelease];
 }
 
-+ (NGWaveletName *) waveNameWithString:(NSString *)stringWaveUrl {
-	return [[[NGWaveletName alloc] initWithString:stringWaveUrl] autorelease];
++ (NGWaveletName *) waveletNameWithSerialisedWaveletName:(NSString *)serialisedWaveletName {
+	NGWaveletName *waveletNameInstance = [[NGWaveletName alloc] init];
+	[waveletNameInstance deserialise:serialisedWaveletName];
+	[waveletNameInstance autorelease];
+	return waveletNameInstance;
 }
 
 - (NSString *)domain {
-	return [[self waveletId] domain];
+	return self.waveletId.domain;
 }
 
 - (id) initWithWaveId:(NGWaveId *)aWaveId WaveletId:(NGWaveletId *)aWaveletId {
@@ -42,27 +45,34 @@
 	return self;
 }
 
-- (id) initWithString:(NSString *)stringWaveUrl {
-	if (self = [super init]) {
-		[self parse:stringWaveUrl];
-	}
-	return self;
-}
-
-- (void) parse:(NSString *)stringWaveUrl {
-	NSURL *waveUrl = [NSURL URLWithString:stringWaveUrl];
+- (void) deserialise:(NSString *)serialisedWaveletName {
+	NSURL *waveUrl = [NSURL URLWithString:serialisedWaveletName];
 	assert([[waveUrl scheme] isEqual:@"wave"]);
 	NSString *domain = [waveUrl host];
 	NSString *path = [waveUrl path];
 	NSArray *ids = [path componentsSeparatedByString:@"/"];
 	NSString *thisWaveId = [ids objectAtIndex:1];
 	NSString *thisWaveletId = [ids objectAtIndex:2];
-	[self setWaveId:[NGWaveId waveIdWithDomain:domain waveId:thisWaveId]];
-	[self setWaveletId:[NGWaveletId waveletIdWithDomain:domain waveletId:thisWaveletId]];
+	self.waveId = [NGWaveId waveIdWithDomain:domain waveId:thisWaveId];
+	self.waveletId = [NGWaveletId waveletIdWithDomain:domain waveletId:thisWaveletId];
 }
 
-- (NSString *) url {
-	return [NSString stringWithFormat:@"wave://%@/%@/%@", [self domain], [[self waveId] waveId], [[self waveletId] waveletId]];
+- (NSString *) serialise {
+	return [NSString stringWithFormat:@"wave://%@/%@/%@", [self domain], self.waveId.waveId, self.waveletId.waveletId];
+}
+
+- (BOOL) isEqual:(id)object {
+	if (object == nil) {
+		return NO;
+	}
+	if (self == object) {
+		return YES;
+	}
+	if (![[[self class] description] isEqual:[[object class] description]]) {
+		return NO;
+	}
+	NGWaveletName *other = (NGWaveletName *)object;
+	return [self.waveId isEqual:other.waveId] && [self.waveletId isEqual:other.waveletId];
 }
 
 @end

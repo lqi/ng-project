@@ -330,7 +330,7 @@
 }
 
 - (void)sendDocumentOperation:(NGMutateDocument *)docOp {
-	NGWaveletName *waveName = [NGWaveletName waveNameWithWaveId:_waveId andWaveletId:_waveletId];
+	NGWaveletName *waveName = [NGWaveletName waveletNameWithWaveId:_waveId andWaveletId:_waveletId];
 	NGWaveletDelta *waveletDelta = [[[NGWaveletDeltaBuilder builder:_participantId] docOp:_blipId andMutateDocument:docOp] build];
 	NGClientRpcController *controller = [[NGClientRpcController alloc] init];
 	NGClientRpcCallback *callback = [[NGClientRpcCallback alloc] initWithApplication:self];

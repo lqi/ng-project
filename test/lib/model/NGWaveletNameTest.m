@@ -20,35 +20,52 @@
 @implementation NGWaveletNameTest
 
 - (void) setUp {
-	_waveName = [[NGWaveletName alloc] initWithString:@"wave://testDomain/testWaveId/testWaveletId"];
+	_waveletName = [[NGWaveletName alloc] init];
+	_waveletName.waveId = [NGWaveId waveIdWithDomain:@"testDomain" waveId:@"testWaveId"];
+	_waveletName.waveletId = [NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"];
 }
 
 - (void) tearDown {
-	[_waveName release];
+	[_waveletName release];
 }
 
 - (void) testWaveId {
-	STAssertEqualObjects([_waveName waveId], [NGWaveId waveIdWithDomain:@"testDomain" waveId:@"testWaveId"], @"waveId should be 'testWaveId@testDomain'");
+	STAssertEqualObjects(_waveletName.waveId, [NGWaveId waveIdWithDomain:@"testDomain" waveId:@"testWaveId"], @"waveId should be 'testWaveId@testDomain'");
 }
 
 - (void) testWaveletId {
-	STAssertEqualObjects([_waveName waveletId], [NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"], @"waveletId should be 'testWaveletId@testDomain'");
+	STAssertEqualObjects(_waveletName.waveletId, [NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"], @"waveletId should be 'testWaveletId@testDomain'");
 }
 
 - (void) testDomain {
-	STAssertEqualObjects([_waveName domain], @"testDomain", @"domain should be 'testDomain'");
+	STAssertEqualObjects([_waveletName domain], @"testDomain", @"domain should be 'testDomain'");
 }
 
 - (void) testStringValue {
-	NGWaveletName *testUrl = [[NGWaveletName alloc] init];
-	[testUrl setWaveId:[NGWaveId waveIdWithDomain:@"testWaveDomain" waveId:@"testWaveId"]];
-	[testUrl setWaveletId:[NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"]];
-	STAssertEqualObjects([testUrl url], @"wave://testDomain/testWaveId/testWaveletId", @"string value of this wave url should be 'wave://testDomain/testWaveId/testWaveletId'");
+	STAssertEqualObjects([_waveletName serialise], @"wave://testDomain/testWaveId/testWaveletId", @"string value of this wave url should be 'wave://testDomain/testWaveId/testWaveletId'");
 }
 
-- (void) testStringValueWithGlobalInitializeMethod {
-	NGWaveletName *testUrl = [NGWaveletName waveNameWithWaveId:[NGWaveId waveIdWithDomain:@"testWaveDomain" waveId:@"testWaveId"] andWaveletId:[NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"]];
-	STAssertEqualObjects([testUrl url], @"wave://testDomain/testWaveId/testWaveletId", @"string value of this wave url should be 'wave://testDomain/testWaveId/testWaveletId'");
+- (void) testDeserialise {
+	NGWaveletName *testName = [NGWaveletName waveletNameWithSerialisedWaveletName:@"wave://testDomain/testWaveId/testWaveletId"];
+	STAssertEqualObjects(testName.waveId, [NGWaveId waveIdWithDomain:@"testDomain" waveId:@"testWaveId"], @"waveId should be 'testWaveId@testDomain'");
+	STAssertEqualObjects(testName.waveletId, [NGWaveletId waveletIdWithDomain:@"testDomain" waveletId:@"testWaveletId"], @"waveletId should be 'testWaveletId@testDomain'");
+}
+
+- (void) testEqualsCompareToSameObject {
+	STAssertEqualObjects(_waveletName, _waveletName, @"WaveletName with samd object should be equal");
+}
+
+- (void) testEqualsCompareToNil {
+	STAssertFalse([_waveletName isEqual:nil], @"WaveletName cannot equal to a nil object");
+}
+
+- (void) testEqualsCompareToDifferentType {
+	STAssertFalse([_waveletName isEqual:@"NSString"], @"WaveletName cannot equal to an object with different type");
+}
+
+- (void) testEqualsCompareToSameValue {
+	NGWaveletName *compareWaveletName = [NGWaveletName waveletNameWithSerialisedWaveletName:@"wave://testDomain/testWaveId/testWaveletId"];
+	STAssertEqualObjects(_waveletName, compareWaveletName, @"WaveletName with same domain and id should be equal");
 }
 
 @end

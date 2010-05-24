@@ -22,7 +22,7 @@
 #import "NGWaveletId.h"
 
 @interface NGWaveletNameTest : SenTestCase {
-	NGWaveletName *_waveName;
+	NGWaveletName *_waveletName;
 }
 
 @end
